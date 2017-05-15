@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Lato-Bold.ttf">
+            <string>Lato-Bold</string>
+        </array>
+        <array key="Lato-Regular.ttf">
+            <string>Lato-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="idCellCmt" rowHeight="100" id="F62-I8-xka" customClass="CmtCell" customModule="Workaa" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="F62-I8-xka" id="8ud-zM-z7L">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="99.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="1000" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="COA-6r-FTs">
+                        <rect key="frame" x="10" y="10" width="275" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="25" id="k7k-QS-mwZ"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="14"/>
+                        <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellowstar.png" translatesAutoresizingMaskIntoConstraints="NO" id="Sng-ra-ln9">
+                        <rect key="frame" x="290" y="15" width="15" height="15"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="15" id="alJ-o2-bep"/>
+                            <constraint firstAttribute="width" constant="15" id="uop-A9-vIL"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="1000" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tCM-oq-bNJ" customClass="KILabel">
+                        <rect key="frame" x="10" y="40" width="300" height="55"/>
+                        <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="14"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="tCM-oq-bNJ" secondAttribute="trailing" constant="10" id="4Oc-oL-VyM"/>
+                    <constraint firstItem="COA-6r-FTs" firstAttribute="leading" secondItem="8ud-zM-z7L" secondAttribute="leading" constant="10" id="4qR-7s-S3t"/>
+                    <constraint firstItem="tCM-oq-bNJ" firstAttribute="top" secondItem="COA-6r-FTs" secondAttribute="bottom" constant="5" id="4tM-x5-KM4"/>
+                    <constraint firstItem="Sng-ra-ln9" firstAttribute="top" secondItem="8ud-zM-z7L" secondAttribute="top" constant="15" id="CZ3-bu-gX4"/>
+                    <constraint firstItem="COA-6r-FTs" firstAttribute="top" secondItem="8ud-zM-z7L" secondAttribute="top" constant="10" id="HGf-VY-NoC"/>
+                    <constraint firstAttribute="trailing" secondItem="Sng-ra-ln9" secondAttribute="trailing" constant="15" id="HqM-vP-ZIb"/>
+                    <constraint firstItem="Sng-ra-ln9" firstAttribute="leading" secondItem="COA-6r-FTs" secondAttribute="trailing" constant="5" id="bo2-NE-GLZ"/>
+                    <constraint firstAttribute="bottom" secondItem="tCM-oq-bNJ" secondAttribute="bottom" constant="4.5" id="dVE-CO-eaO"/>
+                    <constraint firstItem="tCM-oq-bNJ" firstAttribute="leading" secondItem="8ud-zM-z7L" secondAttribute="leading" constant="10" id="lb5-XA-1qh"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <connections>
+                <outlet property="lblChatMessage" destination="tCM-oq-bNJ" id="OMf-Uk-ts8"/>
+                <outlet property="lblSenderDetails" destination="COA-6r-FTs" id="ZMQ-Rd-UO7"/>
+                <outlet property="starimage" destination="Sng-ra-ln9" id="hra-kH-5ve"/>
+            </connections>
+            <point key="canvasLocation" x="903" y="305"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="yellowstar.png" width="50" height="50"/>
+    </resources>
+</document>

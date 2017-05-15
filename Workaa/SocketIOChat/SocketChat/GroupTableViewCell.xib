@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Lato-Italic.ttf">
+            <string>Lato-Italic</string>
+        </array>
+        <array key="Lato-Regular.ttf">
+            <string>Lato-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="GroupCell" id="KGk-i7-Jjw" customClass="GroupTableViewCell" customModule="Workaa" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="79.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="y89-64-jg9" customClass="AsyncImageView">
+                        <rect key="frame" x="15" y="20" width="40" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="40" id="93h-yU-8uk"/>
+                            <constraint firstAttribute="height" constant="40" id="9dZ-it-kWI"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="20"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Vijay Shanthi - Development" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NE7-Kp-xeK">
+                        <rect key="frame" x="65" y="15" width="250" height="21"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="Rkd-bO-WHG"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="16"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12 Ongoing tasks" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gGA-GD-fih">
+                        <rect key="frame" x="65" y="41" width="110" height="21"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="110" id="4rH-6O-req"/>
+                            <constraint firstAttribute="height" constant="21" id="5Oc-nv-b3q"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Lato-Italic" family="Lato" pointSize="14"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="odb-Wd-ZPb">
+                        <rect key="frame" x="175" y="50" width="6" height="6"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="6" id="bVV-uq-d96"/>
+                            <constraint firstAttribute="width" constant="6" id="tft-3f-g2Z"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="3"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3 critical" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="La3-JO-Ltb">
+                        <rect key="frame" x="186" y="41" width="105" height="21"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="105" id="PKu-ee-gtz"/>
+                            <constraint firstAttribute="height" constant="21" id="Tqe-T5-PBI"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Lato-Italic" family="Lato" pointSize="14"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cmh-67-A9E">
+                        <rect key="frame" x="0.0" y="79" width="320" height="1"/>
+                        <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="cnO-0J-ElC"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="Cmh-67-A9E" secondAttribute="trailing" id="7qz-Ux-LBt"/>
+                    <constraint firstItem="Cmh-67-A9E" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="F7F-dn-81q"/>
+                    <constraint firstAttribute="bottom" secondItem="Cmh-67-A9E" secondAttribute="bottom" id="KBX-vM-bxK"/>
+                    <constraint firstItem="gGA-GD-fih" firstAttribute="leading" secondItem="y89-64-jg9" secondAttribute="trailing" constant="10" id="MmZ-FF-g1e"/>
+                    <constraint firstItem="odb-Wd-ZPb" firstAttribute="top" secondItem="NE7-Kp-xeK" secondAttribute="bottom" constant="14" id="Nna-kp-eqY"/>
+                    <constraint firstItem="gGA-GD-fih" firstAttribute="top" secondItem="NE7-Kp-xeK" secondAttribute="bottom" constant="5" id="SWX-t1-DJU"/>
+                    <constraint firstAttribute="trailing" secondItem="NE7-Kp-xeK" secondAttribute="trailing" constant="5" id="WDq-oO-YbQ"/>
+                    <constraint firstItem="y89-64-jg9" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="gGb-jq-AO4"/>
+                    <constraint firstItem="y89-64-jg9" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="kTU-Rb-tF0"/>
+                    <constraint firstItem="La3-JO-Ltb" firstAttribute="leading" secondItem="odb-Wd-ZPb" secondAttribute="trailing" constant="5" id="lah-Fo-bIE"/>
+                    <constraint firstItem="La3-JO-Ltb" firstAttribute="top" secondItem="NE7-Kp-xeK" secondAttribute="bottom" constant="5" id="oNk-l0-rEh"/>
+                    <constraint firstItem="NE7-Kp-xeK" firstAttribute="leading" secondItem="y89-64-jg9" secondAttribute="trailing" constant="10" id="psg-lz-xRt"/>
+                    <constraint firstItem="NE7-Kp-xeK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="uDO-fz-Kye"/>
+                    <constraint firstItem="odb-Wd-ZPb" firstAttribute="leading" secondItem="gGA-GD-fih" secondAttribute="trailing" id="yVy-44-o6y"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="circleView" destination="odb-Wd-ZPb" id="4wh-td-wS6"/>
+                <outlet property="lblgroupname" destination="NE7-Kp-xeK" id="Bu4-Lp-7ST"/>
+                <outlet property="lblstatus" destination="La3-JO-Ltb" id="CmG-XI-OwW"/>
+                <outlet property="lbltask" destination="gGA-GD-fih" id="jjq-s2-NVS"/>
+                <outlet property="profileimage" destination="y89-64-jg9" id="hmb-Yq-DvZ"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

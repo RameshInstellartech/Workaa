@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="INSTELLAR.ttf">
+            <string>icomoon</string>
+        </array>
+        <array key="Lato-Regular.ttf">
+            <string>Lato-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="IdUserCell" id="KGk-i7-Jjw" customClass="UserCellTableViewCell" customModule="Workaa" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="49.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Phs-Hr-fgf" customClass="AsyncImageView">
+                        <rect key="frame" x="15" y="10" width="30" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="5Ji-66-LNO"/>
+                            <constraint firstAttribute="width" constant="30" id="5ib-th-NMb"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="15"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cvM-Y3-paP">
+                        <rect key="frame" x="55" y="0.0" width="215" height="50"/>
+                        <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="15"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lpM-10-lTB">
+                        <rect key="frame" x="280" y="12" width="25" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="25" id="Ikj-p2-dTY"/>
+                            <constraint firstAttribute="height" constant="25" id="ZBp-OT-d0h"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="icomoon" family="icomoon" pointSize="25"/>
+                        <state key="normal">
+                            <color key="titleColor" red="0.094117647058823528" green="0.81568627450980391" blue="0.48627450980392156" alpha="1" colorSpace="calibratedRGB"/>
+                        </state>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="cvM-Y3-paP" secondAttribute="bottom" id="7i7-Kk-nWC"/>
+                    <constraint firstAttribute="trailing" secondItem="lpM-10-lTB" secondAttribute="trailing" constant="15" id="B6i-KF-R8l"/>
+                    <constraint firstItem="lpM-10-lTB" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="FbG-Wy-vbW"/>
+                    <constraint firstItem="lpM-10-lTB" firstAttribute="leading" secondItem="cvM-Y3-paP" secondAttribute="trailing" constant="10" id="S6C-uH-jwK"/>
+                    <constraint firstItem="cvM-Y3-paP" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="kSb-Wk-iU9"/>
+                    <constraint firstItem="cvM-Y3-paP" firstAttribute="leading" secondItem="Phs-Hr-fgf" secondAttribute="trailing" constant="10" id="pUA-Nf-zsZ"/>
+                    <constraint firstItem="Phs-Hr-fgf" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="pa7-y9-yKF"/>
+                    <constraint firstItem="Phs-Hr-fgf" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="wVl-BF-m4N"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="lblusername" destination="cvM-Y3-paP" id="pxS-W9-ip6"/>
+                <outlet property="profileimage" destination="Phs-Hr-fgf" id="lvj-Hy-t7r"/>
+                <outlet property="tickbtn" destination="lpM-10-lTB" id="xLH-te-b14"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

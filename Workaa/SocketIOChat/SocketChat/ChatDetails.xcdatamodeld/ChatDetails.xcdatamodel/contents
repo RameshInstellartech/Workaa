@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16E195" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CafeChat" syncable="YES">
+        <attribute name="commentdetails" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="filecaption" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="filesize" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imagepath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imagetitle" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="linkdetails" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="loginuserid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="message" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="msgid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sharedetails" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="starmsg" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="teamid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="CafeComment" syncable="YES">
+        <attribute name="cmtid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="cmtmsg" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="groupid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="msgid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="starmsg" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="teamid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="GroupChat" syncable="YES">
+        <attribute name="commentdetails" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="filecaption" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="filesize" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="groupid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imagepath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imagetitle" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="linkdetails" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="loginuserid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="message" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="msgid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sharedetails" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="starmsg" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="teamid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="GroupComment" syncable="YES">
+        <attribute name="cmtid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="cmtmsg" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="groupid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="msgid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="starmsg" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="teamid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="OneToOne" syncable="YES">
+        <attribute name="commentdetails" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="filecaption" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="filesize" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imagepath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imagetitle" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="linkdetails" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="loginuserid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="message" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="msgid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sendertype" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="senderuserid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sharedetails" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="starmsg" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="teamid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="OneToOneComment" syncable="YES">
+        <attribute name="cmtid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="cmtmsg" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="msgid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="starmsg" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="teamid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="CafeChat" positionX="-63" positionY="135" width="128" height="285"/>
+        <element name="CafeComment" positionX="-54" positionY="144" width="128" height="180"/>
+        <element name="GroupChat" positionX="-63" positionY="-18" width="128" height="300"/>
+        <element name="GroupComment" positionX="-63" positionY="45" width="128" height="180"/>
+        <element name="OneToOne" positionX="-63" positionY="90" width="128" height="315"/>
+        <element name="OneToOneComment" positionX="-63" positionY="135" width="128" height="165"/>
+    </elements>
+</model>
