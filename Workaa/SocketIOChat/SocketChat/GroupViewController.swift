@@ -1610,7 +1610,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
         let filesize = currentChatMessage.value(forKey: "filesize") as? NSString
         let favstring = String(format: "%@", currentChatMessage.value(forKey: "starmsg") as! CVarArg)
         
-        let cellheight = self.tableView(tableView, heightForRowAt: indexPath)
+//        let cellheight = self.tableView(tableView, heightForRowAt: indexPath)
         
         let longPressGesture:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(GroupViewController.longPress(_:)))
         longPressGesture.minimumPressDuration = 0.5
@@ -1671,7 +1671,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                         cell.rightsharecommentView?.isHidden = false
                         cell.leftsharecommentView?.isHidden = true
                         
-                        cell.rightsubsharecommentView?.layer.cornerRadius = 10
+//                        cell.rightsubsharecommentView?.layer.cornerRadius = 10
                         
                         cell.rightsharecommentDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                         
@@ -1707,7 +1707,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                         cell.rightsharecommentView?.isHidden = true
                         cell.leftsharecommentView?.isHidden = false
                         
-                        cell.leftsubsharecommentView?.layer.cornerRadius = 10
+//                        cell.leftsubsharecommentView?.layer.cornerRadius = 10
                         
                         cell.leftsharecommentDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                         
@@ -1776,7 +1776,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                             cell.rightsharetextView?.isHidden = false
                             cell.leftsharetextView?.isHidden = true
                             
-                            cell.rightsubsharetextView?.layer.cornerRadius = 10
+//                            cell.rightsubsharetextView?.layer.cornerRadius = 10
                             
                             cell.rightsharetextDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                             
@@ -1802,7 +1802,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                             cell.rightsharetextView?.isHidden = true
                             cell.leftsharetextView?.isHidden = false
                             
-                            cell.leftsubsharetextView?.layer.cornerRadius = 10
+//                            cell.leftsubsharetextView?.layer.cornerRadius = 10
                             
                             cell.leftsharetextDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                             
@@ -1865,7 +1865,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                                 cell.rightshareimageView?.isHidden = false
                                 cell.leftshareimageView?.isHidden = true
 
-                                cell.rightsubshareimageView?.layer.cornerRadius = 10
+//                                cell.rightsubshareimageView?.layer.cornerRadius = 10
                                 
                                 cell.rightshareimageDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                                 
@@ -1910,7 +1910,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                                 cell.rightshareimageView?.isHidden = true
                                 cell.leftshareimageView?.isHidden = false
                                 
-                                cell.leftsubshareimageView?.layer.cornerRadius = 10
+//                                cell.leftsubshareimageView?.layer.cornerRadius = 10
                                 
                                 cell.leftshareimageDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                                 
@@ -1974,7 +1974,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                                 cell.rightsharefileView?.isHidden = false
                                 cell.leftsharefileView?.isHidden = true
 
-                                cell.rightsubsharefileView?.layer.cornerRadius = 10
+//                                cell.rightsubsharefileView?.layer.cornerRadius = 10
                                 
                                 cell.rightsharefileDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                                 
@@ -2024,7 +2024,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                                 cell.rightsharefileView?.isHidden = true
                                 cell.leftsharefileView?.isHidden = false
                                 
-                                cell.leftsubsharefileView?.layer.cornerRadius = 10
+//                                cell.leftsubsharefileView?.layer.cornerRadius = 10
                                 
                                 cell.leftsharefileDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                                 
@@ -2112,7 +2112,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                     cell.rightlinkView?.isHidden = false
                     cell.leftlinkView?.isHidden = true
                     
-                    cell.rightsublinkView?.layer.cornerRadius = 20
+//                    cell.rightsublinkView?.layer.cornerRadius = 20
                     
                     cell.rightlinkmsglbl?.text = message as String?
                     cell.rightlinkmsgheight?.constant = height
@@ -2162,7 +2162,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                     cell.rightlinkView?.isHidden = true
                     cell.leftlinkView?.isHidden = false
                     
-                    cell.leftsublinkView?.layer.cornerRadius = 20
+//                    cell.leftsublinkView?.layer.cornerRadius = 20
                     
                     var UserNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftlinkUserNamelbl?.font!)!, text: senderNickname! as NSString)
                     UserNametextwidth = ceil(UserNametextwidth)
@@ -2259,7 +2259,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                     cell.rightcommentView?.isHidden = false
                     cell.leftcommentView?.isHidden = true
 
-                    cell.rightsubcommentView?.layer.cornerRadius = 10
+//                    cell.rightsubcommentView?.layer.cornerRadius = 10
                     
                     cell.rightcommentDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                     
@@ -2286,13 +2286,15 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                     {
                         cell.rightcommentstarimage?.isHidden = false
                     }
+                    
+                    cell.rightcommentDetailsheight?.constant = 50.0
                 }
                 else
                 {
                     cell.rightcommentView?.isHidden = true
                     cell.leftcommentView?.isHidden = false
                     
-                    cell.leftsubcommentView?.layer.cornerRadius = 10
+//                    cell.leftsubcommentView?.layer.cornerRadius = 10
 
                     cell.leftcommentDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                     
@@ -2486,7 +2488,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                             cell.rightchatimage?.image = UIImage(contentsOfFile: path.path)
                             cell.rightchatimage?.imageURL = fileUrl as URL?
                             
-                            cell.rightchatimage?.layer.cornerRadius = 10
+//                            cell.rightchatimage?.layer.cornerRadius = 10
                             
                             cell.rightimageDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                             
@@ -2504,7 +2506,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                             cell.rightimageView?.isHidden = true
                             cell.leftimageView?.isHidden = false
                             
-                            cell.leftsubimageView?.layer.cornerRadius = 10
+//                            cell.leftsubimageView?.layer.cornerRadius = 10
                             
                             var UserNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftimageUserNamelbl?.font!)!, text: senderNickname! as NSString)
                             UserNametextwidth = ceil(UserNametextwidth)
@@ -2561,7 +2563,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                             cell.rightfileView?.isHidden = false
                             cell.leftfileView?.isHidden = true
 
-                            cell.rightsubfileView?.layer.cornerRadius = 10
+//                            cell.rightsubfileView?.layer.cornerRadius = 10
                             
                             cell.rightfileDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                             
@@ -2590,7 +2592,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                             cell.rightfileView?.isHidden = true
                             cell.leftfileView?.isHidden = false
                             
-                            cell.leftsubfileView?.layer.cornerRadius = 10
+//                            cell.leftsubfileView?.layer.cornerRadius = 10
                             
                             var UserNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftfileUserNamelbl?.font!)!, text: senderNickname! as NSString)
                             UserNametextwidth = ceil(UserNametextwidth)
@@ -2639,6 +2641,8 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                 }
             }
         }
+        
+        cell.layoutIfNeeded()
         
         return cell
     }

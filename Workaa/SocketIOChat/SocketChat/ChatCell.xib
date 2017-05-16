@@ -184,6 +184,12 @@
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="W8g-3F-12o" customClass="AsyncImageView">
                                 <rect key="frame" x="60" y="10" width="250" height="230"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellowstar.png" translatesAutoresizingMaskIntoConstraints="NO" id="UnV-0w-w9k">
                                 <rect key="frame" x="40" y="10" width="15" height="15"/>
@@ -260,6 +266,12 @@
                                     <constraint firstAttribute="bottom" secondItem="yQx-0J-EMn" secondAttribute="bottom" constant="5" id="mz8-Nj-PdN"/>
                                     <constraint firstItem="yQx-0J-EMn" firstAttribute="leading" secondItem="rst-0p-zkk" secondAttribute="leading" constant="15" id="quL-Pp-iqG"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f9X-bH-JQ4">
                                 <rect key="frame" x="265" y="105" width="55" height="40"/>
@@ -337,6 +349,12 @@
                                     <constraint firstItem="bGS-vh-Nsv" firstAttribute="top" secondItem="1gh-YF-zrw" secondAttribute="top" constant="10" id="wmP-Oo-XxC"/>
                                     <constraint firstItem="hM8-Ho-rZq" firstAttribute="leading" secondItem="1gh-YF-zrw" secondAttribute="leading" constant="10" id="yOc-js-xB3"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellowstar.png" translatesAutoresizingMaskIntoConstraints="NO" id="1fy-Ai-fgC">
                                 <rect key="frame" x="40" y="10" width="15" height="15"/>
@@ -418,6 +436,12 @@
                                     <constraint firstItem="he7-il-PpS" firstAttribute="leading" secondItem="JUq-NW-4pq" secondAttribute="leading" constant="10" id="wRJ-IC-IP4"/>
                                     <constraint firstItem="zcD-Zr-WWl" firstAttribute="leading" secondItem="JUq-NW-4pq" secondAttribute="leading" constant="10" id="xEC-Iy-E4Q"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xgT-8z-i2a">
                                 <rect key="frame" x="265" y="105" width="55" height="40"/>
@@ -508,6 +532,12 @@
                                     <constraint firstAttribute="trailing" secondItem="zzu-0h-tno" secondAttribute="trailing" constant="10" id="rrF-Mv-nvW"/>
                                     <constraint firstItem="zzu-0h-tno" firstAttribute="top" secondItem="32N-So-IpZ" secondAttribute="top" constant="15" id="xZe-Ka-xN8"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellowstar.png" translatesAutoresizingMaskIntoConstraints="NO" id="6Jw-EL-osZ">
                                 <rect key="frame" x="40" y="10" width="15" height="15"/>
@@ -602,6 +632,12 @@
                                     <constraint firstItem="Eps-cp-Sii" firstAttribute="leading" secondItem="qpi-6P-hS5" secondAttribute="trailing" constant="15" id="mM6-JH-730"/>
                                     <constraint firstItem="NCN-qh-uaY" firstAttribute="leading" secondItem="AYs-R7-0Ll" secondAttribute="leading" constant="15" id="ume-5J-jG3"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iuS-A8-HKZ">
                                 <rect key="frame" x="265" y="105" width="55" height="40"/>
@@ -689,6 +725,12 @@
                                     <constraint firstAttribute="bottom" secondItem="Ali-iI-dvO" secondAttribute="bottom" constant="10" id="sbh-R0-zmn"/>
                                     <constraint firstItem="e99-A8-o3U" firstAttribute="top" secondItem="QJP-KK-PFi" secondAttribute="bottom" id="tef-Un-BYE"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellowstar.png" translatesAutoresizingMaskIntoConstraints="NO" id="8Od-vN-xan">
                                 <rect key="frame" x="40" y="10" width="15" height="15"/>
@@ -780,6 +822,12 @@
                                     <constraint firstAttribute="trailing" secondItem="WhF-hb-Ira" secondAttribute="trailing" constant="10" id="k4K-0J-jr9"/>
                                     <constraint firstItem="WhF-hb-Ira" firstAttribute="top" secondItem="sYh-pa-VGD" secondAttribute="bottom" id="od7-Md-2yi"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bph-D8-sUm">
                                 <rect key="frame" x="265" y="105" width="55" height="40"/>
@@ -865,6 +913,12 @@
                                     <constraint firstAttribute="bottom" secondItem="ypm-PA-Trf" secondAttribute="bottom" constant="10" id="qi0-xf-NUc"/>
                                     <constraint firstAttribute="trailing" secondItem="ypm-PA-Trf" secondAttribute="trailing" constant="10" id="wcg-CZ-hFe"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellowstar.png" translatesAutoresizingMaskIntoConstraints="NO" id="nRo-Rn-Tdr">
                                 <rect key="frame" x="40" y="10" width="15" height="15"/>
@@ -954,6 +1008,12 @@
                                     <constraint firstAttribute="trailing" secondItem="iHB-vW-amm" secondAttribute="trailing" constant="10" id="vRh-Su-8qu"/>
                                     <constraint firstItem="tOo-UR-bVK" firstAttribute="top" secondItem="Q0W-Jd-k35" secondAttribute="bottom" constant="5" id="w1u-pp-3bs"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fRu-yH-OdL">
                                 <rect key="frame" x="265" y="105" width="55" height="40"/>
@@ -1067,6 +1127,12 @@
                                     <constraint firstItem="Bm2-Ov-83K" firstAttribute="leading" secondItem="8FS-Vh-Pjt" secondAttribute="trailing" constant="15" id="mXs-kK-vEN"/>
                                     <constraint firstItem="dz9-rM-gur" firstAttribute="top" secondItem="Bm2-Ov-83K" secondAttribute="bottom" constant="10" id="oKe-R4-EFP"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellowstar.png" translatesAutoresizingMaskIntoConstraints="NO" id="EPA-QN-kdX">
                                 <rect key="frame" x="40" y="10" width="15" height="15"/>
@@ -1184,6 +1250,12 @@
                                     <constraint firstAttribute="trailing" secondItem="O2K-pU-2gU" secondAttribute="trailing" constant="10" id="sqP-ge-sHD"/>
                                     <constraint firstAttribute="trailing" secondItem="Aqk-a9-zXc" secondAttribute="trailing" constant="10" id="syM-bf-KLI"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZBm-FM-Q8S">
                                 <rect key="frame" x="265" y="105" width="55" height="40"/>
@@ -1271,6 +1343,12 @@
                                     <constraint firstAttribute="trailing" secondItem="pcP-pN-6UW" secondAttribute="trailing" constant="10" id="nQr-3c-1U8"/>
                                     <constraint firstItem="pcP-pN-6UW" firstAttribute="top" secondItem="MMt-25-kIc" secondAttribute="bottom" id="zZL-vx-ytL"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellowstar.png" translatesAutoresizingMaskIntoConstraints="NO" id="BeE-6d-xpG">
                                 <rect key="frame" x="40" y="10" width="15" height="15"/>
@@ -1362,6 +1440,12 @@
                                     <constraint firstItem="DZu-wV-fsT" firstAttribute="leading" secondItem="2Kd-Rt-f6C" secondAttribute="leading" constant="25" id="mYv-fa-7IF"/>
                                     <constraint firstItem="9nx-d6-9tF" firstAttribute="top" secondItem="LgK-aM-gHD" secondAttribute="bottom" id="z7r-hv-zsh"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h6P-Mf-79M">
                                 <rect key="frame" x="265" y="105" width="55" height="40"/>
@@ -1463,6 +1547,12 @@
                                     <constraint firstItem="ndl-JS-DUZ" firstAttribute="top" secondItem="joX-i6-JHM" secondAttribute="bottom" constant="10" id="pcP-fO-BYS"/>
                                     <constraint firstAttribute="trailing" secondItem="DYX-cg-Vgz" secondAttribute="trailing" constant="5" id="zBB-L2-zpD"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GSV-6g-RH0">
                                 <rect key="frame" x="0.0" y="105" width="55" height="40"/>
@@ -1588,6 +1678,12 @@
                                     <constraint firstAttribute="trailing" secondItem="uc3-mF-EzQ" secondAttribute="trailing" constant="10" id="w3C-5a-GLH"/>
                                     <constraint firstItem="QqV-Oy-OYm" firstAttribute="top" secondItem="uc3-mF-EzQ" secondAttribute="bottom" constant="10" id="wKz-fs-gqg"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cEo-gO-Ng3">
                                 <rect key="frame" x="265" y="105" width="55" height="40"/>
@@ -1805,6 +1901,7 @@
                 <outlet property="lefttextwidth" destination="tGZ-ee-yTt" id="9Lo-vh-k7a"/>
                 <outlet property="rightchatimage" destination="W8g-3F-12o" id="PhL-cn-IS7"/>
                 <outlet property="rightcommentDatelbl" destination="D71-DA-4s7" id="YlC-07-a9e"/>
+                <outlet property="rightcommentDetailsheight" destination="Wfe-2H-Qa6" id="hjX-ZL-kBE"/>
                 <outlet property="rightcommentDetailslbl" destination="bGS-vh-Nsv" id="6P3-UY-R6Q"/>
                 <outlet property="rightcommentMsglbl" destination="hM8-Ho-rZq" id="de0-sR-k1p"/>
                 <outlet property="rightcommentView" destination="bY3-vY-LLr" id="u43-an-Bj4"/>
