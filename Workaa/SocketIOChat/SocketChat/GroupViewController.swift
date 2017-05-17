@@ -967,9 +967,10 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                             }
                             else
                             {
-                                if let errormsg = getreponse.value(forKey: "MSG") as? String
+                                if let errormsg = getreponse.value(forKey: "errorMessage") as? String
                                 {
                                     alertClass.showAlert(alerttitle: "Info", alertmsg: errormsg)
+                                    self.GetFailureReponseMethod(errorreponse: errormsg)
                                 }
                             }
                         }
@@ -1357,6 +1358,11 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
     func GetFailureReponseMethod(errorreponse: String)
     {
         print("GetFailureReponseMethod")
+        
+        imageProgress.uploadCompleted()
+        commonmethodClass.delayWithSeconds(0.5, completion: {
+            self.imageProgress.animateView(self.imageProgress, withAnimationType: kCATransitionFromTop)
+        })
     }
 
     func GetReponseMethod(reponse : NSDictionary)
@@ -2286,8 +2292,6 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                     {
                         cell.rightcommentstarimage?.isHidden = false
                     }
-                    
-                    cell.rightcommentDetailsheight?.constant = 50.0
                 }
                 else
                 {

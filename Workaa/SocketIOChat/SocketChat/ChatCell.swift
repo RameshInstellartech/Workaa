@@ -54,7 +54,6 @@ class ChatCell: BaseCell
     @IBOutlet weak var rightsubcommentView = UIView()
     @IBOutlet weak var rightcommentDatelbl = UILabel()
     @IBOutlet weak var rightcommentDetailslbl = UILabel()
-    @IBOutlet weak var rightcommentDetailsheight = NSLayoutConstraint()
     @IBOutlet weak var rightcommentMsglbl = KILabel()
     @IBOutlet weak var rightcommentstarimage = UIImageView()
 
