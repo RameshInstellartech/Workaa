@@ -23,6 +23,7 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
     @IBOutlet weak var tblheight: NSLayoutConstraint!
     @IBOutlet weak var groupfiles: UILabel!
     @IBOutlet weak var groupfavmsg: UILabel!
+    @IBOutlet weak var groupmemaction: UIView!
 
     var groupdictionary = NSDictionary()
     var selecteduserArray = NSMutableArray()
@@ -30,6 +31,7 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
     var connectionClass = ConnectionClass()
     var commonmethodClass = CommonMethodClass()
     var imgData : NSData!
+    var sendertag = NSInteger()
 
     override func viewDidLoad()
     {
@@ -113,7 +115,7 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
             hourswitchtype.isUserInteractionEnabled = false
         }
         
-        tblteamlist.register(UINib(nibName: "teamUserTableViewCell", bundle: nil), forCellReuseIdentifier: "teamUserCell")
+        tblteamlist.register(UINib(nibName: "GroupUserTableViewCell", bundle: nil), forCellReuseIdentifier: "GroupUserCell")
         
         commonmethodClass.delayWithSeconds(0.1, completion: {
             self.getUserList()
@@ -126,6 +128,23 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
         groupfavmsg.text = favourite
         
         print("groupdictionary =>\(groupdictionary)")
+        
+        for view : UIView in groupmemaction.subviews
+        {
+            for view1 : UIView in view.subviews
+            {
+                if(view1.tag==0)
+                {
+                    for view2 : UIView in view1.subviews
+                    {
+                        if let btn = view2 as? UIButton
+                        {
+                            btn.setTitle(closeIcon, for: .normal)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override func viewWillAppear(_ animated: Bool)
@@ -219,21 +238,28 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
         connectionClass.UserList(groupid: (groupdictionary["id"] as? String)!)
     }
     
-    func usercloseaction(sender : UIButton)
+    @IBAction func close(sender : UIButton)
     {
-        print("sender =>\(sender.tag)")
+        groupmemaction.isHidden = true
+    }
+    
+    @IBAction func usercloseaction(sender : UIButton)
+    {
+        print("sender =>\(sendertag)")
         
         let adminstring = String(format: "%@", groupdictionary.value(forKey: "admin") as! CVarArg)
         if(commonmethodClass.retrieveteamadmin()=="1" || adminstring=="1")
         {
             if(selecteduserArray.count>0)
             {
-                let userdictionary = selecteduserArray[sender.tag] as! NSDictionary
+                let userdictionary = selecteduserArray[sendertag] as! NSDictionary
                 let emailstring = String(format: "%@", userdictionary.value(forKey: "email") as! CVarArg)
                 connectionClass.UpdateRemoveUser(groupid: String(format: "%@", groupdictionary.value(forKey: "id") as! CVarArg), email: emailstring)
                 
-                selecteduserArray.removeObject(at: sender.tag)
+                selecteduserArray.removeObject(at: sendertag)
             }
+            
+            self.close(sender: sender)
             
             tblheight.constant = CGFloat(selecteduserArray.count * 50) + 55
             
@@ -241,16 +267,15 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
         }
     }
     
-    func userlevelaction(_ sender: UITapGestureRecognizer)
+    @IBAction func userlevelaction(sender : UIButton)
     {
         let admnstring = String(format: "%@", groupdictionary.value(forKey: "admin") as! CVarArg)
         if(commonmethodClass.retrieveteamadmin()=="1" || admnstring=="1")
         {
-            let tappedView = sender.view!
-            print("sender =>\(tappedView.tag)")
+            print("sender =>\(sendertag)")
             print("selecteduserArray =>\(selecteduserArray)")
             
-            let userdictionary = selecteduserArray[tappedView.tag] as! NSDictionary
+            let userdictionary = selecteduserArray[sendertag] as! NSDictionary
             var adminstring = String(format: "%@", userdictionary.value(forKey: "admin") as! CVarArg)
             let emailstring = String(format: "%@", userdictionary.value(forKey: "email") as! CVarArg)
             if adminstring == "1"
@@ -269,6 +294,8 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
             
             print("selecteduserArray =>\(selecteduserArray)")
             
+            self.close(sender: sender)
+
             tblteamlist.reloadData()
         }
     }
@@ -463,7 +490,7 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "teamUserCell", for: indexPath) as! teamUserTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "GroupUserCell", for: indexPath) as! GroupUserTableViewCell
         
         let userdictionary = selecteduserArray[indexPath.row] as! NSDictionary
         
@@ -471,38 +498,73 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
         let fileUrl = NSURL(string: filestring)
         cell.profileimage.imageURL = fileUrl as URL?
         
-        cell.closebtn.setTitle(closeIcon, for: .normal)
-        cell.closebtn.addTarget(self, action: #selector(self.usercloseaction(sender:)), for: .touchUpInside)
-        cell.closebtn.tag = indexPath.row
-        
         cell.lblusername.text = String(format: "%@ %@", userdictionary.value(forKey: "firstName") as! CVarArg, userdictionary.value(forKey: "lastName") as! CVarArg)
         
         let levelstring = String(format: "%@",userdictionary.value(forKey: "admin") as! CVarArg)
         if levelstring == "1"
         {
-            cell.levelView.layer.borderColor = blueColor.cgColor
-            cell.levelLbl.textColor = blueColor
-            cell.arrowLbl.textColor = blueColor
-            cell.levelLbl.text = "Admin"
+            cell.levelView.isHidden = false
         }
         else
         {
-            cell.levelView.layer.borderColor = UIColor.lightGray.cgColor
-            cell.levelLbl.textColor = UIColor.lightGray
-            cell.arrowLbl.textColor = UIColor.lightGray
-            cell.levelLbl.text = "Normal"
+            cell.levelView.isHidden = true
         }
+        
+        cell.levelView.layer.borderColor = UIColor.lightGray.cgColor
         cell.levelView.layer.borderWidth = 1.0
-        cell.arrowLbl.text = soliddownarrowIcon
-        cell.levelView.tag = indexPath.row
         
-        let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.userlevelaction))
-        tapGesture.numberOfTapsRequired = 1
-        cell.levelView.addGestureRecognizer(tapGesture)
-        
-        cell.selectionStyle = .none
+        let adminstring = String(format: "%@", groupdictionary.value(forKey: "admin") as! CVarArg)
+        if(commonmethodClass.retrieveteamadmin()=="1" || adminstring=="1")
+        {
+            cell.selectionStyle = .gray
+        }
+        else
+        {
+            cell.selectionStyle = .none
+        }
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
+    {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        sendertag = indexPath.row
+        
+        let userdictionary = selecteduserArray[indexPath.row] as! NSDictionary
+        let namestring = String(format: "%@ %@", userdictionary.value(forKey: "firstName") as! CVarArg, userdictionary.value(forKey: "lastName") as! CVarArg)
+        let levelstring = String(format: "%@",userdictionary.value(forKey: "admin") as! CVarArg)
+
+        for view : UIView in groupmemaction.subviews
+        {
+            for view1 : UIView in view.subviews
+            {
+                for view2 : UIView in view1.subviews
+                {
+                    if let lbl = view2 as? UILabel
+                    {
+                        if(view1.tag==1)
+                        {
+                            if levelstring == "1"
+                            {
+                                lbl.text = "Remove Admin"
+                            }
+                            else
+                            {
+                                lbl.text = "Make Group Admin"
+                            }
+                        }
+                        if(view1.tag==2)
+                        {
+                            lbl.text = String(format: "Remove %@",namestring)
+                        }
+                    }
+                }
+            }
+        }
+
+        groupmemaction.isHidden = false
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
@@ -523,7 +585,7 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
         headerView.backgroundColor = UIColor(red: 249/255, green: 249/255, blue: 249/255, alpha: 1)
         
         let personlbl = UILabel()
-        personlbl.frame = CGRect(x: CGFloat(20.0), y: CGFloat(0.0), width: CGFloat(30.0), height: CGFloat(headerheight))
+        personlbl.frame = CGRect(x: CGFloat(15.0), y: CGFloat(0.0), width: CGFloat(30.0), height: CGFloat(headerheight))
         personlbl.font = UIFont(name: Workaa_Font, size: CGFloat(25.0))
         personlbl.backgroundColor = UIColor.clear
         personlbl.textColor = UIColor.black
@@ -538,15 +600,19 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
         memberslbl.text = "Add Members"
         headerView.addSubview(memberslbl)
         
-        let plusiconbtn = UIButton()
-        plusiconbtn.frame = CGRect(x: CGFloat(screenWidth-55.0), y: CGFloat(0.0), width: CGFloat(40.0), height: CGFloat(headerheight))
-        plusiconbtn.titleLabel?.font = UIFont(name: Workaa_Font, size: CGFloat(27.0))
-        plusiconbtn.backgroundColor = UIColor.clear
-        plusiconbtn.setTitleColor(UIColor.darkGray, for: .normal)
-        plusiconbtn.setTitle(roundplusIcon, for: .normal)
-        plusiconbtn.addTarget(self, action: #selector(GroupDetailsInfoViewController.getUseraction), for: .touchUpInside)
-        plusiconbtn.contentHorizontalAlignment = .right
-        headerView.addSubview(plusiconbtn)
+        let adminstring = String(format: "%@", groupdictionary.value(forKey: "admin") as! CVarArg)
+        if(commonmethodClass.retrieveteamadmin()=="1" || adminstring=="1")
+        {
+            let plusiconbtn = UIButton()
+            plusiconbtn.frame = CGRect(x: CGFloat(screenWidth-55.0), y: CGFloat(0.0), width: CGFloat(40.0), height: CGFloat(headerheight))
+            plusiconbtn.titleLabel?.font = UIFont(name: Workaa_Font, size: CGFloat(27.0))
+            plusiconbtn.backgroundColor = UIColor.clear
+            plusiconbtn.setTitleColor(UIColor.darkGray, for: .normal)
+            plusiconbtn.setTitle(roundplusIcon, for: .normal)
+            plusiconbtn.addTarget(self, action: #selector(GroupDetailsInfoViewController.getUseraction), for: .touchUpInside)
+            plusiconbtn.contentHorizontalAlignment = .right
+            headerView.addSubview(plusiconbtn)
+        }
         
         return headerView
     }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -43,10 +43,10 @@
                         <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="15"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iXZ-tZ-O2D">
-                        <rect key="frame" x="280" y="0.0" width="20" height="50"/>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iXZ-tZ-O2D">
+                        <rect key="frame" x="275" y="0.0" width="45" height="50"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="20" id="SrN-B6-H6p"/>
+                            <constraint firstAttribute="width" constant="45" id="SrN-B6-H6p"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="icomoon" family="icomoon" pointSize="22"/>
                         <state key="normal">
@@ -95,12 +95,12 @@
                 <constraints>
                     <constraint firstItem="f8m-yZ-UAs" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="2bU-8f-vtW"/>
                     <constraint firstAttribute="bottom" secondItem="iXZ-tZ-O2D" secondAttribute="bottom" id="HZf-BV-N0r"/>
-                    <constraint firstAttribute="trailing" secondItem="iXZ-tZ-O2D" secondAttribute="trailing" constant="20" id="K4E-O8-DzD"/>
+                    <constraint firstAttribute="trailing" secondItem="iXZ-tZ-O2D" secondAttribute="trailing" id="K4E-O8-DzD"/>
                     <constraint firstItem="9IU-B5-IN7" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="PaM-jh-8K6"/>
                     <constraint firstAttribute="bottom" secondItem="9IU-B5-IN7" secondAttribute="bottom" id="SgJ-qS-38x"/>
                     <constraint firstItem="9IU-B5-IN7" firstAttribute="leading" secondItem="f8m-yZ-UAs" secondAttribute="trailing" constant="10" id="ZfP-7f-vGP"/>
                     <constraint firstItem="iXZ-tZ-O2D" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="glH-it-FPl"/>
-                    <constraint firstItem="iXZ-tZ-O2D" firstAttribute="leading" secondItem="aWr-qe-rhK" secondAttribute="trailing" constant="10" id="kti-hM-zEp"/>
+                    <constraint firstItem="iXZ-tZ-O2D" firstAttribute="leading" secondItem="aWr-qe-rhK" secondAttribute="trailing" constant="5" id="kti-hM-zEp"/>
                     <constraint firstItem="f8m-yZ-UAs" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="o67-gW-FK2"/>
                     <constraint firstItem="aWr-qe-rhK" firstAttribute="leading" secondItem="9IU-B5-IN7" secondAttribute="trailing" constant="5" id="rxq-bg-Qvz"/>
                     <constraint firstItem="aWr-qe-rhK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="13" id="wZQ-zC-hAM"/>

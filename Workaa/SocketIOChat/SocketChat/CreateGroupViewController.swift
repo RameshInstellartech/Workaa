@@ -422,6 +422,7 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate, UITextVi
         cell.closebtn.setTitle(closeIcon, for: .normal)
         cell.closebtn.addTarget(self, action: #selector(self.usercloseaction(sender:)), for: .touchUpInside)
         cell.closebtn.tag = indexPath.row
+        cell.closebtn.contentEdgeInsets = UIEdgeInsetsMake(0.0, 6.0, 0.0, 0.0)
         
         cell.lblusername.text = String(format: "%@ %@", userdictionary.value(forKey: "firstName") as! CVarArg, userdictionary.value(forKey: "lastName") as! CVarArg)
         

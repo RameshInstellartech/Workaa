@@ -101,6 +101,8 @@
 		1360482F1DE71A1C00F32D41 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1360482E1DE71A1C00F32D41 /* Photos.framework */; };
 		13639AC81DD0470200731682 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13639AC71DD0470200731682 /* SignInViewController.swift */; };
 		1363C5BC1E17E19200534234 /* CreateTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1363C5BB1E17E19200534234 /* CreateTaskViewController.swift */; };
+		1364EA841ECC4A770081A235 /* GroupUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1364EA821ECC4A760081A235 /* GroupUserTableViewCell.swift */; };
+		1364EA851ECC4A770081A235 /* GroupUserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1364EA831ECC4A770081A235 /* GroupUserTableViewCell.xib */; };
 		136558111DFA804600B32386 /* SwiftLinkPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136558101DFA804600B32386 /* SwiftLinkPreview.swift */; };
 		136558131DFA80F500B32386 /* PreviewError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136558121DFA80F500B32386 /* PreviewError.swift */; };
 		136558151DFA813400B32386 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136558141DFA813400B32386 /* StringExtension.swift */; };
@@ -314,6 +316,8 @@
 		1360482E1DE71A1C00F32D41 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		13639AC71DD0470200731682 /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		1363C5BB1E17E19200534234 /* CreateTaskViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateTaskViewController.swift; sourceTree = "<group>"; };
+		1364EA821ECC4A760081A235 /* GroupUserTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupUserTableViewCell.swift; sourceTree = "<group>"; };
+		1364EA831ECC4A770081A235 /* GroupUserTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupUserTableViewCell.xib; sourceTree = "<group>"; };
 		136558101DFA804600B32386 /* SwiftLinkPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftLinkPreview.swift; sourceTree = "<group>"; };
 		136558121DFA80F500B32386 /* PreviewError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewError.swift; sourceTree = "<group>"; };
 		136558141DFA813400B32386 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
@@ -775,6 +779,8 @@
 				1350FB731EB99EFB00385587 /* UserCellTableViewCell.xib */,
 				1341D4851EC19DE200738FBE /* FilesTableViewCell.swift */,
 				1341D4861EC19DE200738FBE /* FilesTableViewCell.xib */,
+				1364EA821ECC4A760081A235 /* GroupUserTableViewCell.swift */,
+				1364EA831ECC4A770081A235 /* GroupUserTableViewCell.xib */,
 			);
 			name = "Custom Cells";
 			sourceTree = "<group>";
@@ -902,6 +908,7 @@
 				134289A31E72ACCA00346EA9 /* switchToggle.png in Resources */,
 				1341D4A11EC1AFF200738FBE /* movie.png in Resources */,
 				1341D49E1EC1AFF200738FBE /* front-end-coding.png in Resources */,
+				1364EA851ECC4A770081A235 /* GroupUserTableViewCell.xib in Resources */,
 				134289A61E72ACCA00346EA9 /* switchToggleHigh@2x.png in Resources */,
 				13853F381E694F81005ECC08 /* ProfileTableViewCell.xib in Resources */,
 				1341D49B1EC1AFF200738FBE /* excel.png in Resources */,
@@ -1076,6 +1083,7 @@
 				13521FFB1E86B061005CCCFB /* ICToken.swift in Sources */,
 				C075D7651C5E17DD009F9044 /* SocketLogger.swift in Sources */,
 				C075D71D1C5E0E81009F9044 /* AppDelegate.swift in Sources */,
+				1364EA841ECC4A770081A235 /* GroupUserTableViewCell.swift in Sources */,
 				1375616B1E88F71800C7C78A /* UserTableViewCell.swift in Sources */,
 				135CE30E1E6585D0003C36AE /* QueueDetailViewController.swift in Sources */,
 				136FAB4A1DD3078C00B04A2A /* GroupListController.swift in Sources */,

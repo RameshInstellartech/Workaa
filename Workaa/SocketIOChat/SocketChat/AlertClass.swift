@@ -258,7 +258,26 @@ class AlertClass: UIView, ConnectionProtocol, UITextViewDelegate
     {
         notdonetask = UIAlertController(title: "Task\n\n\n\n\n\n\n", message: "", preferredStyle: UIAlertControllerStyle.alert)
         
-        let rect = CGRect(x: 5.0, y: 60.0, width: screenWidth-60.0, height: 150.0)
+        var alertwidth = CGFloat()
+        alertwidth = screenWidth-60.0
+        if(IS_IPHONE_6)
+        {
+            alertwidth = screenWidth-100.0
+        }
+        if(IS_IPHONE_6P)
+        {
+            alertwidth = screenWidth-60.0
+        }
+        if(IS_IPAD)
+        {
+            alertwidth = screenWidth-60.0
+        }
+        if(IS_IPAD_PRO)
+        {
+            alertwidth = screenWidth-60.0
+        }
+        
+        let rect = CGRect(x: 5.0, y: 60.0, width: alertwidth, height: 150.0)
         let textView = UITextView(frame: rect)
         textView.font               = UIFont(name: LatoRegular, size: 16)
         textView.textColor          = UIColor.lightGray
