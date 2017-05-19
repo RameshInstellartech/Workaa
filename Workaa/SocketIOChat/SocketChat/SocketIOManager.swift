@@ -147,6 +147,54 @@ class SocketIOManager: NSObject
         }
     }
     
+    func editImagetitlecap(groupid: String, title: String, caption: String, idString: String,  completionHandler: @escaping (_ messageInfo: NSDictionary) -> Void)
+    {
+        let messagedictionary = ["gid": groupid, "token": commonmethodClass.retrieveUsernameToken(), "title": title, "caption": caption, "id" : idString] as [String : Any]
+        print("messagedictionary =>\(messagedictionary)");
+        
+        socket.emitWithAck("GroupMessageImageEdit", messagedictionary)(0) {data in
+            print("got ack =>\(data)")
+            if(data.count>0)
+            {
+                var messageDictionary : NSDictionary!
+                messageDictionary = data[0] as! NSDictionary
+                completionHandler(messageDictionary)
+            }
+        }
+    }
+    
+    func directeditImagetitlecap(uid: String, title: String, caption: String, idString: String,  completionHandler: @escaping (_ messageInfo: NSDictionary) -> Void)
+    {
+        let messagedictionary = ["uid": uid, "token": commonmethodClass.retrieveUsernameToken(), "title": title, "caption": caption, "id" : idString] as [String : Any]
+        print("messagedictionary =>\(messagedictionary)");
+        
+        socket.emitWithAck("DirectImageEdit", messagedictionary)(0) {data in
+            print("got ack =>\(data)")
+            if(data.count>0)
+            {
+                var messageDictionary : NSDictionary!
+                messageDictionary = data[0] as! NSDictionary
+                completionHandler(messageDictionary)
+            }
+        }
+    }
+    
+    func CafeeditImagetitlecap(title: String, caption: String, idString: String,  completionHandler: @escaping (_ messageInfo: NSDictionary) -> Void)
+    {
+        let messagedictionary = ["token": commonmethodClass.retrieveUsernameToken(), "title": title, "caption": caption, "id" : idString] as [String : Any]
+        print("messagedictionary =>\(messagedictionary)");
+        
+        socket.emitWithAck("CafeImageEdit", messagedictionary)(0) {data in
+            print("got ack =>\(data)")
+            if(data.count>0)
+            {
+                var messageDictionary : NSDictionary!
+                messageDictionary = data[0] as! NSDictionary
+                completionHandler(messageDictionary)
+            }
+        }
+    }
+    
     func sendMessage(message: String, groupid: String,  completionHandler: @escaping (_ messageInfo: NSDictionary) -> Void)
     {
         print("*** sendMessage =>\(message)");
@@ -845,6 +893,42 @@ class SocketIOManager: NSObject
             var messageDictionary : NSDictionary!
             messageDictionary = dataArray[0] as! NSDictionary
             completionHandler(messageDictionary)
+        }
+    }
+    
+    func groupMsgImgEdit(completionHandler: @escaping (_ messageInfo: NSDictionary) -> Void) {
+        socket.on("SendGroupMsgImgEdit") { (dataArray, socketAck) -> Void in
+            print("dataArray =>\(dataArray)")
+            if(dataArray.count>0)
+            {
+                var messageDictionary : NSDictionary!
+                messageDictionary = dataArray[0] as! NSDictionary
+                completionHandler(messageDictionary)
+            }
+        }
+    }
+    
+    func directMsgImgEdit(completionHandler: @escaping (_ messageInfo: NSDictionary) -> Void) {
+        socket.on("DirectImageEdit") { (dataArray, socketAck) -> Void in
+            print("dataArray =>\(dataArray)")
+            if(dataArray.count>0)
+            {
+                var messageDictionary : NSDictionary!
+                messageDictionary = dataArray[0] as! NSDictionary
+                completionHandler(messageDictionary)
+            }
+        }
+    }
+    
+    func cafeMsgImgEdit(completionHandler: @escaping (_ messageInfo: NSDictionary) -> Void) {
+        socket.on("CafeImageEdit") { (dataArray, socketAck) -> Void in
+            print("dataArray =>\(dataArray)")
+            if(dataArray.count>0)
+            {
+                var messageDictionary : NSDictionary!
+                messageDictionary = dataArray[0] as! NSDictionary
+                completionHandler(messageDictionary)
+            }
         }
     }
     

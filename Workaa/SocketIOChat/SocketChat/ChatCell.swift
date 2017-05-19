@@ -32,9 +32,11 @@ class ChatCell: BaseCell
 
     // right side image chat cell
     @IBOutlet weak var rightimageView = UIView()
+    @IBOutlet weak var rightsubimageView = UIView()
     @IBOutlet weak var rightchatimage = AsyncImageView()
     @IBOutlet weak var rightimageDatelbl = UILabel()
     @IBOutlet weak var rightimagestarimage = UIImageView()
+    @IBOutlet weak var rightimageMessagelbl = KILabel()
 
     // left side image chat cell
     @IBOutlet weak var leftimageView = UIView()
@@ -77,6 +79,7 @@ class ChatCell: BaseCell
     @IBOutlet weak var rightfiletitlelbl = UILabel()
     @IBOutlet weak var rightfilesizelbl = UILabel()
     @IBOutlet weak var rightfilestarimage = UIImageView()
+    @IBOutlet weak var rightfileMessagelbl = KILabel()
 
     // left file chat cell
     @IBOutlet weak var leftfileView = UIView()
@@ -90,6 +93,7 @@ class ChatCell: BaseCell
     @IBOutlet weak var leftfiletitlelbl = UILabel()
     @IBOutlet weak var leftfilesizelbl = UILabel()
     @IBOutlet weak var leftfilestarimage = UIImageView()
+    @IBOutlet weak var leftfileMessagelbl = KILabel()
 
     // right share text chat cell
     @IBOutlet weak var rightsharetextView = UIView()

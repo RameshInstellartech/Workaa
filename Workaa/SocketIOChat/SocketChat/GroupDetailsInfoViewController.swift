@@ -254,16 +254,25 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
             {
                 let userdictionary = selecteduserArray[sendertag] as! NSDictionary
                 let emailstring = String(format: "%@", userdictionary.value(forKey: "email") as! CVarArg)
-                connectionClass.UpdateRemoveUser(groupid: String(format: "%@", groupdictionary.value(forKey: "id") as! CVarArg), email: emailstring)
-                
-                selecteduserArray.removeObject(at: sendertag)
+                let dictionary = connectionClass.UpdateRemoveUser(groupid: String(format: "%@", groupdictionary.value(forKey: "id") as! CVarArg), email: emailstring) 
+                print("dictionary =>\(dictionary)")
+                if(dictionary.count>0)
+                {
+                    if let statuscode = dictionary.value(forKey: "status") as? NSInteger
+                    {
+                        if statuscode==1
+                        {
+                            selecteduserArray.removeObject(at: sendertag)
+                            
+                            self.close(sender: sender)
+                            
+                            tblheight.constant = CGFloat(selecteduserArray.count * 50) + 55
+                            
+                            tblteamlist.reloadData()
+                        }
+                    }
+                }
             }
-            
-            self.close(sender: sender)
-            
-            tblheight.constant = CGFloat(selecteduserArray.count * 50) + 55
-            
-            tblteamlist.reloadData()
         }
     }
     
@@ -278,25 +287,36 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
             let userdictionary = selecteduserArray[sendertag] as! NSDictionary
             var adminstring = String(format: "%@", userdictionary.value(forKey: "admin") as! CVarArg)
             let emailstring = String(format: "%@", userdictionary.value(forKey: "email") as! CVarArg)
+            var dictionary = NSDictionary()
             if adminstring == "1"
             {
                 adminstring = "0"
                 
-                connectionClass.UpdateRemoveAdmin(groupid: String(format: "%@", groupdictionary.value(forKey: "id") as! CVarArg), email: emailstring)
+                dictionary = connectionClass.UpdateRemoveAdmin(groupid: String(format: "%@", groupdictionary.value(forKey: "id") as! CVarArg), email: emailstring)
             }
             else
             {
                 adminstring = "1"
                 
-                connectionClass.UpdateMarkAdmin(groupid: String(format: "%@", groupdictionary.value(forKey: "id") as! CVarArg), email: emailstring)
+                dictionary = connectionClass.UpdateMarkAdmin(groupid: String(format: "%@", groupdictionary.value(forKey: "id") as! CVarArg), email: emailstring)
             }
-            userdictionary.setValue(adminstring, forKey: "admin")
             
-            print("selecteduserArray =>\(selecteduserArray)")
-            
-            self.close(sender: sender)
-
-            tblteamlist.reloadData()
+            if(dictionary.count>0)
+            {
+                if let statuscode = dictionary.value(forKey: "status") as? NSInteger
+                {
+                    if statuscode==1
+                    {
+                        userdictionary.setValue(adminstring, forKey: "admin")
+                        
+                        print("selecteduserArray =>\(selecteduserArray)")
+                        
+                        self.close(sender: sender)
+                        
+                        tblteamlist.reloadData()
+                    }
+                }
+            }
         }
     }
     

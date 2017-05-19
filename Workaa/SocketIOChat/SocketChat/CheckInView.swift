@@ -24,9 +24,6 @@ class CheckInView: UIView, ConnectionProtocol
 
     func loadCheckInView()
     {
-        UserDefaults.standard.set(Date(), forKey: "CheckInSavedDate")
-        UserDefaults.standard.synchronize()
-        
         connectionClass.delegate = self
 
         self.backgroundColor = UIColor(white: 1.0, alpha: 0.8)
@@ -295,5 +292,8 @@ class CheckInView: UIView, ConnectionProtocol
             v.removeFromSuperview()
         }
         self.removeFromSuperview()
+        
+        UserDefaults.standard.set(Date(), forKey: "CheckInSavedDate")
+        UserDefaults.standard.synchronize()
     }
 }

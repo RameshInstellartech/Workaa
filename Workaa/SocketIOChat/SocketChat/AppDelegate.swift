@@ -519,6 +519,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             print("New getGroupUrlPreview =>\(messageInfo)")
             self.grouplinkmsg(messageInfo: messageInfo)
         }
+        
+        SocketIOManager.sharedInstance.groupMsgImgEdit { (messageInfo) -> Void in
+            print("groupMsgImgEdit =>\(messageInfo)")
+            self.groupMsgImgEdit(messageInfo: messageInfo)
+        }
     }
     
     func oneToonesocketMethod()
@@ -571,6 +576,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
 //            print("New getGroupUrlPreview =>\(messageInfo)")
 //            self.grouplinkmsg(messageInfo: messageInfo)
 //        }
+        
+        SocketIOManager.sharedInstance.directMsgImgEdit { (messageInfo) -> Void in
+            print("groupMsgImgEdit =>\(messageInfo)")
+            self.directMsgImgEdit(messageInfo: messageInfo)
+        }
     }
     
     func cafesocketMethod()
@@ -616,8 +626,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
         }
         
         SocketIOManager.sharedInstance.getChatTyping { (messageInfo) -> Void in
-            
             print("New getChatTyping =>\(messageInfo)")
+        }
+        
+        SocketIOManager.sharedInstance.cafeMsgImgEdit { (messageInfo) -> Void in
+            print("cafeMsgImgEdit =>\(messageInfo)")
+            self.cafeMsgImgEdit(messageInfo: messageInfo)
         }
     }
     
@@ -976,6 +990,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             
         } catch let error as NSError {
             print("Could not fetch \(error), \(error.userInfo)")
+        }
+    }
+    
+    func cafeMsgImgEdit(messageInfo : NSDictionary)
+    {
+        if let filedictionary = messageInfo.value(forKey: "file") as? NSDictionary
+        {
+            let msgId = String(format: "%@", messageInfo.value(forKey: "messageId") as! CVarArg)
+            let title = String(format: "%@", filedictionary.value(forKey: "title") as! CVarArg)
+            let caption = String(format: "%@", filedictionary.value(forKey: "caption") as! CVarArg)
+            
+            do {
+                let fetchRequest:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CafeChat")
+                fetchRequest.returnsObjectsAsFaults = false
+                
+                let predicate = NSPredicate(format: "msgid = %@", msgId)
+                fetchRequest.predicate = predicate
+                
+                let results =
+                    try managedContext.fetch(fetchRequest)
+                let editMessages = results as! [NSManagedObject]
+                if editMessages.count>0
+                {
+                    let getmanageObj = editMessages[0]
+                    getmanageObj.setValue(title, forKey: "imagetitle")
+                    getmanageObj.setValue(caption, forKey: "filecaption")
+                    
+                    do {
+                        try managedContext.save()
+                        
+                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "CafeChat_Refresh"), object: nil)
+                        
+                    } catch let error as NSError  {
+                        print("Could not save \(error), \(error.userInfo)")
+                    }
+                }
+                
+            } catch let error as NSError {
+                print("Could not fetch \(error), \(error.userInfo)")
+            }
         }
     }
     
@@ -1361,6 +1415,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             
         } catch let error as NSError {
             print("Could not fetch \(error), \(error.userInfo)")
+        }
+    }
+    
+    func directMsgImgEdit(messageInfo : NSDictionary)
+    {
+        if let filedictionary = messageInfo.value(forKey: "file") as? NSDictionary
+        {
+            let msgId = String(format: "%@", messageInfo.value(forKey: "messageId") as! CVarArg)
+            let title = String(format: "%@", filedictionary.value(forKey: "title") as! CVarArg)
+            let caption = String(format: "%@", filedictionary.value(forKey: "caption") as! CVarArg)
+            
+            do {
+                let fetchRequest:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "OneToOne")
+                fetchRequest.returnsObjectsAsFaults = false
+                
+                let predicate = NSPredicate(format: "msgid = %@", msgId)
+                fetchRequest.predicate = predicate
+                
+                let results =
+                    try managedContext.fetch(fetchRequest)
+                let editMessages = results as! [NSManagedObject]
+                if editMessages.count>0
+                {
+                    let getmanageObj = editMessages[0]
+                    getmanageObj.setValue(title, forKey: "imagetitle")
+                    getmanageObj.setValue(caption, forKey: "filecaption")
+                    
+                    do {
+                        try managedContext.save()
+                        
+                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "DirectChat_Refresh"), object: nil)
+                        
+                    } catch let error as NSError  {
+                        print("Could not save \(error), \(error.userInfo)")
+                    }
+                }
+                
+            } catch let error as NSError {
+                print("Could not fetch \(error), \(error.userInfo)")
+            }
         }
     }
 
@@ -1763,6 +1857,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             
         } catch let error as NSError {
             print("Could not fetch \(error), \(error.userInfo)")
+        }
+    }
+    
+    func groupMsgImgEdit(messageInfo : NSDictionary)
+    {
+        if let filedictionary = messageInfo.value(forKey: "file") as? NSDictionary
+        {
+            let msgId = String(format: "%@", messageInfo.value(forKey: "messageId") as! CVarArg)
+            let title = String(format: "%@", filedictionary.value(forKey: "title") as! CVarArg)
+            let caption = String(format: "%@", filedictionary.value(forKey: "caption") as! CVarArg)
+
+            do {
+                let fetchRequest:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "GroupChat")
+                fetchRequest.returnsObjectsAsFaults = false
+                
+                let predicate = NSPredicate(format: "msgid = %@", msgId)
+                fetchRequest.predicate = predicate
+                
+                let results =
+                    try managedContext.fetch(fetchRequest)
+                let editMessages = results as! [NSManagedObject]
+                if editMessages.count>0
+                {
+                    let getmanageObj = editMessages[0]
+                    getmanageObj.setValue(title, forKey: "imagetitle")
+                    getmanageObj.setValue(caption, forKey: "filecaption")
+                    
+                    do {
+                        try managedContext.save()
+                        
+                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "GroupChat_Refresh"), object: nil)
+
+                    } catch let error as NSError  {
+                        print("Could not save \(error), \(error.userInfo)")
+                    }
+                }
+                
+            } catch let error as NSError {
+                print("Could not fetch \(error), \(error.userInfo)")
+            }
         }
     }
     

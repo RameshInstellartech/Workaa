@@ -20,6 +20,7 @@ class GroupListController: UIViewController, ConnectionProtocol, UITableViewDele
     var connectionClass = ConnectionClass()
     var commonmethodClass = CommonMethodClass()
     var bottomView : BottomView!
+    var refreshControl = UIRefreshControl()
 
     override func viewDidLoad()
     {
@@ -64,6 +65,8 @@ class GroupListController: UIViewController, ConnectionProtocol, UITableViewDele
         })
         
         self.loadbottomView()
+        
+        self.setRefreshControl()
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -77,6 +80,30 @@ class GroupListController: UIViewController, ConnectionProtocol, UITableViewDele
         self.title = "Groups"
         
         navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: LatoRegular, size: CGFloat(18.0))!, NSForegroundColorAttributeName : UIColor.white];
+    }
+    
+    func setRefreshControl()
+    {
+        let attributes = [ NSForegroundColorAttributeName : UIColor.darkGray ] as [String: Any]
+        
+        refreshControl.tintColor = UIColor.darkGray
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to Refresh...", attributes: attributes)
+        refreshControl.addTarget(self, action: #selector(GroupListController.refreshData(sender:)), for: .valueChanged)
+        
+        // Add to Table View
+        if #available(iOS 10.0, *) {
+            self.tblGroupUserList.refreshControl = refreshControl
+        } else {
+            self.tblGroupUserList.addSubview(refreshControl)
+        }
+    }
+    
+    func refreshData(sender: UIRefreshControl)
+    {
+        commonmethodClass.delayWithSeconds(1.0, completion: {
+            self.getGroupList()
+            self.refreshControl.endRefreshing()
+        })
     }
     
     func loadbottomView()

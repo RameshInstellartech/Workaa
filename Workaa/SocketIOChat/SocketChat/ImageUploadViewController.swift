@@ -7,11 +7,13 @@
 //
 
 import UIKit
+import CoreData
 
 protocol ImageUploadDelegate: class
 {
     func imageUploadtoServer(filename : String, comment : String)
     func fileUploadtoServer(filename : String, comment : String)
+    func UpdateFileDetails(filename : String, comment : String, msgId : String)
 }
 
 class ImageUploadViewController: UITableViewController
@@ -22,6 +24,9 @@ class ImageUploadViewController: UITableViewController
     var titletxtfield : UITextField!
     var cmttxtView : UITextView!
     var filename : String!
+    var viewtype = String()
+    var chatmsg = NSManagedObject()
+    var filetype = String()
 
     override func viewDidLoad()
     {
@@ -29,16 +34,36 @@ class ImageUploadViewController: UITableViewController
 
         // Do any additional setup after loading the view.
         
-        if uploadimage != nil
+        if viewtype == "Update"
         {
-            self.title = "Upload Image"
+            if filetype == "Image"
+            {
+                self.title = "Upload Image"
+            }
+            else
+            {
+                self.title = "Upload File"
+            }
         }
         else
         {
-            self.title = "Upload File"
+            if uploadimage != nil
+            {
+                self.title = "Upload Image"
+            }
+            else
+            {
+                self.title = "Upload File"
+            }
         }
         
-        let doneButton : UIBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ImageUploadViewController.doneAction))
+        var btnstring = "Done"
+        if viewtype == "Update"
+        {
+            btnstring = "Update"
+        }
+        
+        let doneButton : UIBarButtonItem = UIBarButtonItem(title: btnstring, style: UIBarButtonItemStyle.plain, target: self, action: #selector(ImageUploadViewController.doneAction))
         self.navigationItem.rightBarButtonItem = doneButton
         
         let cancelButton : UIBarButtonItem = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: self, action: #selector(ImageUploadViewController.cancelAction))
@@ -51,36 +76,49 @@ class ImageUploadViewController: UITableViewController
     
     func doneAction()
     {
-        print("cmttxtView =>\(cmttxtView.text)")
-        print("titletxtfield =>\(String(describing: titletxtfield.text))")
-        
-        var filname = String(format: "%@.jpg", titletxtfield.text!)
-        if uploadimage == nil
+        if viewtype == "Update"
         {
-            filname = String(format: "%@", titletxtfield.text!)
-        }
-        if titletxtfield.text?.characters.count == 0
-        {
-            if uploadimage != nil
+            if (titletxtfield.text?.characters.count)! > 0
             {
-                filname = "Image uploaded from iOS.jpg"
+                let msgId = String(format: "%@", chatmsg.value(forKey: "msgid") as! CVarArg)
+                delegate?.UpdateFileDetails(filename: titletxtfield.text!, comment: cmttxtView.text, msgId: msgId)
+                
+                self.dismiss(animated: true, completion: nil)
             }
-            else
-            {
-                filname = String(format: "File uploaded from iOS.%@", (filename as NSString).pathExtension)
-            }
-        }
-        
-        print("filname =>\(filname)")
-
-        self.dismiss(animated: true, completion: nil)
-        if uploadimage != nil
-        {
-            delegate?.imageUploadtoServer(filename: filname, comment: cmttxtView.text)
         }
         else
         {
-            delegate?.fileUploadtoServer(filename: filname, comment: cmttxtView.text)
+            print("cmttxtView =>\(cmttxtView.text)")
+            print("titletxtfield =>\(String(describing: titletxtfield.text))")
+            
+            var filname = String(format: "%@.jpg", titletxtfield.text!)
+            if uploadimage == nil
+            {
+                filname = String(format: "%@", titletxtfield.text!)
+            }
+            if titletxtfield.text?.characters.count == 0
+            {
+                if uploadimage != nil
+                {
+                    filname = "Image uploaded from iOS.jpg"
+                }
+                else
+                {
+                    filname = String(format: "File uploaded from iOS.%@", (filename as NSString).pathExtension)
+                }
+            }
+            
+            print("filname =>\(filname)")
+            
+            self.dismiss(animated: true, completion: nil)
+            if uploadimage != nil
+            {
+                delegate?.imageUploadtoServer(filename: filname, comment: cmttxtView.text)
+            }
+            else
+            {
+                delegate?.fileUploadtoServer(filename: filname, comment: cmttxtView.text)
+            }
         }
     }
     
@@ -98,104 +136,228 @@ class ImageUploadViewController: UITableViewController
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        if uploadimage != nil
+        if viewtype == "Update"
         {
-            return 3
+            if filetype == "Image"
+            {
+                return 3
+            }
+            else
+            {
+                return 2
+            }
         }
         else
         {
-            return 2
+            if uploadimage != nil
+            {
+                return 3
+            }
+            else
+            {
+                return 2
+            }
         }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        if uploadimage != nil
+        if viewtype == "Update"
         {
-            if(indexPath.row==0)
+            if filetype == "Image"
             {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as UITableViewCell
-                
-                let imageView = cell.contentView.viewWithTag(1) as? UIImageView
-                imageView?.image = uploadimage
-                
-                return cell
-            }
-            else if(indexPath.row==1)
-            {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "titleCell", for: indexPath)
-                titletxtfield = cell.contentView.viewWithTag(1) as? UITextField
-                
-                return cell
+                if(indexPath.row==0)
+                {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as UITableViewCell
+                    let imageView = cell.contentView.viewWithTag(1) as? AsyncImageView
+                    
+                    let filepath = String(format: "%@", chatmsg.value(forKey: "imagepath") as! CVarArg)
+                    let filestring = String(format: "%@%@", kfilePath,filepath)
+                    let fileUrl = NSURL(string: filestring)
+                    imageView?.imageURL = fileUrl as URL?
+
+                    return cell
+                }
+                else if(indexPath.row==1)
+                {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "titleCell", for: indexPath)
+                    titletxtfield = cell.contentView.viewWithTag(1) as? UITextField
+                    
+                    let filepath = String(format: "%@", chatmsg.value(forKey: "imagetitle") as! CVarArg)
+                    titletxtfield.text = filepath
+                    
+                    return cell
+                }
+                else
+                {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "commentCell", for: indexPath)
+                    
+                    cmttxtView = cell.contentView.viewWithTag(1) as? UITextView
+                    let placeholder = cell.contentView.viewWithTag(2) as? UILabel
+                    
+                    let caption = String(format: "%@", chatmsg.value(forKey: "filecaption") as! CVarArg)
+                    cmttxtView.text = caption
+                    
+                    if (cmttxtView?.text.characters.count)!>0
+                    {
+                        placeholder?.isHidden = true
+                    }
+                    
+                    return cell
+                }
             }
             else
             {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "commentCell", for: indexPath)
-                
-                cmttxtView = cell.contentView.viewWithTag(1) as? UITextView
-                let placeholder = cell.contentView.viewWithTag(2) as? UILabel
-                
-                if (cmttxtView?.text.characters.count)!>0
+                if(indexPath.row==0)
                 {
-                    placeholder?.isHidden = true
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "titleCell", for: indexPath)
+                    titletxtfield = cell.contentView.viewWithTag(1) as? UITextField
+
+                    let filepath = String(format: "%@", chatmsg.value(forKey: "imagetitle") as! CVarArg)
+                    titletxtfield.text = filepath
+                    
+                    return cell
                 }
-                
-                return cell
+                else
+                {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "commentCell", for: indexPath)
+                    
+                    cmttxtView = cell.contentView.viewWithTag(1) as? UITextView
+                    let placeholder = cell.contentView.viewWithTag(2) as? UILabel
+                    
+                    let caption = String(format: "%@", chatmsg.value(forKey: "filecaption") as! CVarArg)
+                    cmttxtView.text = caption
+                    
+                    if (cmttxtView?.text.characters.count)!>0
+                    {
+                        placeholder?.isHidden = true
+                    }
+                    
+                    return cell
+                }
             }
         }
         else
         {
-            if(indexPath.row==0)
+            if uploadimage != nil
             {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "titleCell", for: indexPath)
-                titletxtfield = cell.contentView.viewWithTag(1) as? UITextField
-                titletxtfield.text = filename
-
-                return cell
+                if(indexPath.row==0)
+                {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as UITableViewCell
+                    
+                    let imageView = cell.contentView.viewWithTag(1) as? AsyncImageView
+                    imageView?.image = uploadimage
+                    
+                    return cell
+                }
+                else if(indexPath.row==1)
+                {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "titleCell", for: indexPath)
+                    titletxtfield = cell.contentView.viewWithTag(1) as? UITextField
+                    
+                    return cell
+                }
+                else
+                {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "commentCell", for: indexPath)
+                    
+                    cmttxtView = cell.contentView.viewWithTag(1) as? UITextView
+                    let placeholder = cell.contentView.viewWithTag(2) as? UILabel
+                    
+                    if (cmttxtView?.text.characters.count)!>0
+                    {
+                        placeholder?.isHidden = true
+                    }
+                    
+                    return cell
+                }
             }
             else
             {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "commentCell", for: indexPath)
-                
-                cmttxtView = cell.contentView.viewWithTag(1) as? UITextView
-                let placeholder = cell.contentView.viewWithTag(2) as? UILabel
-                
-                if (cmttxtView?.text.characters.count)!>0
+                if(indexPath.row==0)
                 {
-                    placeholder?.isHidden = true
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "titleCell", for: indexPath)
+                    titletxtfield = cell.contentView.viewWithTag(1) as? UITextField
+                    titletxtfield.text = filename
+                    
+                    return cell
                 }
-                
-                return cell
+                else
+                {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "commentCell", for: indexPath)
+                    
+                    cmttxtView = cell.contentView.viewWithTag(1) as? UITextView
+                    let placeholder = cell.contentView.viewWithTag(2) as? UILabel
+                    
+                    if (cmttxtView?.text.characters.count)!>0
+                    {
+                        placeholder?.isHidden = true
+                    }
+                    
+                    return cell
+                }
             }
         }
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
-        if uploadimage != nil
+        if viewtype == "Update"
         {
-            if(indexPath.row==0)
+            if filetype == "Image"
             {
-                return 200
-            }
-            else if(indexPath.row==1)
-            {
-                return 44
+                if(indexPath.row==0)
+                {
+                    return 200
+                }
+                else if(indexPath.row==1)
+                {
+                    return 44
+                }
+                else
+                {
+                    return estimateheight
+                }
             }
             else
             {
-                return estimateheight
+                if(indexPath.row==0)
+                {
+                    return 44
+                }
+                else
+                {
+                    return estimateheight
+                }
             }
         }
         else
         {
-            if(indexPath.row==0)
+            if uploadimage != nil
             {
-                return 44
+                if(indexPath.row==0)
+                {
+                    return 200
+                }
+                else if(indexPath.row==1)
+                {
+                    return 44
+                }
+                else
+                {
+                    return estimateheight
+                }
             }
             else
             {
-                return estimateheight
+                if(indexPath.row==0)
+                {
+                    return 44
+                }
+                else
+                {
+                    return estimateheight
+                }
             }
         }
     }

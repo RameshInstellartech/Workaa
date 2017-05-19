@@ -1215,7 +1215,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.in1947.workaa;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "/Users/in1947/Documents/Ramesh Hari/Workaa/Project/Workaa/SocketIOChat/SocketChat/Workaa-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/rameshhari/Documents/Ramesh/Workaa/Workaa/Project/Workaa/SocketIOChat/SocketChat/Workaa-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -1232,7 +1232,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.in1947.workaa;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "/Users/in1947/Documents/Ramesh Hari/Workaa/Project/Workaa/SocketIOChat/SocketChat/Workaa-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/rameshhari/Documents/Ramesh/Workaa/Workaa/Project/Workaa/SocketIOChat/SocketChat/Workaa-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

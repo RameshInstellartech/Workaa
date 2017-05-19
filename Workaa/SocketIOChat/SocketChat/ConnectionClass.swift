@@ -505,7 +505,7 @@ class ConnectionClass: NSObject
         self.getRequest(request: request)
     }
     
-    func UpdateMarkAdmin(groupid:String, email:String)
+    func UpdateMarkAdmin(groupid:String, email:String) -> NSDictionary
     {
         let urlpath = String(format: "%@%@", kBaseURL,kgroupUserMarkAdmin)
         print("urlpath =>\(urlpath)")
@@ -518,10 +518,59 @@ class ConnectionClass: NSObject
         request.addHeader("Accept", value: "application/json")
         request.startSynchronous()
         
-        self.getRequest(request: request)
+        var responseError : NSError?
+        responseError = request.error as NSError?
+        
+        if (responseError == nil)
+        {
+            print("request.responseString() = \(request.responseString())")
+            
+            if request.responseString() != nil && !request.responseString().isEmpty
+            {
+                if (request.responseString().jsonValue() as? NSDictionary) != nil
+                {
+                    let reponsedictionary = request.responseString().jsonValue() as! NSDictionary
+                    print("reponsedictionary = \(reponsedictionary)")
+                    
+                    if reponsedictionary.count>0
+                    {
+                        if let getreponse = reponsedictionary.value(forKey: "apiResponse") as? NSDictionary
+                        {
+                            if let statuscode = getreponse.value(forKey: "status") as? NSInteger
+                            {
+                                if statuscode==1
+                                {
+                                    return getreponse
+                                }
+                                else
+                                {
+                                    if let errormsg = getreponse.value(forKey: "message") as? String
+                                    {
+                                        AlertClass().showAlert(alerttitle: "Info", alertmsg: errormsg)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    AlertClass().showAlert(alerttitle: "Info", alertmsg: servererrormsg)
+                }
+            }
+            else
+            {
+                AlertClass().showAlert(alerttitle: "Info", alertmsg: servererrormsg)
+            }
+        }
+        else
+        {
+            AlertClass().showAlert(alerttitle: "Info", alertmsg: (responseError?.localizedDescription)!)
+        }
+        return NSDictionary()
     }
     
-    func UpdateRemoveAdmin(groupid:String, email:String)
+    func UpdateRemoveAdmin(groupid:String, email:String) -> NSDictionary
     {
         let urlpath = String(format: "%@%@", kBaseURL,kgroupUserRemoveAdmin)
         print("urlpath =>\(urlpath)")
@@ -534,10 +583,59 @@ class ConnectionClass: NSObject
         request.addHeader("Accept", value: "application/json")
         request.startSynchronous()
         
-        self.getRequest(request: request)
+        var responseError : NSError?
+        responseError = request.error as NSError?
+        
+        if (responseError == nil)
+        {
+            print("request.responseString() = \(request.responseString())")
+            
+            if request.responseString() != nil && !request.responseString().isEmpty
+            {
+                if (request.responseString().jsonValue() as? NSDictionary) != nil
+                {
+                    let reponsedictionary = request.responseString().jsonValue() as! NSDictionary
+                    print("reponsedictionary = \(reponsedictionary)")
+                    
+                    if reponsedictionary.count>0
+                    {
+                        if let getreponse = reponsedictionary.value(forKey: "apiResponse") as? NSDictionary
+                        {
+                            if let statuscode = getreponse.value(forKey: "status") as? NSInteger
+                            {
+                                if statuscode==1
+                                {
+                                    return getreponse
+                                }
+                                else
+                                {
+                                    if let errormsg = getreponse.value(forKey: "message") as? String
+                                    {
+                                        AlertClass().showAlert(alerttitle: "Info", alertmsg: errormsg)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    AlertClass().showAlert(alerttitle: "Info", alertmsg: servererrormsg)
+                }
+            }
+            else
+            {
+                AlertClass().showAlert(alerttitle: "Info", alertmsg: servererrormsg)
+            }
+        }
+        else
+        {
+            AlertClass().showAlert(alerttitle: "Info", alertmsg: (responseError?.localizedDescription)!)
+        }
+        return NSDictionary()
     }
     
-    func UpdateRemoveUser(groupid:String, email:String)
+    func UpdateRemoveUser(groupid:String, email:String) -> NSDictionary
     {
         let urlpath = String(format: "%@%@", kBaseURL,kgroupUserRemove)
         print("urlpath =>\(urlpath)")
@@ -550,7 +648,56 @@ class ConnectionClass: NSObject
         request.addHeader("Accept", value: "application/json")
         request.startSynchronous()
         
-        self.getRequest(request: request)
+        var responseError : NSError?
+        responseError = request.error as NSError?
+        
+        if (responseError == nil)
+        {
+            print("request.responseString() = \(request.responseString())")
+            
+            if request.responseString() != nil && !request.responseString().isEmpty
+            {
+                if (request.responseString().jsonValue() as? NSDictionary) != nil
+                {
+                    let reponsedictionary = request.responseString().jsonValue() as! NSDictionary
+                    print("reponsedictionary = \(reponsedictionary)")
+                    
+                    if reponsedictionary.count>0
+                    {
+                        if let getreponse = reponsedictionary.value(forKey: "apiResponse") as? NSDictionary
+                        {
+                            if let statuscode = getreponse.value(forKey: "status") as? NSInteger
+                            {
+                                if statuscode==1
+                                {
+                                    return getreponse
+                                }
+                                else
+                                {
+                                    if let errormsg = getreponse.value(forKey: "message") as? String
+                                    {
+                                        AlertClass().showAlert(alerttitle: "Info", alertmsg: errormsg)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    AlertClass().showAlert(alerttitle: "Info", alertmsg: servererrormsg)
+                }
+            }
+            else
+            {
+                AlertClass().showAlert(alerttitle: "Info", alertmsg: servererrormsg)
+            }
+        }
+        else
+        {
+            AlertClass().showAlert(alerttitle: "Info", alertmsg: (responseError?.localizedDescription)!)
+        }
+        return NSDictionary()
     }
     
     func SendFile(groupid:String, imageData:Data, imagesize:String, filename : String)

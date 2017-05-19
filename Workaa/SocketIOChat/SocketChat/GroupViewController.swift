@@ -329,6 +329,55 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
         self.present(navController, animated: true, completion: nil)
     }
     
+    func UpdateFileDetails(filename : String, comment : String, msgId : String)
+    {
+        SocketIOManager.sharedInstance.editImagetitlecap(groupid: self.groupdictionary.value(forKey: "id") as! String, title: filename, caption: comment, idString: msgId) { (messageInfo) -> Void in
+            
+            print("editImagetitlecap =>\(messageInfo)")
+            
+            if let getreponse = messageInfo.value(forKey: "apiResponse") as? NSDictionary
+            {
+                if let statuscode = getreponse.value(forKey: "status") as? NSInteger
+                {
+                    if statuscode==1
+                    {
+                        do {
+                            let fetchRequest:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "GroupChat")
+                            fetchRequest.returnsObjectsAsFaults = false
+                            
+                            let predicate = NSPredicate(format: "msgid = %@", msgId)
+                            fetchRequest.predicate = predicate
+                            
+                            let results =
+                                try managedContext.fetch(fetchRequest)
+                            let editMessages = results as! [NSManagedObject]
+                            if editMessages.count>0
+                            {
+                                let getmanageObj = editMessages[0]
+                                getmanageObj.setValue(filename, forKey: "imagetitle")
+                                getmanageObj.setValue(comment, forKey: "filecaption")
+
+                                do {
+                                    try managedContext.save()
+                                    self.tblChat.reloadData()
+                                } catch let error as NSError  {
+                                    print("Could not save \(error), \(error.userInfo)")
+                                }
+                            }
+                            
+                        } catch let error as NSError {
+                            print("Could not fetch \(error), \(error.userInfo)")
+                        }
+                    }
+                    else
+                    {
+                        print("MSG ERROR")
+                    }
+                }
+            }
+        }
+    }
+    
     func imageUploadtoServer(filename : String, comment : String)
     {
         if pickedImage != nil
@@ -538,7 +587,10 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                                         }
                                         else
                                         {
-                                            chatdetailsdict = ["userid":self.commonmethodClass.retrieveuserid(), "username":self.commonmethodClass.retrieveusername(), "message":message!, "date":date!, "teamid":self.commonmethodClass.retrieveteamid(), "groupid":self.groupdictionary.value(forKey: "id") as! String, "imagepath":imagepath!, "msgid": shareid, "type": "Share", "commentdetails":cmtDetails, "sharedetails":sharedetails, "imagetitle":imagetitle!, "filesize":filesize!, "filecaption":filecaption!, "starmsg":"0"]
+                                            let commentdetails = cmtDetails.mutableCopy() as? NSMutableDictionary
+                                            commentdetails?.setValue(self.commonmethodClass.retrieveuserid(), forKey: "senderuserid")
+                                            
+                                            chatdetailsdict = ["userid":self.commonmethodClass.retrieveuserid(), "username":self.commonmethodClass.retrieveusername(), "message":message!, "date":date!, "teamid":self.commonmethodClass.retrieveteamid(), "groupid":self.groupdictionary.value(forKey: "id") as! String, "imagepath":imagepath!, "msgid": shareid, "type": "Share", "commentdetails":commentdetails!, "sharedetails":sharedetails, "imagetitle":imagetitle!, "filesize":filesize!, "filecaption":filecaption!, "starmsg":"0"]
                                         }
                                     }
                                     else
@@ -916,6 +968,21 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
         self.present(alert, animated: true, completion: {
             print("completion block")
         })
+    }
+    
+    func UpdateImgTitleandCaption(chatdetails : NSManagedObject, filetype : String)
+    {
+        let imageUploadView = self.storyboard?.instantiateViewController(withIdentifier: "ImageUploadViewID") as? ImageUploadViewController
+        imageUploadView?.delegate = self
+        imageUploadView?.viewtype = "Update"
+        imageUploadView?.chatmsg = chatdetails
+        imageUploadView?.filetype = filetype
+        let navController = UINavigationController(rootViewController: imageUploadView!)
+        navController.navigationBar.barTintColor = greenColor
+        navController.navigationBar.isTranslucent = false
+        navController.navigationBar.tintColor = UIColor.white
+        navController.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.white]
+        self.present(navController, animated: true, completion: nil)
     }
     
     // MARK: - ImageUpload Methods
@@ -1326,6 +1393,21 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                             
                             if(userid?.isEqual(to: self.commonmethodClass.retrieveuserid() as String))!
                             {
+                                alert.addAction(UIAlertAction(title: "Edit File", style: .default , handler:{ (UIAlertAction)in
+                                    let filestring = String(format: "%@%@", kfilePath,filepath!)
+                                    let fileUrl = NSURL(string: filestring)
+                                    var fileextension = String(format: "%@", (fileUrl?.pathExtension)!) as NSString
+                                    fileextension = fileextension.lowercased as NSString
+                                    if (fileextension.isEqual(to: "jpg") || fileextension.isEqual(to: "png") || fileextension.isEqual(to: "jpeg") || fileextension.isEqual(to: "gif"))
+                                    {
+                                        self.UpdateImgTitleandCaption(chatdetails: currentChatMessage, filetype: "Image")
+                                    }
+                                    else
+                                    {
+                                        self.UpdateImgTitleandCaption(chatdetails: currentChatMessage, filetype: "File")
+                                    }
+                                }))
+                                
                                 alert.addAction(UIAlertAction(title: "Delete File", style: .destructive , handler:{ (UIAlertAction)in
                                     self.DeleteMessage(msgId: msgId!)
                                 }))
@@ -1615,7 +1697,8 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
         let imagetitle = currentChatMessage.value(forKey: "imagetitle") as? NSString
         let filesize = currentChatMessage.value(forKey: "filesize") as? NSString
         let favstring = String(format: "%@", currentChatMessage.value(forKey: "starmsg") as! CVarArg)
-        
+        let caption = String(format: "%@", currentChatMessage.value(forKey: "filecaption") as! CVarArg)
+
 //        let cellheight = self.tableView(tableView, heightForRowAt: indexPath)
         
         let longPressGesture:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(GroupViewController.longPress(_:)))
@@ -2386,6 +2469,12 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
 //                        
 //                        cell.righttextMessageView?.layer.masksToBounds = true
                         
+//                        let range = (message!).range(of: "(edited)" as String)
+//                        let attributedString = NSMutableAttributedString(string:message! as String)
+//                        attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.5) , range: range)
+//                        attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoRegular, size: 14.0)! , range: range)
+//                        cell.righttextMessagelbl?.attributedText = attributedString
+                        
                         cell.righttextMessagelbl?.text = message as String?
                         
                         cell.righttextDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
@@ -2494,6 +2583,8 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                             
 //                            cell.rightchatimage?.layer.cornerRadius = 10
                             
+                            cell.rightimageMessagelbl?.text = caption
+                            
                             cell.rightimageDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                             
                             if favstring == "0"
@@ -2537,13 +2628,13 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                             cell.leftchatimage?.image = UIImage(contentsOfFile: path.path)
                             cell.leftchatimage?.imageURL = fileUrl as URL?
                             
-                            cell.leftimageMessagelbl?.text = ""
+                            cell.leftimageMessagelbl?.text = caption
                             
-                            var msgHeight = commonmethodClass.dynamicHeight(width: screenWidth-120, font: (cell.leftimageMessagelbl?.font!)!, string: cell.leftimageMessagelbl?.text! as! String)
-                            msgHeight = ceil(msgHeight)
+//                            var msgHeight = commonmethodClass.dynamicHeight(width: screenWidth-120, font: (cell.leftimageMessagelbl?.font!)!, string: cell.leftimageMessagelbl?.text! as! String)
+//                            msgHeight = ceil(msgHeight)
 //                            print("msgHeight =>\(msgHeight)")
-                            
-                            cell.leftimageMessageheight?.constant = msgHeight
+//                            
+//                            cell.leftimageMessageheight?.constant = msgHeight
                             
                             cell.leftimageDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                             
@@ -2581,6 +2672,8 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                             cell.rightfiletitlelbl?.text = (imagetitle! as NSString).deletingPathExtension
                             
                             cell.rightfilesizelbl?.text = filesize as String?
+                            
+                            cell.rightfileMessagelbl?.text = caption
                             
                             if favstring == "0"
                             {
@@ -2632,6 +2725,8 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                             
                             cell.leftfilesizelbl?.text = filesize as String?
                             
+                            cell.leftfileMessagelbl?.text = caption
+                            
                             if favstring == "0"
                             {
                                 cell.leftfilestarimage?.isHidden = true
@@ -2660,6 +2755,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
         let message = currentChatMessage.value(forKey: "message") as? NSString
         let userid = currentChatMessage.value(forKey: "userid") as? NSString
         let imagetitle = currentChatMessage.value(forKey: "imagetitle") as? NSString
+        let caption = String(format: "%@", currentChatMessage.value(forKey: "filecaption") as! CVarArg)
 
         if let chattype = currentChatMessage.value(forKey: "type") as? NSString
         {
@@ -2804,6 +2900,9 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                 }
                 else
                 {
+                    var msgHeight = commonmethodClass.dynamicHeight(width: screenWidth-120, font: UIFont (name: LatoRegular, size: 16)!, string: caption)
+                    msgHeight = ceil(msgHeight)
+                    
                     let filestring = String(format: "%@%@", kfilePath,filepath!)
                     let fileUrl = NSURL(string: filestring)
                     
@@ -2814,22 +2913,22 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                     {
                         if(userid?.isEqual(to: self.commonmethodClass.retrieveuserid() as String))!
                         {
-                            return 250.0
+                            return msgHeight+250.0
                         }
                         else
                         {
-                            return 300.0
+                            return msgHeight+280.0
                         }
                     }
                     else
                     {
                         if(userid?.isEqual(to: self.commonmethodClass.retrieveuserid() as String))!
                         {
-                            return 90.0
+                            return msgHeight+90.0
                         }
                         else
                         {
-                            return 120.0
+                            return msgHeight+120.0
                         }
                     }
                 }
