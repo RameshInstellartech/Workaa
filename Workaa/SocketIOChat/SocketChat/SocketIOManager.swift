@@ -84,9 +84,9 @@ class SocketIOManager: NSObject
         }
     }
     
-    func directResetCount(completionHandler: @escaping (_ messageInfo: NSDictionary) -> Void)
+    func directResetCount(uid: String, completionHandler: @escaping (_ messageInfo: NSDictionary) -> Void)
     {
-        let messagedictionary = ["token": commonmethodClass.retrieveUsernameToken()] as [String : Any]
+        let messagedictionary = ["token": commonmethodClass.retrieveUsernameToken(), "uid":uid] as [String : Any]
         print("messagedictionary =>\(messagedictionary)");
         socket.emitWithAck("DirectMessageUnread", messagedictionary)(0) {data in
             print("got ack =>\(data)")

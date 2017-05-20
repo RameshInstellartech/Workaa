@@ -88,6 +88,14 @@ class MenuTableViewController: UIViewController, UITableViewDelegate, UITableVie
         {
             let cell = tableView.dequeueReusableCell(withIdentifier: "menucell", for: indexPath) as! MenuTableViewCell
             
+            for view : UIView in cell.contentView.subviews
+            {
+                if(view.frame.size.height==20)
+                {
+                    view.removeFromSuperview()
+                }
+            }
+            
             cell.menunamelbl.text = String(format: "%@",menuArray[indexPath.row-1] as! CVarArg)
             
             if(indexPath.row==2 || indexPath.row==3)
@@ -95,7 +103,7 @@ class MenuTableViewController: UIViewController, UITableViewDelegate, UITableVie
                 let countlbl = UILabel()
                 if(indexPath.row==2)
                 {
-                    countlbl.frame = CGRect(x: CGFloat(screenWidth-130.0), y: CGFloat(17.0), width: CGFloat(20.0), height: CGFloat(20.0))
+                    countlbl.frame = CGRect(x: CGFloat(190.0), y: CGFloat(17.0), width: CGFloat(20.0), height: CGFloat(20.0))
                     if directunreadcount == 0
                     {
                         countlbl.isHidden = true
@@ -108,7 +116,7 @@ class MenuTableViewController: UIViewController, UITableViewDelegate, UITableVie
                 }
                 else
                 {
-                    countlbl.frame = CGRect(x: CGFloat(screenWidth-150.0), y: CGFloat(17.0), width: CGFloat(20.0), height: CGFloat(20.0))
+                    countlbl.frame = CGRect(x: CGFloat(170.0), y: CGFloat(17.0), width: CGFloat(20.0), height: CGFloat(20.0))
                     if groupunreadcount == 0
                     {
                         countlbl.isHidden = true

@@ -199,6 +199,17 @@ class GroupListController: UIViewController, ConnectionProtocol, UITableViewDele
         
         cell.lblstatus.text = String(format: "%@ critical", groupdictionary.value(forKey: "criticalTask") as! CVarArg)
         
+        let countstring = String(format: "%@", groupdictionary.value(forKey: "unread") as! CVarArg)
+        if countstring == "0"
+        {
+            cell.countlbl.isHidden = true
+        }
+        else
+        {
+            cell.countlbl.isHidden = false
+        }
+        cell.countlbl.text = countstring
+        
         return cell
     }
     

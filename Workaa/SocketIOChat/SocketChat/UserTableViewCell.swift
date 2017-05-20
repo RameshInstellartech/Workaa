@@ -13,6 +13,7 @@ class UserTableViewCell: UITableViewCell
     @IBOutlet weak var profileimage: AsyncImageView!
     @IBOutlet weak var lblusername: UILabel!
     @IBOutlet weak var lblchatdesc: UILabel!
+    @IBOutlet weak var countlbl: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

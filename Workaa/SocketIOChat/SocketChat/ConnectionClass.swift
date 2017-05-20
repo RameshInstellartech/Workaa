@@ -36,7 +36,8 @@ class ConnectionClass: NSObject
     {
         let urlpath = String(format: "%@%@", commonmethodClass.retrieveteamUrl(),kappLabelDomain)
         print("urlpath =>\(urlpath)")
-        
+        print("token =>\(commonmethodClass.retrieveUsernameToken())")
+
         let request : ASIFormDataRequest = ASIFormDataRequest(url: NSURL(string: urlpath)! as URL)
         request.requestMethod = "POST"
         request.addPostValue(commonmethodClass.retrieveteamdomain(), forKey: "domain")

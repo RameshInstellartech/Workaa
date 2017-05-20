@@ -653,11 +653,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
         let userid = String(format: "%@", messageInfo.value(forKey: "sendId") as! CVarArg)
         let teamid = String(format: "%@", messageInfo.value(forKey: "teamId") as! CVarArg)
         let date = String(format: "%@", messageInfo.value(forKey: "sendTime") as! CVarArg)
-        let username = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg,messageInfo.value(forKey: "sendLastName") as! CVarArg)
+        let flname = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg,messageInfo.value(forKey: "sendLastName") as! CVarArg)
         let msg = String(format: "%@", messageInfo.value(forKey: "message") as! CVarArg)
         let msgid = String(format: "%@", messageInfo.value(forKey: "messageId") as! CVarArg)
         
-        let chatdetails = ["userid":userid, "username":username, "message":msg, "date":date, "teamid":teamid, "imagepath":"", "msgid":msgid, "imagetitle":"", "filesize":"", "filecaption":"", "starmsg":"0"] as [String : Any]
+        var username = ""
+        if let uname = messageInfo.value(forKey: "sendUsername") as? String
+        {
+            username = uname
+        }
+        
+        let chatdetails = ["userid":userid, "username":username, "message":msg, "date":date, "teamid":teamid, "imagepath":"", "msgid":msgid, "imagetitle":"", "filesize":"", "filecaption":"", "starmsg":"0", "flname" : flname] as [String : Any]
         
         self.saveCafeChatDetails(chatdetails: chatdetails as NSDictionary)
     }
@@ -672,7 +678,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             let date = String(format: "%@", messageInfo.value(forKey: "sendTime") as! CVarArg)
             let title = String(format: "%@", filedictionary.value(forKey: "title") as! CVarArg)
             let caption = String(format: "%@", filedictionary.value(forKey: "caption") as! CVarArg)
-            let username = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg,messageInfo.value(forKey: "sendLastName") as! CVarArg)
+            let flname = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg,messageInfo.value(forKey: "sendLastName") as! CVarArg)
+            
+            var username = ""
+            if let uname = messageInfo.value(forKey: "sendUsername") as? String
+            {
+                username = uname
+            }
             
             var data : NSData!
             
@@ -716,7 +728,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             let filesize = formatter.string(fromByteCount: Int64((data?.length)!))
             print("filesize =>\(filesize)")
             
-            let chatdetails = ["userid":userid, "username":username, "message":"", "date":date, "teamid":teamid, "imagepath":imagepath, "msgid":String(format: "%@", messageInfo.value(forKey: "messageId") as! CVarArg), "imagetitle":title, "filesize":filesize, "filecaption":caption, "starmsg":"0"] as [String : Any]
+            let chatdetails = ["userid":userid, "username":username, "message":"", "date":date, "teamid":teamid, "imagepath":imagepath, "msgid":String(format: "%@", messageInfo.value(forKey: "messageId") as! CVarArg), "imagetitle":title, "filesize":filesize, "filecaption":caption, "starmsg":"0", "flname" : flname] as [String : Any]
             
             self.saveCafeChatDetails(chatdetails: chatdetails as NSDictionary)
         }
@@ -825,7 +837,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             let shareuserid = shareDetails.value(forKey: "userId") as? String
             let shareteamid = messageInfo.value(forKey: "teamId") as? String
             let userid = messageInfo.value(forKey: "sendId") as? String
-            let username = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg,messageInfo.value(forKey: "sendLastName") as! CVarArg)
+            let flname = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg,messageInfo.value(forKey: "sendLastName") as! CVarArg)
+            
+            var username = ""
+            if let uname = messageInfo.value(forKey: "sendUsername") as? String
+            {
+                username = uname
+            }
             
             let infostring = shareDetails.value(forKey: "info") as? String
             var message = ""
@@ -866,7 +884,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             
             if cmtid == ""
             {
-                let chatdetails = ["userid":userid!, "username":username, "message":message, "date":date!, "teamid":teamid!, "imagepath":imagepath, "msgid": msgId!, "type": "Share", "commentdetails":"", "sharedetails":sharedetails, "imagetitle":imagetitle, "filesize":filesize, "filecaption":filecaption, "starmsg":"0"] as [String : Any]
+                let chatdetails = ["userid":userid!, "username":username, "message":message, "date":date!, "teamid":teamid!, "imagepath":imagepath, "msgid": msgId!, "type": "Share", "commentdetails":"", "sharedetails":sharedetails, "imagetitle":imagetitle, "filesize":filesize, "filecaption":filecaption, "starmsg":"0", "flname" : flname] as [String : Any]
                 
                 self.saveCafeChatDetails(chatdetails: chatdetails as NSDictionary)
             }
@@ -878,7 +896,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
                 
                 let cmtdetails = ["username":cmtusername, "userid":"", "cmtmsg":cmtmsg, "senderusername":cmtsenderusername, "senderuserid":userid!, "cmtid":cmtid] as [String : Any]
                 
-                let chatdetails = ["userid":userid!, "username":username, "message":message, "date":date!, "teamid":teamid!, "imagepath":imagepath, "msgid": msgId!, "type": "Share", "commentdetails":cmtdetails, "sharedetails":sharedetails, "imagetitle":imagetitle, "filesize":filesize, "filecaption":filecaption, "starmsg":"0"] as [String : Any]
+                let chatdetails = ["userid":userid!, "username":username, "message":message, "date":date!, "teamid":teamid!, "imagepath":imagepath, "msgid": msgId!, "type": "Share", "commentdetails":cmtdetails, "sharedetails":sharedetails, "imagetitle":imagetitle, "filesize":filesize, "filecaption":filecaption, "starmsg":"0", "flname" : flname] as [String : Any]
                 
                 self.saveCafeChatDetails(chatdetails: chatdetails as NSDictionary)
             }
@@ -893,11 +911,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             let teamid = String(format: "%@", messageInfo.value(forKey: "teamId") as! CVarArg)
             let msgid = String(format: "%@", filedictionary.value(forKey: "fileId") as! CVarArg)
             let cmtId = String(format: "%@", messageInfo.value(forKey: "messageId") as! CVarArg)
-            let username = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg, messageInfo.value(forKey: "sendLastName") as! CVarArg)
+            let flname = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg,messageInfo.value(forKey: "sendLastName") as! CVarArg)
             let cmtmsg = String(format: "%@", messageInfo.value(forKey: "comment") as! CVarArg)
             let date = String(format: "%@", messageInfo.value(forKey: "sendTime") as! CVarArg)
             
-            let cmtdetails = ["userid":userid, "username":username, "cmtmsg":cmtmsg, "date":date, "teamid":teamid, "msgid": msgid, "cmtid": cmtId, "starmsg":"0"] as [String : Any]
+            var username = ""
+            if let uname = messageInfo.value(forKey: "sendUsername") as? String
+            {
+                username = uname
+            }
+            
+            let cmtdetails = ["userid":userid, "username":username, "cmtmsg":cmtmsg, "date":date, "teamid":teamid, "msgid": msgid, "cmtid": cmtId, "starmsg":"0", "flname" : flname] as [String : Any]
             
             self.saveCafeCommentDetails(chatdetails: cmtdetails as NSDictionary)
             
@@ -909,7 +933,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             //                    userid = String(format: "%@", userdictionary?.value(forKey: "SUSERID") as! CVarArg)
             //                }
             
-            let chatcmtdetails = ["username":username, "userid":userid, "cmtmsg":cmtmsg, "senderusername":username, "senderuserid":userid, "cmtid":cmtId, "starmsg":"0"] as [String : Any]
+            let chatcmtdetails = ["username":username, "userid":userid, "cmtmsg":cmtmsg, "senderusername":username, "senderuserid":userid, "cmtid":cmtId, "starmsg":"0", "flname" : flname] as [String : Any]
             print("chatcmtdetails =>\(chatcmtdetails)")
             
             self.saveCafeChatCmtDetails(cmtdetails: chatcmtdetails as NSDictionary, msgId: msgid)
@@ -1038,11 +1062,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
         let userid = String(format: "%@", messageInfo.value(forKey: "sendId") as! CVarArg)
         let teamid = String(format: "%@", messageInfo.value(forKey: "teamId") as! CVarArg)
         let date = String(format: "%@", messageInfo.value(forKey: "sendTime") as! CVarArg)
-        let username = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg,messageInfo.value(forKey: "sendLastName") as! CVarArg)
+        let flname = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg,messageInfo.value(forKey: "sendLastName") as! CVarArg)
         let msg = String(format: "%@", messageInfo.value(forKey: "message") as! CVarArg)
         let msgid = String(format: "%@", messageInfo.value(forKey: "messageId") as! CVarArg)
         
-        let chatdetails = ["userid":userid, "username":username, "message":msg, "date":date, "teamid":teamid, "imagepath":"", "msgid":msgid, "imagetitle":"", "filesize":"", "filecaption":"", "type":"message", "sendertype":"left", "senderuserid":userid, "starmsg":"0"] as [String : Any]
+        var username = ""
+        if let uname = messageInfo.value(forKey: "sendUsername") as? String
+        {
+            username = uname
+        }
+        
+        let chatdetails = ["userid":userid, "username":username, "message":msg, "date":date, "teamid":teamid, "imagepath":"", "msgid":msgid, "imagetitle":"", "filesize":"", "filecaption":"", "type":"message", "sendertype":"left", "senderuserid":userid, "starmsg":"0", "flname" : flname] as [String : Any]
         
         self.saveOneToOneChatDetails(chatdetails: chatdetails as NSDictionary)
     }
@@ -1057,7 +1087,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             let date = String(format: "%@", messageInfo.value(forKey: "sendTime") as! CVarArg)
             let title = String(format: "%@", filedictionary.value(forKey: "title") as! CVarArg)
             let caption = String(format: "%@", filedictionary.value(forKey: "caption") as! CVarArg)
-            let username = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg,messageInfo.value(forKey: "sendLastName") as! CVarArg)
+            let flname = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg,messageInfo.value(forKey: "sendLastName") as! CVarArg)
+            
+            var username = ""
+            if let uname = messageInfo.value(forKey: "sendUsername") as? String
+            {
+                username = uname
+            }
             
             var data : NSData!
             var filetype : String!
@@ -1106,7 +1142,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             let filesize = formatter.string(fromByteCount: Int64((data?.length)!))
             print("filesize =>\(filesize)")
             
-            let chatdetails = ["userid":userid, "username":username, "message":"", "date":date, "teamid":teamid, "imagepath":imagepath, "msgid":String(format: "%@", messageInfo.value(forKey: "messageId") as! CVarArg), "imagetitle":title, "filesize":filesize, "filecaption":caption, "type":filetype, "sendertype":"left", "senderuserid":userid, "starmsg":"0"] as [String : Any]
+            let chatdetails = ["userid":userid, "username":username, "message":"", "date":date, "teamid":teamid, "imagepath":imagepath, "msgid":String(format: "%@", messageInfo.value(forKey: "messageId") as! CVarArg), "imagetitle":title, "filesize":filesize, "filecaption":caption, "type":filetype, "sendertype":"left", "senderuserid":userid, "starmsg":"0", "flname" : flname] as [String : Any]
             
             self.saveOneToOneChatDetails(chatdetails: chatdetails as NSDictionary)
         }
@@ -1215,7 +1251,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             let shareuserid = messageInfo.value(forKey: "recUserId") as? String
             let shareteamid = messageInfo.value(forKey: "teamId") as? String
             let userid = messageInfo.value(forKey: "sendId") as? String
-            let username = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg,messageInfo.value(forKey: "sendLastName") as! CVarArg)
+            let flname = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg,messageInfo.value(forKey: "sendLastName") as! CVarArg)
+            
+            var username = ""
+            if let uname = messageInfo.value(forKey: "sendUsername") as? String
+            {
+                username = uname
+            }
             
             let infostring = shareDetails.value(forKey: "info") as? String
             var message = ""
@@ -1256,7 +1298,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             
             if cmtid == ""
             {
-                let chatdetails = ["userid":userid!, "username":username, "message":message, "date":date!, "teamid":teamid!, "imagepath":imagepath, "msgid": msgId!, "type": "share", "commentdetails":"", "sharedetails":sharedetails, "imagetitle":imagetitle, "filesize":filesize, "filecaption":filecaption, "sendertype":"left", "senderuserid":userid!, "starmsg":"0"] as [String : Any]
+                let chatdetails = ["userid":userid!, "username":username, "message":message, "date":date!, "teamid":teamid!, "imagepath":imagepath, "msgid": msgId!, "type": "share", "commentdetails":"", "sharedetails":sharedetails, "imagetitle":imagetitle, "filesize":filesize, "filecaption":filecaption, "sendertype":"left", "senderuserid":userid!, "starmsg":"0", "flname" : flname] as [String : Any]
                 
                 self.saveOneToOneChatDetails(chatdetails: chatdetails as NSDictionary)
             }
@@ -1268,7 +1310,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
                 
                 let cmtdetails = ["username":cmtusername, "userid":"", "cmtmsg":cmtmsg, "senderusername":cmtsenderusername, "senderuserid":userid!, "cmtid":cmtid] as [String : Any]
                 
-                let chatdetails = ["userid":userid!, "username":username, "message":message, "date":date!, "teamid":teamid!, "imagepath":imagepath, "msgid": msgId!, "type": "share", "commentdetails":cmtdetails, "sharedetails":sharedetails, "imagetitle":imagetitle, "filesize":filesize, "filecaption":filecaption, "sendertype":"left", "senderuserid":userid!, "starmsg":"0"] as [String : Any]
+                let chatdetails = ["userid":userid!, "username":username, "message":message, "date":date!, "teamid":teamid!, "imagepath":imagepath, "msgid": msgId!, "type": "share", "commentdetails":cmtdetails, "sharedetails":sharedetails, "imagetitle":imagetitle, "filesize":filesize, "filecaption":filecaption, "sendertype":"left", "senderuserid":userid!, "starmsg":"0", "flname" : flname] as [String : Any]
                 
                 self.saveOneToOneChatDetails(chatdetails: chatdetails as NSDictionary)
             }
@@ -1283,15 +1325,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             let teamid = String(format: "%@", messageInfo.value(forKey: "teamId") as! CVarArg)
             let msgid = String(format: "%@", filedictionary.value(forKey: "fileId") as! CVarArg)
             let cmtId = String(format: "%@", messageInfo.value(forKey: "messageId") as! CVarArg)
-            let username = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg, messageInfo.value(forKey: "sendLastName") as! CVarArg)
+            let flname = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg,messageInfo.value(forKey: "sendLastName") as! CVarArg)
             let cmtmsg = String(format: "%@", messageInfo.value(forKey: "comment") as! CVarArg)
             let date = String(format: "%@", messageInfo.value(forKey: "sendTime") as! CVarArg)
             
-            let cmtdetails = ["userid":userid, "username":username, "cmtmsg":cmtmsg, "date":date, "teamid":teamid, "msgid": msgid, "cmtid": cmtId, "starmsg":"0"] as [String : Any]
+            var username = ""
+            if let uname = messageInfo.value(forKey: "sendUsername") as? String
+            {
+                username = uname
+            }
+            
+            let cmtdetails = ["userid":userid, "username":username, "cmtmsg":cmtmsg, "date":date, "teamid":teamid, "msgid": msgid, "cmtid": cmtId, "starmsg":"0", "flname" : flname] as [String : Any]
             
             self.saveOneToOneCommentDetails(chatdetails: cmtdetails as NSDictionary)
             
-            let chatcmtdetails = ["username":username, "userid":userid, "cmtmsg":cmtmsg, "senderusername":username, "senderuserid":userid, "cmtid":cmtId, "starmsg":"0"] as [String : Any]
+            let chatcmtdetails = ["username":username, "userid":userid, "cmtmsg":cmtmsg, "senderusername":username, "senderuserid":userid, "cmtid":cmtId, "starmsg":"0", "flname" : flname] as [String : Any]
             print("chatcmtdetails =>\(chatcmtdetails)")
             
             self.saveOneToOneChatCmtDetails(cmtdetails: chatcmtdetails as NSDictionary, msgId: msgid, sendertype: "left")
@@ -1464,11 +1512,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
         let groupid = String(format: "%@", messageInfo.value(forKey: "groupId") as! CVarArg)
         let teamid = String(format: "%@", messageInfo.value(forKey: "teamId") as! CVarArg)
         let date = String(format: "%@", messageInfo.value(forKey: "sendTime") as! CVarArg)
-        let username = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg,messageInfo.value(forKey: "sendLastName") as! CVarArg)
+        let flname = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg,messageInfo.value(forKey: "sendLastName") as! CVarArg)
+        let username = String(format: "%@", messageInfo.value(forKey: "sendUsername") as! CVarArg)
         let msg = String(format: "%@", messageInfo.value(forKey: "message") as! CVarArg)
         let msgid = String(format: "%@", messageInfo.value(forKey: "messageId") as! CVarArg)
         
-        let chatdetails = ["userid":userid, "username":username, "message":msg, "date":date, "groupid":groupid, "teamid":teamid, "imagepath":"", "msgid":msgid, "imagetitle":"", "filesize":"", "filecaption":"",  "starmsg":"0"] as [String : Any]
+        let chatdetails = ["userid":userid, "username":username, "message":msg, "date":date, "groupid":groupid, "teamid":teamid, "imagepath":"", "msgid":msgid, "imagetitle":"", "filesize":"", "filecaption":"",  "starmsg":"0", "flname" : flname] as [String : Any]
         
         self.saveChatDetails(chatdetails: chatdetails as NSDictionary)
         
@@ -1489,7 +1538,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             let date = String(format: "%@", messageInfo.value(forKey: "sendTime") as! CVarArg)
             let title = String(format: "%@", filedictionary.value(forKey: "title") as! CVarArg)
             let caption = String(format: "%@", filedictionary.value(forKey: "caption") as! CVarArg)
-            let username = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg,messageInfo.value(forKey: "sendLastName") as! CVarArg)
+            let flname = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg,messageInfo.value(forKey: "sendLastName") as! CVarArg)
+            let username = String(format: "%@", messageInfo.value(forKey: "sendUsername") as! CVarArg)
             
             let imagestring = String(format: "%@%@", kfilePath,imagepath)
             let fileUrl = NSURL(string: imagestring)
@@ -1524,7 +1574,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
                     let filesize = formatter.string(fromByteCount: Int64((data.length)))
                     print("filesize =>\(filesize)")
                     
-                    let chatdetails = ["userid":userid, "username":username, "message":"", "date":date, "groupid":groupid, "teamid":teamid, "imagepath":imagepath, "msgid":String(format: "%@", messageInfo.value(forKey: "messageId") as! CVarArg), "imagetitle":title, "filesize":filesize, "filecaption":caption, "starmsg":"0"] as [String : Any]
+                    let chatdetails = ["userid":userid, "username":username, "message":"", "date":date, "groupid":groupid, "teamid":teamid, "imagepath":imagepath, "msgid":String(format: "%@", messageInfo.value(forKey: "messageId") as! CVarArg), "imagetitle":title, "filesize":filesize, "filecaption":caption, "starmsg":"0", "flname" : flname] as [String : Any]
                     
                     DispatchQueue.main.async(execute: {() -> Void in
                         self.saveChatDetails(chatdetails: chatdetails as NSDictionary)
@@ -1657,7 +1707,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             let sharegroupid = messageInfo.value(forKey: "groupId") as? String
             let shareteamid = messageInfo.value(forKey: "teamId") as? String
             let userid = messageInfo.value(forKey: "sendId") as? String
-            let username = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg,messageInfo.value(forKey: "sendLastName") as! CVarArg)
+            let flname = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg,messageInfo.value(forKey: "sendLastName") as! CVarArg)
+            let username = String(format: "%@", messageInfo.value(forKey: "sendUsername") as! CVarArg)
             
             let infostring = shareDetails.value(forKey: "info") as? String
             var message = ""
@@ -1699,7 +1750,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             
             if cmtid == ""
             {
-                let chatdetails = ["userid":userid!, "username":username, "message":message, "date":date!, "teamid":teamid!, "groupid":groupid!, "imagepath":imagepath, "msgid": msgId!, "type": "Share", "commentdetails":"", "sharedetails":sharedetails, "imagetitle":imagetitle, "filesize":filesize, "filecaption":filecaption, "starmsg":"0"] as [String : Any]
+                let chatdetails = ["userid":userid!, "username":username, "message":message, "date":date!, "teamid":teamid!, "groupid":groupid!, "imagepath":imagepath, "msgid": msgId!, "type": "Share", "commentdetails":"", "sharedetails":sharedetails, "imagetitle":imagetitle, "filesize":filesize, "filecaption":filecaption, "starmsg":"0", "flname" : flname] as [String : Any]
                 
                 self.saveChatDetails(chatdetails: chatdetails as NSDictionary)
             }
@@ -1711,7 +1762,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
                 
                 let cmtdetails = ["username":cmtusername, "userid":"", "cmtmsg":cmtmsg, "senderusername":cmtsenderusername, "senderuserid":userid!, "cmtid":cmtid] as [String : Any]
                 
-                let chatdetails = ["userid":userid!, "username":username, "message":message, "date":date!, "teamid":teamid!, "groupid":groupid!, "imagepath":imagepath, "msgid": msgId!, "type": "Share", "commentdetails":cmtdetails, "sharedetails":sharedetails, "imagetitle":imagetitle, "filesize":filesize, "filecaption":filecaption, "starmsg":"0"] as [String : Any]
+                let chatdetails = ["userid":userid!, "username":username, "message":message, "date":date!, "teamid":teamid!, "groupid":groupid!, "imagepath":imagepath, "msgid": msgId!, "type": "Share", "commentdetails":cmtdetails, "sharedetails":sharedetails, "imagetitle":imagetitle, "filesize":filesize, "filecaption":filecaption, "starmsg":"0", "flname" : flname] as [String : Any]
                 
                 self.saveChatDetails(chatdetails: chatdetails as NSDictionary)
             }
@@ -1745,11 +1796,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             let teamid = String(format: "%@", messageInfo.value(forKey: "teamId") as! CVarArg)
             let msgid = String(format: "%@", filedictionary.value(forKey: "fileId") as! CVarArg)
             let cmtId = String(format: "%@", messageInfo.value(forKey: "messageId") as! CVarArg)
-            let username = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg, messageInfo.value(forKey: "sendLastName") as! CVarArg)
             let cmtmsg = String(format: "%@", messageInfo.value(forKey: "comment") as! CVarArg)
             let date = String(format: "%@", messageInfo.value(forKey: "sendTime") as! CVarArg)
+            let flname = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg,messageInfo.value(forKey: "sendLastName") as! CVarArg)
+            let username = String(format: "%@", messageInfo.value(forKey: "sendUsername") as! CVarArg)
             
-            let cmtdetails = ["userid":userid, "username":username, "cmtmsg":cmtmsg, "date":date, "teamid":teamid, "groupid":groupid, "msgid": msgid, "cmtid": cmtId, "starmsg":"0"] as [String : Any]
+            let cmtdetails = ["userid":userid, "username":username, "cmtmsg":cmtmsg, "date":date, "teamid":teamid, "groupid":groupid, "msgid": msgid, "cmtid": cmtId, "starmsg":"0", "flname" : flname] as [String : Any]
             
             self.saveCommentDetails(chatdetails: cmtdetails as NSDictionary)
             
@@ -1761,7 +1813,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             //                    userid = String(format: "%@", userdictionary?.value(forKey: "SUSERID") as! CVarArg)
             //                }
             
-            let chatcmtdetails = ["username":username, "userid":userid, "cmtmsg":cmtmsg, "senderusername":username, "senderuserid":userid, "cmtid":cmtId, "starmsg":"0"] as [String : Any]
+            let chatcmtdetails = ["username":username, "userid":userid, "cmtmsg":cmtmsg, "senderusername":username, "senderuserid":userid, "cmtid":cmtId, "starmsg":"0", "flname" : flname] as [String : Any]
             print("chatcmtdetails =>\(chatcmtdetails)")
             
             self.saveChatCmtDetails(cmtdetails: chatcmtdetails as NSDictionary, msgId: msgid, date: date)
@@ -2232,6 +2284,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
         chatdetail.setValue(chatdetails.value(forKey: "teamid"), forKey: "teamid")
         chatdetail.setValue(chatdetails.value(forKey: "msgid"), forKey: "msgid")
         chatdetail.setValue(chatdetails.value(forKey: "starmsg"), forKey: "starmsg")
+        chatdetail.setValue(chatdetails.value(forKey: "flname"), forKey: "flname")
 
         do {
             
@@ -2261,6 +2314,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
         chatdetail.setValue(chatdetails.value(forKey: "teamid"), forKey: "teamid")
         chatdetail.setValue(chatdetails.value(forKey: "msgid"), forKey: "msgid")
         chatdetail.setValue(chatdetails.value(forKey: "starmsg"), forKey: "starmsg")
+        chatdetail.setValue(chatdetails.value(forKey: "flname"), forKey: "flname")
 
         do {
             
@@ -2289,6 +2343,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
         chatdetail.setValue(chatdetails.value(forKey: "teamid"), forKey: "teamid")
         chatdetail.setValue(chatdetails.value(forKey: "msgid"), forKey: "msgid")
         chatdetail.setValue(chatdetails.value(forKey: "starmsg"), forKey: "starmsg")
+        chatdetail.setValue(chatdetails.value(forKey: "flname"), forKey: "flname")
 
         do {
             
@@ -2331,6 +2386,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
                 chatdetail.setValue(currentChatMessage.value(forKey: "loginuserid"), forKey: "loginuserid")
                 chatdetail.setValue(currentChatMessage.value(forKey: "userid"), forKey: "userid")
                 chatdetail.setValue(currentChatMessage.value(forKey: "username"), forKey: "username")
+                chatdetail.setValue(currentChatMessage.value(forKey: "flname"), forKey: "flname")
                 chatdetail.setValue(currentChatMessage.value(forKey: "message"), forKey: "message")
                 chatdetail.setValue(date, forKey: "date")
                 chatdetail.setValue(currentChatMessage.value(forKey: "groupid"), forKey: "groupid")
@@ -2384,6 +2440,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
                 chatdetail.setValue(currentChatMessage.value(forKey: "loginuserid"), forKey: "loginuserid")
                 chatdetail.setValue(currentChatMessage.value(forKey: "userid"), forKey: "userid")
                 chatdetail.setValue(currentChatMessage.value(forKey: "username"), forKey: "username")
+                chatdetail.setValue(currentChatMessage.value(forKey: "flname"), forKey: "flname")
                 chatdetail.setValue(currentChatMessage.value(forKey: "message"), forKey: "message")
                 chatdetail.setValue(currentChatMessage.value(forKey: "date"), forKey: "date")
                 chatdetail.setValue(currentChatMessage.value(forKey: "teamid"), forKey: "teamid")
@@ -2436,6 +2493,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
                 chatdetail.setValue(currentChatMessage.value(forKey: "loginuserid"), forKey: "loginuserid")
                 chatdetail.setValue(currentChatMessage.value(forKey: "userid"), forKey: "userid")
                 chatdetail.setValue(currentChatMessage.value(forKey: "username"), forKey: "username")
+                chatdetail.setValue(currentChatMessage.value(forKey: "flname"), forKey: "flname")
                 chatdetail.setValue(currentChatMessage.value(forKey: "message"), forKey: "message")
                 chatdetail.setValue(currentChatMessage.value(forKey: "date"), forKey: "date")
                 chatdetail.setValue(currentChatMessage.value(forKey: "teamid"), forKey: "teamid")
@@ -2519,7 +2577,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
         }
         chatdetail.setValue(chatdetails.value(forKey: "type"), forKey: "type")
         chatdetail.setValue(chatdetails.value(forKey: "starmsg"), forKey: "starmsg")
-        
+        chatdetail.setValue(chatdetails.value(forKey: "flname"), forKey: "flname")
+
         do {
             
             try managedContext.save()
@@ -2568,6 +2627,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
         }
         chatdetail.setValue(chatdetails.value(forKey: "type"), forKey: "type")
         chatdetail.setValue(chatdetails.value(forKey: "starmsg"), forKey: "starmsg")
+        chatdetail.setValue(chatdetails.value(forKey: "flname"), forKey: "flname")
 
         do {
             
@@ -2619,6 +2679,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
         chatdetail.setValue(chatdetails.value(forKey: "sendertype"), forKey: "sendertype")
         chatdetail.setValue(chatdetails.value(forKey: "senderuserid"), forKey: "senderuserid")
         chatdetail.setValue(chatdetails.value(forKey: "starmsg"), forKey: "starmsg")
+        chatdetail.setValue(chatdetails.value(forKey: "flname"), forKey: "flname")
 
         do {
             

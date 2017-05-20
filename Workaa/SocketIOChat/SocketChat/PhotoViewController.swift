@@ -352,11 +352,11 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate, UITextViewDel
                                         let cmtId = String(format: "%@", datareponse.value(forKey: "messageId") as! CVarArg)
                                         let date = String(format: "%@", datareponse.value(forKey: "time") as! CVarArg)
                                         
-                                        let cmtdetails = ["userid":self.commonmethodClass.retrieveuserid(), "username":self.commonmethodClass.retrieveusername(), "cmtmsg":self.cmtMsgEditor.text!, "date":date, "teamid":self.commonmethodClass.retrieveteamid(), "msgid": self.msgId, "cmtid": cmtId, "starmsg":"0"] as [String : Any]
+                                        let cmtdetails = ["userid":self.commonmethodClass.retrieveuserid(), "username":self.commonmethodClass.retrieveusername(), "cmtmsg":self.cmtMsgEditor.text!, "date":date, "teamid":self.commonmethodClass.retrieveteamid(), "msgid": self.msgId, "cmtid": cmtId, "starmsg":"0", "flname" : self.commonmethodClass.retrievename()] as [String : Any]
                                         
                                         appDelegate.saveOneToOneCommentDetails(chatdetails: cmtdetails as NSDictionary)
                                         
-                                        let chatcmtdetails = ["username":self.commonmethodClass.retrieveusername(), "userid":self.commonmethodClass.retrieveusername(), "cmtmsg":self.cmtMsgEditor.text!, "senderusername":self.commonmethodClass.retrieveusername(), "senderuserid":self.commonmethodClass.retrieveuserid(), "cmtid":cmtId, "starmsg":"0"] as [String : Any]
+                                        let chatcmtdetails = ["username":self.commonmethodClass.retrieveusername(), "userid":self.commonmethodClass.retrieveusername(), "cmtmsg":self.cmtMsgEditor.text!, "senderusername":self.commonmethodClass.retrieveusername(), "senderuserid":self.commonmethodClass.retrieveuserid(), "cmtid":cmtId, "starmsg":"0", "flname" : self.commonmethodClass.retrievename()] as [String : Any]
                                         print("chatcmtdetails =>\(chatcmtdetails)")
                                         
                                         appDelegate.saveOneToOneChatCmtDetails(cmtdetails: chatcmtdetails as NSDictionary, msgId: self.msgId as String, sendertype: "right")
@@ -395,14 +395,14 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate, UITextViewDel
                                         let cmtId = String(format: "%@", datareponse.value(forKey: "messageId") as! CVarArg)
                                         let date = String(format: "%@", datareponse.value(forKey: "time") as! CVarArg)
                                         
-                                        let cmtdetails = ["userid":self.commonmethodClass.retrieveuserid(), "username":self.commonmethodClass.retrieveusername(), "cmtmsg":self.cmtMsgEditor.text!, "date":date, "teamid":self.commonmethodClass.retrieveteamid(), "msgid": self.msgId, "cmtid": cmtId, "starmsg":"0"] as [String : Any]
+                                        let cmtdetails = ["userid":self.commonmethodClass.retrieveuserid(), "username":self.commonmethodClass.retrieveusername(), "cmtmsg":self.cmtMsgEditor.text!, "date":date, "teamid":self.commonmethodClass.retrieveteamid(), "msgid": self.msgId, "cmtid": cmtId, "starmsg":"0", "flname" : self.commonmethodClass.retrievename()] as [String : Any]
                                         
                                         appDelegate.saveCafeCommentDetails(chatdetails: cmtdetails as NSDictionary)
                                         
                                         let username = String(format: "%@", self.commonmethodClass.retrieveusername())
                                         let userid = String(format: "%@", self.commonmethodClass.retrieveuserid())
                                         
-                                        let chatcmtdetails = ["username":username, "userid":userid, "cmtmsg":self.cmtMsgEditor.text!, "senderusername":self.commonmethodClass.retrieveusername(), "senderuserid":self.commonmethodClass.retrieveuserid(), "cmtid":cmtId, "starmsg":"0"] as [String : Any]
+                                        let chatcmtdetails = ["username":username, "userid":userid, "cmtmsg":self.cmtMsgEditor.text!, "senderusername":self.commonmethodClass.retrieveusername(), "senderuserid":self.commonmethodClass.retrieveuserid(), "cmtid":cmtId, "starmsg":"0", "flname" : self.commonmethodClass.retrievename()] as [String : Any]
                                         print("chatcmtdetails =>\(chatcmtdetails)")
                                         
                                         appDelegate.saveCafeChatCmtDetails(cmtdetails: chatcmtdetails as NSDictionary, msgId: self.msgId as String)
@@ -441,14 +441,14 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate, UITextViewDel
                                         let cmtId = String(format: "%@", datareponse.value(forKey: "messageId") as! CVarArg)
                                         let date = String(format: "%@", datareponse.value(forKey: "time") as! CVarArg)
                                         
-                                        let cmtdetails = ["userid":self.commonmethodClass.retrieveuserid(), "username":self.commonmethodClass.retrieveusername(), "cmtmsg":self.cmtMsgEditor.text!, "date":date, "teamid":self.commonmethodClass.retrieveteamid(), "groupid":self.groupId, "msgid": self.msgId, "cmtid": cmtId, "starmsg":"0"] as [String : Any]
+                                        let cmtdetails = ["userid":self.commonmethodClass.retrieveuserid(), "username":self.commonmethodClass.retrieveusername(), "cmtmsg":self.cmtMsgEditor.text!, "date":date, "teamid":self.commonmethodClass.retrieveteamid(), "groupid":self.groupId, "msgid": self.msgId, "cmtid": cmtId, "starmsg":"0", "flname" : self.commonmethodClass.retrievename()] as [String : Any]
                                         
                                         appDelegate.saveCommentDetails(chatdetails: cmtdetails as NSDictionary)
                                         
                                         let username = String(format: "%@", self.commonmethodClass.retrieveusername())
                                         let userid = String(format: "%@", self.commonmethodClass.retrieveuserid())
                                         
-                                        let chatcmtdetails = ["username":username, "userid":userid, "cmtmsg":self.cmtMsgEditor.text!, "senderusername":self.commonmethodClass.retrieveusername(), "senderuserid":self.commonmethodClass.retrieveuserid(), "cmtid":cmtId, "starmsg":"0"] as [String : Any]
+                                        let chatcmtdetails = ["username":username, "userid":userid, "cmtmsg":self.cmtMsgEditor.text!, "senderusername":self.commonmethodClass.retrieveusername(), "senderuserid":self.commonmethodClass.retrieveuserid(), "cmtid":cmtId, "starmsg":"0", "flname" : self.commonmethodClass.retrievename()] as [String : Any]
                                         print("chatcmtdetails =>\(chatcmtdetails)")
                                         
                                         appDelegate.saveChatCmtDetails(cmtdetails: chatcmtdetails as NSDictionary, msgId: self.msgId as String, date: date)

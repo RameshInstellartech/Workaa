@@ -93,7 +93,7 @@
                                 <rect key="frame" x="10" y="10" width="250" height="230"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AKA-6T-ijb">
-                                        <rect key="frame" x="25" y="5" width="50" height="25"/>
+                                        <rect key="frame" x="15" y="5" width="50" height="25"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="50" id="dfJ-ez-hTe"/>
                                             <constraint firstAttribute="height" constant="25" id="msx-6j-cX9"/>
@@ -103,7 +103,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ium-Py-Ejv">
-                                        <rect key="frame" x="175" y="5" width="50" height="25"/>
+                                        <rect key="frame" x="185" y="5" width="50" height="25"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="25" id="0th-tD-UeO"/>
                                             <constraint firstAttribute="width" constant="50" id="Tyr-i8-xE1"/>
@@ -113,7 +113,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="justified" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Efb-Yh-xMm" customClass="KILabel">
-                                        <rect key="frame" x="25" y="30" width="205" height="190"/>
+                                        <rect key="frame" x="15" y="30" width="225" height="190"/>
                                         <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="16"/>
                                         <color key="textColor" red="0.52156862749999999" green="0.52156862749999999" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -122,13 +122,13 @@
                                 <color key="backgroundColor" red="0.97254901959999995" green="0.97254901959999995" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="Efb-Yh-xMm" firstAttribute="top" secondItem="Ium-Py-Ejv" secondAttribute="bottom" id="4bI-Kg-UQO"/>
-                                    <constraint firstItem="Efb-Yh-xMm" firstAttribute="leading" secondItem="Qa2-x0-LXK" secondAttribute="leading" constant="25" id="9ns-Di-Qvd"/>
+                                    <constraint firstItem="Efb-Yh-xMm" firstAttribute="leading" secondItem="Qa2-x0-LXK" secondAttribute="leading" constant="15" id="9ns-Di-Qvd"/>
                                     <constraint firstItem="AKA-6T-ijb" firstAttribute="top" secondItem="Qa2-x0-LXK" secondAttribute="top" constant="5" id="DKM-r3-bZx"/>
                                     <constraint firstItem="Ium-Py-Ejv" firstAttribute="top" secondItem="Qa2-x0-LXK" secondAttribute="top" constant="5" id="HBa-hg-czB"/>
-                                    <constraint firstAttribute="trailing" secondItem="Ium-Py-Ejv" secondAttribute="trailing" constant="25" id="fXX-Gb-N29"/>
-                                    <constraint firstItem="AKA-6T-ijb" firstAttribute="leading" secondItem="Qa2-x0-LXK" secondAttribute="leading" constant="25" id="haL-Na-v5J"/>
+                                    <constraint firstAttribute="trailing" secondItem="Ium-Py-Ejv" secondAttribute="trailing" constant="15" id="fXX-Gb-N29"/>
+                                    <constraint firstItem="AKA-6T-ijb" firstAttribute="leading" secondItem="Qa2-x0-LXK" secondAttribute="leading" constant="15" id="haL-Na-v5J"/>
                                     <constraint firstAttribute="width" constant="250" id="lN9-Dw-oU4"/>
-                                    <constraint firstAttribute="trailing" secondItem="Efb-Yh-xMm" secondAttribute="trailing" constant="20" id="mTB-oF-iYl"/>
+                                    <constraint firstAttribute="trailing" secondItem="Efb-Yh-xMm" secondAttribute="trailing" constant="10" id="mTB-oF-iYl"/>
                                     <constraint firstAttribute="bottom" secondItem="Efb-Yh-xMm" secondAttribute="bottom" constant="10" id="xGm-JZ-20F"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
@@ -514,26 +514,20 @@
                                             <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D5v-Nk-lKt">
-                                        <rect key="frame" x="70" y="15" width="170" height="20"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="cd8-NE-F6j"/>
-                                        </constraints>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="FileName" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D5v-Nk-lKt">
+                                        <rect key="frame" x="70" y="15" width="170" height="169"/>
                                         <fontDescription key="fontDescription" name="Lato-Black" family="Lato" pointSize="15"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aSI-ZD-Rse">
-                                        <rect key="frame" x="70" y="35" width="170" height="20"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="CRd-8z-hDB"/>
-                                        </constraints>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FileSize" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aSI-ZD-Rse">
+                                        <rect key="frame" x="70" y="184" width="170" height="16"/>
                                         <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="13"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="caption" textAlignment="justified" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v1h-fO-gZy" customClass="KILabel">
-                                        <rect key="frame" x="15" y="60" width="230" height="165"/>
+                                        <rect key="frame" x="15" y="205" width="230" height="20"/>
                                         <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="16"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -587,30 +581,28 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jXc-YO-7Qd">
                                 <rect key="frame" x="10" y="10" width="250" height="230"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a2B-VN-bcA">
-                                        <rect key="frame" x="15" y="10" width="50" height="25"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a2B-VN-bcA">
+                                        <rect key="frame" x="15" y="10" width="50" height="17"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="50" id="GFx-WZ-Fqf"/>
-                                            <constraint firstAttribute="height" constant="25" id="Oua-Pu-VLQ"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="14"/>
                                         <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cEl-ha-3tQ">
-                                        <rect key="frame" x="185" y="10" width="50" height="25"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cEl-ha-3tQ">
+                                        <rect key="frame" x="185" y="10" width="50" height="14"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="50" id="FoP-oX-trZ"/>
-                                            <constraint firstAttribute="height" constant="25" id="Kh0-9Y-lW5"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="12"/>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="85E-19-IlF">
-                                        <rect key="frame" x="15" y="45" width="40" height="40"/>
+                                        <rect key="frame" x="15" y="37" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="5Iw-md-NJy"/>
                                             <constraint firstAttribute="width" constant="40" id="C2g-ho-jQK"/>
@@ -620,26 +612,20 @@
                                             <color key="titleColor" red="0.0" green="0.79215686269999996" blue="0.98823529409999999" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O7Q-Aw-8P4">
-                                        <rect key="frame" x="70" y="45" width="170" height="20"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="Vcw-ep-hhS"/>
-                                        </constraints>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="File Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O7Q-Aw-8P4">
+                                        <rect key="frame" x="70" y="34" width="170" height="18"/>
                                         <fontDescription key="fontDescription" name="Lato-Black" family="Lato" pointSize="15"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5T8-tQ-goq">
-                                        <rect key="frame" x="70" y="65" width="170" height="20"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="HzG-QL-tA6"/>
-                                        </constraints>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="FileSize" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5T8-tQ-goq">
+                                        <rect key="frame" x="70" y="52" width="170" height="148"/>
                                         <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="13"/>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="caption" textAlignment="justified" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sJk-BR-CMy" customClass="KILabel">
-                                        <rect key="frame" x="15" y="90" width="230" height="135"/>
+                                        <rect key="frame" x="15" y="205" width="230" height="20"/>
                                         <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="16"/>
                                         <color key="textColor" red="0.52156862749999999" green="0.52156862749999999" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>

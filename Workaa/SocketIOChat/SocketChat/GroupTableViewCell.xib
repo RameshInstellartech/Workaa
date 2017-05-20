@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="Lato-Bold.ttf">
+            <string>Lato-Bold</string>
+        </array>
         <array key="Lato-Italic.ttf">
             <string>Lato-Italic</string>
         </array>
@@ -39,7 +42,7 @@
                         </userDefinedRuntimeAttributes>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Vijay Shanthi - Development" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NE7-Kp-xeK">
-                        <rect key="frame" x="65" y="15" width="250" height="21"/>
+                        <rect key="frame" x="65" y="15" width="225" height="21"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="Rkd-bO-WHG"/>
@@ -91,6 +94,23 @@
                             <constraint firstAttribute="height" constant="1" id="cnO-0J-ElC"/>
                         </constraints>
                     </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z6n-6W-VOz">
+                        <rect key="frame" x="290" y="30" width="20" height="20"/>
+                        <color key="backgroundColor" red="0.094117647060000004" green="0.81568627449999997" blue="0.48627450979999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="BdB-2M-SSy"/>
+                            <constraint firstAttribute="width" constant="20" id="oD8-bi-rXK"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="11"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="10"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="Cmh-67-A9E" secondAttribute="trailing" id="7qz-Ux-LBt"/>
@@ -99,10 +119,12 @@
                     <constraint firstItem="gGA-GD-fih" firstAttribute="leading" secondItem="y89-64-jg9" secondAttribute="trailing" constant="10" id="MmZ-FF-g1e"/>
                     <constraint firstItem="odb-Wd-ZPb" firstAttribute="top" secondItem="NE7-Kp-xeK" secondAttribute="bottom" constant="14" id="Nna-kp-eqY"/>
                     <constraint firstItem="gGA-GD-fih" firstAttribute="top" secondItem="NE7-Kp-xeK" secondAttribute="bottom" constant="5" id="SWX-t1-DJU"/>
-                    <constraint firstAttribute="trailing" secondItem="NE7-Kp-xeK" secondAttribute="trailing" constant="5" id="WDq-oO-YbQ"/>
+                    <constraint firstAttribute="trailing" secondItem="NE7-Kp-xeK" secondAttribute="trailing" constant="30" id="WDq-oO-YbQ"/>
+                    <constraint firstAttribute="trailing" secondItem="z6n-6W-VOz" secondAttribute="trailing" constant="10" id="bSf-fs-3o5"/>
                     <constraint firstItem="y89-64-jg9" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="gGb-jq-AO4"/>
                     <constraint firstItem="y89-64-jg9" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="kTU-Rb-tF0"/>
                     <constraint firstItem="La3-JO-Ltb" firstAttribute="leading" secondItem="odb-Wd-ZPb" secondAttribute="trailing" constant="5" id="lah-Fo-bIE"/>
+                    <constraint firstItem="z6n-6W-VOz" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="nVq-1e-gfZ"/>
                     <constraint firstItem="La3-JO-Ltb" firstAttribute="top" secondItem="NE7-Kp-xeK" secondAttribute="bottom" constant="5" id="oNk-l0-rEh"/>
                     <constraint firstItem="NE7-Kp-xeK" firstAttribute="leading" secondItem="y89-64-jg9" secondAttribute="trailing" constant="10" id="psg-lz-xRt"/>
                     <constraint firstItem="NE7-Kp-xeK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="uDO-fz-Kye"/>
@@ -111,6 +133,7 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="circleView" destination="odb-Wd-ZPb" id="4wh-td-wS6"/>
+                <outlet property="countlbl" destination="z6n-6W-VOz" id="zCF-fw-7eE"/>
                 <outlet property="lblgroupname" destination="NE7-Kp-xeK" id="Bu4-Lp-7ST"/>
                 <outlet property="lblstatus" destination="La3-JO-Ltb" id="CmG-XI-OwW"/>
                 <outlet property="lbltask" destination="gGA-GD-fih" id="jjq-s2-NVS"/>

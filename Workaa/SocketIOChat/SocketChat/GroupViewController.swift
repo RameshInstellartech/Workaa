@@ -304,6 +304,17 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
     {
         SocketIOManager.sharedInstance.groupResetCount(groupid: groupdictionary.value(forKey: "id") as! String) { (messageInfo) -> Void in
             print("Send messageInfo =>\(messageInfo)")
+            if let getreponse = messageInfo.value(forKey: "apiResponse") as? NSDictionary
+            {
+                if let statuscode = getreponse.value(forKey: "status") as? NSInteger
+                {
+                    if statuscode==1
+                    {
+                        let unreadcount = self.groupdictionary.value(forKey: "unread") as! NSInteger
+                        groupunreadcount = groupunreadcount - unreadcount
+                    }
+                }
+            }
         }
     }
     
@@ -583,19 +594,19 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                                     {
                                         if cmtid == ""
                                         {
-                                            chatdetailsdict = ["userid":self.commonmethodClass.retrieveuserid(), "username":self.commonmethodClass.retrieveusername(), "message":message!, "date":date!, "teamid":self.commonmethodClass.retrieveteamid(), "groupid":self.groupdictionary.value(forKey: "id") as! String, "imagepath":imagepath!, "msgid": shareid, "type": "Share", "commentdetails":"", "sharedetails":sharedetails, "imagetitle":imagetitle!, "filesize":filesize!, "filecaption":filecaption!, "starmsg":"0"]
+                                            chatdetailsdict = ["userid":self.commonmethodClass.retrieveuserid(), "username":self.commonmethodClass.retrieveusername(), "message":message!, "date":date!, "teamid":self.commonmethodClass.retrieveteamid(), "groupid":self.groupdictionary.value(forKey: "id") as! String, "imagepath":imagepath!, "msgid": shareid, "type": "Share", "commentdetails":"", "sharedetails":sharedetails, "imagetitle":imagetitle!, "filesize":filesize!, "filecaption":filecaption!, "starmsg":"0", "flname" : self.commonmethodClass.retrievename()]
                                         }
                                         else
                                         {
                                             let commentdetails = cmtDetails.mutableCopy() as? NSMutableDictionary
                                             commentdetails?.setValue(self.commonmethodClass.retrieveuserid(), forKey: "senderuserid")
                                             
-                                            chatdetailsdict = ["userid":self.commonmethodClass.retrieveuserid(), "username":self.commonmethodClass.retrieveusername(), "message":message!, "date":date!, "teamid":self.commonmethodClass.retrieveteamid(), "groupid":self.groupdictionary.value(forKey: "id") as! String, "imagepath":imagepath!, "msgid": shareid, "type": "Share", "commentdetails":commentdetails!, "sharedetails":sharedetails, "imagetitle":imagetitle!, "filesize":filesize!, "filecaption":filecaption!, "starmsg":"0"]
+                                            chatdetailsdict = ["userid":self.commonmethodClass.retrieveuserid(), "username":self.commonmethodClass.retrieveusername(), "message":message!, "date":date!, "teamid":self.commonmethodClass.retrieveteamid(), "groupid":self.groupdictionary.value(forKey: "id") as! String, "imagepath":imagepath!, "msgid": shareid, "type": "Share", "commentdetails":commentdetails!, "sharedetails":sharedetails, "imagetitle":imagetitle!, "filesize":filesize!, "filecaption":filecaption!, "starmsg":"0", "flname" : self.commonmethodClass.retrievename()]
                                         }
                                     }
                                     else
                                     {
-                                        chatdetailsdict = ["userid":self.commonmethodClass.retrieveuserid(), "username":self.commonmethodClass.retrieveusername(), "message":message!, "date":date!, "teamid":self.commonmethodClass.retrieveteamid(), "groupid":self.groupdictionary.value(forKey: "id") as! String, "imagepath":imagepath!, "msgid": shareid, "type": "Share", "commentdetails":"", "sharedetails":sharedetails, "imagetitle":imagetitle!, "filesize":filesize!, "filecaption":filecaption!, "starmsg":"0"]
+                                        chatdetailsdict = ["userid":self.commonmethodClass.retrieveuserid(), "username":self.commonmethodClass.retrieveusername(), "message":message!, "date":date!, "teamid":self.commonmethodClass.retrieveteamid(), "groupid":self.groupdictionary.value(forKey: "id") as! String, "imagepath":imagepath!, "msgid": shareid, "type": "Share", "commentdetails":"", "sharedetails":sharedetails, "imagetitle":imagetitle!, "filesize":filesize!, "filecaption":filecaption!, "starmsg":"0", "flname" : self.commonmethodClass.retrievename()]
                                     }
                                     
                                     appDelegate.saveChatDetails(chatdetails: chatdetailsdict)
@@ -1112,7 +1123,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                         {
                             if let datareponse = getreponse.value(forKey: "data") as? NSDictionary
                             {
-                                let chatdetails = ["userid":self.commonmethodClass.retrieveuserid(), "username":self.commonmethodClass.retrieveusername(), "message":self.tvMessageEditor.text!, "date":String(format: "%@", datareponse.value(forKey: "time") as! CVarArg), "teamid":self.commonmethodClass.retrieveteamid(), "groupid":self.groupdictionary.value(forKey: "id") as! String, "imagepath":"", "msgid": String(format: "%@", datareponse.value(forKey: "messageId") as! CVarArg), "imagetitle":"", "filesize":"",  "filecaption":"",  "starmsg":"0"] as [String : Any]
+                                let chatdetails = ["userid":self.commonmethodClass.retrieveuserid(), "username":self.commonmethodClass.retrieveusername(), "message":self.tvMessageEditor.text!, "date":String(format: "%@", datareponse.value(forKey: "time") as! CVarArg), "teamid":self.commonmethodClass.retrieveteamid(), "groupid":self.groupdictionary.value(forKey: "id") as! String, "imagepath":"", "msgid": String(format: "%@", datareponse.value(forKey: "messageId") as! CVarArg), "imagetitle":"", "filesize":"",  "filecaption":"",  "starmsg":"0", "flname" : self.commonmethodClass.retrievename()] as [String : Any]
                                 
                                 appDelegate.saveChatDetails(chatdetails: chatdetails as NSDictionary)
                                 
@@ -1471,7 +1482,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                         }
                     }
                     
-                    let chatdetails = ["userid":self.commonmethodClass.retrieveuserid(), "username":self.commonmethodClass.retrieveusername(), "message":"", "date":String(format: "%@", datareponse.value(forKey: "time") as! CVarArg), "teamid":self.commonmethodClass.retrieveteamid(), "groupid":self.groupdictionary.value(forKey: "id") as! String, "imagepath":imagepath, "msgid":String(format: "%@", datareponse.value(forKey: "messageId") as! CVarArg), "imagetitle":String(format: "%@", filedictionary.value(forKey: "title") as! CVarArg), "filesize":filesize, "filecaption":String(format: "%@", filedictionary.value(forKey: "caption") as! CVarArg), "starmsg":"0"] as [String : Any]
+                    let chatdetails = ["userid":self.commonmethodClass.retrieveuserid(), "username":self.commonmethodClass.retrieveusername(), "message":"", "date":String(format: "%@", datareponse.value(forKey: "time") as! CVarArg), "teamid":self.commonmethodClass.retrieveteamid(), "groupid":self.groupdictionary.value(forKey: "id") as! String, "imagepath":imagepath, "msgid":String(format: "%@", datareponse.value(forKey: "messageId") as! CVarArg), "imagetitle":String(format: "%@", filedictionary.value(forKey: "title") as! CVarArg), "filesize":filesize, "filecaption":String(format: "%@", filedictionary.value(forKey: "caption") as! CVarArg), "starmsg":"0", "flname" : self.commonmethodClass.retrievename()] as [String : Any]
                     
                     let fileUrl = NSURL(string: imagepath)
                     
@@ -1698,6 +1709,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
         let filesize = currentChatMessage.value(forKey: "filesize") as? NSString
         let favstring = String(format: "%@", currentChatMessage.value(forKey: "starmsg") as! CVarArg)
         let caption = String(format: "%@", currentChatMessage.value(forKey: "filecaption") as! CVarArg)
+        let flname = String(format: "%@", currentChatMessage.value(forKey: "flname") as! CVarArg)
 
 //        let cellheight = self.tableView(tableView, heightForRowAt: indexPath)
         
@@ -1818,7 +1830,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                         
                         cell.leftsharecommentdetailslbl?.attributedText = attributedString
                         
-                        var UserNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftsharecommentUserNamelbl?.font!)!, text: userName! as NSString)
+                        var UserNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftsharecommentUserNamelbl?.font!)!, text: flname as NSString)
                         UserNametextwidth = ceil(UserNametextwidth)
                         
                         var UserTagNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftsharecommentUserTagNamelbl?.font!)!, text: userName! as NSString)
@@ -1835,7 +1847,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                         cell.leftsharecommentUserNamewidth?.constant = UserNametextwidth
                         cell.leftsharecommentUserTagNamewidth?.constant = UserTagNametextwidth
                         
-                        cell.leftsharecommentUserNamelbl?.text = userName! as String
+                        cell.leftsharecommentUserNamelbl?.text = flname as String
                         cell.leftsharecommentUserTagNamelbl?.text = String(format: "@%@", userName!)
                         
                         if favstring == "0"
@@ -1903,7 +1915,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                             
                             cell.leftsharetextmessagelbl?.text = message
                                                         
-                            var UserNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftsharetextUserNamelbl?.font!)!, text: userName! as NSString)
+                            var UserNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftsharetextUserNamelbl?.font!)!, text: flname as NSString)
                             UserNametextwidth = ceil(UserNametextwidth)
                             
                             var UserTagNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftsharetextUserTagNamelbl?.font!)!, text: userName! as NSString)
@@ -1920,7 +1932,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                             cell.leftsharetextUserNamewidth?.constant = UserNametextwidth
                             cell.leftsharetextUserTagNamewidth?.constant = UserTagNametextwidth
                             
-                            cell.leftsharetextUserNamelbl?.text = userName! as String
+                            cell.leftsharetextUserNamelbl?.text = flname as String
                             cell.leftsharetextUserTagNamelbl?.text = String(format: "@%@", userName!)
                             
                             if favstring == "0"
@@ -2023,7 +2035,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                                 cell.leftshareimage?.image = UIImage(contentsOfFile: path.path)
                                 cell.leftshareimage?.imageURL = fileUrl as URL?
                                 
-                                var UserNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftshareimageUserNamelbl?.font!)!, text: userName! as NSString)
+                                var UserNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftshareimageUserNamelbl?.font!)!, text: flname as NSString)
                                 UserNametextwidth = ceil(UserNametextwidth)
                                 
                                 var UserTagNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftshareimageUserTagNamelbl?.font!)!, text: userName! as NSString)
@@ -2040,7 +2052,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                                 cell.leftshareimageUserNamewidth?.constant = UserNametextwidth
                                 cell.leftshareimageUserTagNamewidth?.constant = UserTagNametextwidth
                                 
-                                cell.leftshareimageUserNamelbl?.text = userName! as String
+                                cell.leftshareimageUserNamelbl?.text = flname as String
                                 cell.leftshareimageUserTagNamelbl?.text = String(format: "@%@", userName!)
                                 
                                 if favstring == "0"
@@ -2142,7 +2154,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                                 
                                 cell.leftsharefiletextlbl?.text = sharemessage! as String
                                 
-                                var UserNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftsharefileUserNamelbl?.font!)!, text: userName! as NSString)
+                                var UserNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftsharefileUserNamelbl?.font!)!, text: flname as NSString)
                                 UserNametextwidth = ceil(UserNametextwidth)
                                 
                                 var UserTagNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftsharefileUserTagNamelbl?.font!)!, text: userName! as NSString)
@@ -2159,7 +2171,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                                 cell.leftsharefileUserNamewidth?.constant = UserNametextwidth
                                 cell.leftsharefileUserTagNamewidth?.constant = UserTagNametextwidth
                                 
-                                cell.leftsharefileUserNamelbl?.text = userName! as String
+                                cell.leftsharefileUserNamelbl?.text = flname as String
                                 cell.leftsharefileUserTagNamelbl?.text = String(format: "@%@", userName!)
                                 
                                 if favstring == "0"
@@ -2253,7 +2265,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                     
 //                    cell.leftsublinkView?.layer.cornerRadius = 20
                     
-                    var UserNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftlinkUserNamelbl?.font!)!, text: senderNickname! as NSString)
+                    var UserNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftlinkUserNamelbl?.font!)!, text: flname as NSString)
                     UserNametextwidth = ceil(UserNametextwidth)
                     
                     var UserTagNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftlinkUserTagNamelbl?.font!)!, text: senderNickname! as NSString)
@@ -2270,7 +2282,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                     cell.leftlinkUserNamewidth?.constant = UserNametextwidth
                     cell.leftlinkUserTagNamewidth?.constant = UserTagNametextwidth
                     
-                    cell.leftlinkUserNamelbl?.text = senderNickname
+                    cell.leftlinkUserNamelbl?.text = flname
                     
                     cell.leftlinkUserTagNamelbl?.text = String(format: "@%@", senderNickname!)
                     
@@ -2342,6 +2354,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                 _ = cmtDetails.value(forKey: "username") as? NSString
                 let senderuserId = cmtDetails.value(forKey: "senderuserid") as? NSString
                 let cmtfavstring = String(format: "%@", cmtDetails.value(forKey: "starmsg") as! CVarArg)
+                let cmtflname = String(format: "%@", cmtDetails.value(forKey: "flname") as! CVarArg)
 
                 if(senderuserId?.isEqual(to: self.commonmethodClass.retrieveuserid() as String))!
                 {
@@ -2385,7 +2398,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
 
                     cell.leftcommentDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                     
-                    var UserNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftcommentUserNamelbl?.font!)!, text: senderName! as NSString)
+                    var UserNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftcommentUserNamelbl?.font!)!, text: cmtflname as NSString)
                     UserNametextwidth = ceil(UserNametextwidth)
                     
                     var UserTagNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftcommentUserTagNamelbl?.font!)!, text: senderName! as NSString)
@@ -2402,7 +2415,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                     cell.leftcommentUserNamewidth?.constant = UserNametextwidth
                     cell.leftcommentUserTagNamewidth?.constant = UserTagNametextwidth
                     
-                    cell.leftcommentUserNamelbl?.text = senderName! as String
+                    cell.leftcommentUserNamelbl?.text = cmtflname as String
                     cell.leftcommentUserTagNamelbl?.text = String(format: "@%@", senderName!)
                     
 //                    let cmtdetails = String(format: "Commented on %@'s file %@", userName!, imagetitle!)
@@ -2493,7 +2506,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                         cell.lefttextView?.isHidden = false
                         cell.righttextView?.isHidden = true
                         
-                        var UserNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.lefttextUserNamelbl?.font!)!, text: senderNickname! as NSString)
+                        var UserNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.lefttextUserNamelbl?.font!)!, text: flname as NSString)
                         UserNametextwidth = ceil(UserNametextwidth)
                         
                         var UserTagNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.lefttextUserTagNamelbl?.font!)!, text: senderNickname! as NSString)
@@ -2536,7 +2549,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
 //                        
 //                        cell.lefttextMessageView?.layer.masksToBounds = true
                         
-                        cell.lefttextUserNamelbl?.text = senderNickname
+                        cell.lefttextUserNamelbl?.text = flname
                         
                         cell.lefttextUserTagNamelbl?.text = String(format: "@%@", senderNickname!)
                         
@@ -2603,7 +2616,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                             
 //                            cell.leftsubimageView?.layer.cornerRadius = 10
                             
-                            var UserNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftimageUserNamelbl?.font!)!, text: senderNickname! as NSString)
+                            var UserNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftimageUserNamelbl?.font!)!, text: flname as NSString)
                             UserNametextwidth = ceil(UserNametextwidth)
                             
                             var UserTagNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftimageUserTagNamelbl?.font!)!, text: senderNickname! as NSString)
@@ -2620,7 +2633,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                             cell.leftimageUserNamewidth?.constant = UserNametextwidth
                             cell.leftimageUserTagNamewidth?.constant = UserTagNametextwidth
                             
-                            cell.leftimageUserNamelbl?.text = senderNickname
+                            cell.leftimageUserNamelbl?.text = flname
                             
                             cell.leftimageUserTagNamelbl?.text = String(format: "@%@", senderNickname!)
                             
@@ -2691,7 +2704,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                             
 //                            cell.leftsubfileView?.layer.cornerRadius = 10
                             
-                            var UserNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftfileUserNamelbl?.font!)!, text: senderNickname! as NSString)
+                            var UserNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftfileUserNamelbl?.font!)!, text: flname as NSString)
                             UserNametextwidth = ceil(UserNametextwidth)
                             
                             var UserTagNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftfileUserTagNamelbl?.font!)!, text: senderNickname! as NSString)
@@ -2708,7 +2721,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                             cell.leftfileUserNamewidth?.constant = UserNametextwidth
                             cell.leftfileUserTagNamewidth?.constant = UserTagNametextwidth
                             
-                            cell.leftfileUserNamelbl?.text = senderNickname
+                            cell.leftfileUserNamelbl?.text = flname
                             
                             cell.leftfileUserTagNamelbl?.text = String(format: "@%@", senderNickname!)
 

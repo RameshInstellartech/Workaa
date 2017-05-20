@@ -243,9 +243,26 @@ class CommonMethodClass: NSObject
             let userDecodedObject = UserDefaults.standard.value(forKey: "user_details") as! Data
             let userdetails = NSKeyedUnarchiver.unarchiveObject(with: userDecodedObject) as! NSDictionary
             let userdata = userdetails.value(forKey: "userData") as! NSDictionary
-            //        let username = userdata.value(forKey: "username") as! NSString
-            let username = String(format: "%@ %@", userdata.value(forKey: "firstName") as! CVarArg,userdata.value(forKey: "lastName") as! CVarArg)
+            let username = String(format: "%@", userdata.value(forKey: "username") as! CVarArg)
+//            let username = String(format: "%@ %@", userdata.value(forKey: "firstName") as! CVarArg,userdata.value(forKey: "lastName") as! CVarArg)
             return username as NSString
+        }
+        else
+        {
+            return ""
+        }
+    }
+    
+    func retrievename() -> NSString
+    {
+        if AlreadyExist(Key: "user_details")
+        {
+            let userDecodedObject = UserDefaults.standard.value(forKey: "user_details") as! Data
+            let userdetails = NSKeyedUnarchiver.unarchiveObject(with: userDecodedObject) as! NSDictionary
+            let userdata = userdetails.value(forKey: "userData") as! NSDictionary
+            //        let username = userdata.value(forKey: "username") as! NSString
+            let name = String(format: "%@ %@", userdata.value(forKey: "firstName") as! CVarArg,userdata.value(forKey: "lastName") as! CVarArg)
+            return name as NSString
         }
         else
         {

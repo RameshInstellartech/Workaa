@@ -120,6 +120,17 @@ class MessageViewController: UIViewController, ConnectionProtocol, UITableViewDe
         let fileUrl = NSURL(string: filestring)
         cell.profileimage.imageURL = fileUrl as URL?
         
+        let countstring = String(format: "%@", userdictionary.value(forKey: "unread") as! CVarArg)
+        if countstring == "0"
+        {
+            cell.countlbl.isHidden = true
+        }
+        else
+        {
+            cell.countlbl.isHidden = false
+        }
+        cell.countlbl.text = countstring
+        
         return cell
     }
     
