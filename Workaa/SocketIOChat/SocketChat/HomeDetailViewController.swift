@@ -27,6 +27,7 @@ class HomeDetailViewController: UIViewController, CardsSwipingViewDelegate, call
     var bottomView : BottomView!
     var cardcount = NSInteger()
     var startcount = NSInteger()
+    var refreshControl = UIRefreshControl()
 
     override func viewDidLoad()
     {
@@ -34,7 +35,6 @@ class HomeDetailViewController: UIViewController, CardsSwipingViewDelegate, call
         // Do any additional setup after loading the view.
         
         connectionClass.delegate = self
-        
         cardsSwipingView?.delegate = self;
         
         menubtn.setTitle(menuIcon, for: .normal)
@@ -54,6 +54,8 @@ class HomeDetailViewController: UIViewController, CardsSwipingViewDelegate, call
         }
         
         self.loadbottomView()
+        
+        self.setRefreshControl()
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -71,6 +73,26 @@ class HomeDetailViewController: UIViewController, CardsSwipingViewDelegate, call
         commonmethodClass.delayWithSeconds(0.0, completion: {
             self.getQueueList()
             self.getMyBucketList()
+        })
+    }
+    
+    func setRefreshControl()
+    {
+        let attributes = [ NSForegroundColorAttributeName : UIColor.white ] as [String: Any]
+        refreshControl.tintColor = UIColor.white
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to Refresh...", attributes: attributes)
+        refreshControl.addTarget(self, action: #selector(HomeDetailViewController.refreshData(sender:)), for: .valueChanged)
+        self.scrollView.addSubview(refreshControl)
+    }
+    
+    func refreshData(sender: UIRefreshControl)
+    {
+        commonmethodClass.delayWithSeconds(1.0, completion: {
+            self.cardsSwipingView?.clearQueue()
+            self.cardheight.constant = 290.0
+            self.getQueueList()
+            self.getMyBucketList()
+            self.refreshControl.endRefreshing()
         })
     }
     
@@ -254,6 +276,7 @@ class HomeDetailViewController: UIViewController, CardsSwipingViewDelegate, call
     func addCard()
     {
         self.cardsSwipingView?.clearQueue()
+        self.cardsSwipingView?.isHidden = false
         
         var Ypos : CGFloat!
         Ypos = 15.0
@@ -333,7 +356,12 @@ class HomeDetailViewController: UIViewController, CardsSwipingViewDelegate, call
         }
         else
         {
-            
+            if(startcount==queueArray.count)
+            {
+                commonmethodClass.delayWithSeconds(0.5, completion: {
+                    self.cardsSwipingView?.isHidden = true
+                })
+            }
         }
         return true
     }

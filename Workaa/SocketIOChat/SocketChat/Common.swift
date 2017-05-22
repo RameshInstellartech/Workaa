@@ -12,17 +12,6 @@ import UIKit
 
 // SERVER Details
 
-//let kBaseURL = "http://35.160.88.112:81/mobileapi/"
-//let kChatBaseURL = "http://35.160.88.112:3000"
-//let kBaseURL = "http://192.168.1.2:81/mobileapi/"
-//let kBaseURL = "http://35.166.72.7:81/mobileapi/"
-//let kChatBaseURL = "http://35.166.72.7:5000/"
-//let kfilePath = "http://35.166.72.7:81"
-
-//let kBaseURL = "http://192.168.1.2:8000/mobileapi/"
-//let kChatBaseURL = "http://192.168.1.2:81/"
-//let kfilePath = "http://192.168.1.2:8000"
-
 var kBaseURL = ""
 var kChatBaseURL = ""
 var kfilePath = ""
@@ -34,6 +23,7 @@ let kUrlPath = "http://dotsit.in/backend/ios/"
 
 let uniqueId = (UIDevice.current.identifierForVendor?.uuidString)! as String
 let rootViewController =  UIApplication.shared.keyWindow?.rootViewController
+let appstate = UIApplication.shared.applicationState
 
 func navigation() -> UINavigationController {
     var NVc: UINavigationController?

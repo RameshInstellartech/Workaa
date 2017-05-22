@@ -16,6 +16,7 @@ class MessageViewController: UIViewController, ConnectionProtocol, UITableViewDe
     var connectionClass = ConnectionClass()
     var commonmethodClass = CommonMethodClass()
     var bottomView : BottomView!
+    var refreshControl = UIRefreshControl()
 
     override func viewDidLoad()
     {
@@ -50,6 +51,8 @@ class MessageViewController: UIViewController, ConnectionProtocol, UITableViewDe
         })
         
         self.loadbottomView()
+        
+        self.setRefreshControl()
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -63,6 +66,30 @@ class MessageViewController: UIViewController, ConnectionProtocol, UITableViewDe
         self.title = "Messenger"
         
         navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: LatoRegular, size: CGFloat(18.0))!, NSForegroundColorAttributeName : UIColor.white];
+    }
+    
+    func setRefreshControl()
+    {
+        let attributes = [ NSForegroundColorAttributeName : UIColor.darkGray ] as [String: Any]
+        
+        refreshControl.tintColor = UIColor.darkGray
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to Refresh...", attributes: attributes)
+        refreshControl.addTarget(self, action: #selector(MessageViewController.refreshData(sender:)), for: .valueChanged)
+        
+        // Add to Table View
+        if #available(iOS 10.0, *) {
+            self.tblUserList.refreshControl = refreshControl
+        } else {
+            self.tblUserList.addSubview(refreshControl)
+        }
+    }
+    
+    func refreshData(sender: UIRefreshControl)
+    {
+        commonmethodClass.delayWithSeconds(1.0, completion: {
+            self.getUserList()
+            self.refreshControl.endRefreshing()
+        })
     }
     
     func loadbottomView()

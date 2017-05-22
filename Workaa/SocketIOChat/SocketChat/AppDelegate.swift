@@ -1523,7 +1523,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
         
         if(!commonmethodClass.getGroupChatVisibleViewcontroller())
         {
-            self.showbanner(title: username, subtitle: msg, chattype: "groupChat")
+            if appstate == .active
+            {
+                self.showbanner(title: username, subtitle: msg, chattype: "groupChat")
+            }
         }
     }
     
@@ -1580,7 +1583,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
                         self.saveChatDetails(chatdetails: chatdetails as NSDictionary)
                         if(!self.commonmethodClass.getGroupChatVisibleViewcontroller())
                         {
-                            self.showbanner(title: username, subtitle: String(format: "%@ : %@", socketOnReponse.value(forKey: "fileReceive") as! CVarArg, title), chattype: "groupChat")
+                            if appstate == .active
+                            {
+                                self.showbanner(title: username, subtitle: String(format: "%@ : %@", socketOnReponse.value(forKey: "fileReceive") as! CVarArg, title), chattype: "groupChat")
+                            }
                         }
                     })
                     
@@ -1638,8 +1644,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
                     
                     if(!self.commonmethodClass.getGroupChatVisibleViewcontroller())
                     {
-                        let username = getmanageObj.value(forKey: "username") as? String
-                        self.showbanner(title: username!, subtitle: String(format: "%@ : %@", "Edit a Message", message), chattype: "groupChat")
+                        if appstate == .active
+                        {
+                            let username = getmanageObj.value(forKey: "username") as? String
+                            self.showbanner(title: username!, subtitle: String(format: "%@ : %@", "Edit a Message", message), chattype: "groupChat")
+                        }
                     }
                     
                 } catch let error as NSError  {
@@ -1682,7 +1691,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
                     
                     if(!self.commonmethodClass.getGroupChatVisibleViewcontroller())
                     {
-                        self.showbanner(title: "", subtitle: String(format: "%@", "Delete a Message"), chattype: "groupChat")
+                        if appstate == .active
+                        {
+                            self.showbanner(title: "", subtitle: String(format: "%@", "Delete a Message"), chattype: "groupChat")
+                        }
                     }
                     
                 } catch let error as NSError  {

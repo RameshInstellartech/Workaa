@@ -4096,7 +4096,7 @@ and username on workaa.</string>
                                             <constraint firstItem="uL6-NG-USN" firstAttribute="top" secondItem="i8B-4t-ZAu" secondAttribute="bottom" constant="5" id="wvk-IU-uMx"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cra-mA-h47">
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cra-mA-h47">
                                         <rect key="frame" x="0.0" y="513" width="320" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="ZEE-9i-ia3"/>

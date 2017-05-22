@@ -20,6 +20,7 @@ class TaskListViewController: UIViewController, UITableViewDelegate, UITableView
     var connectionClass = ConnectionClass()
     var alertClass = AlertClass()
     var bottomView : BottomView!
+    var refreshControl = UIRefreshControl()
 
     override func viewDidLoad()
     {
@@ -60,6 +61,8 @@ class TaskListViewController: UIViewController, UITableViewDelegate, UITableView
         })
         
         self.loadbottomView()
+        
+        self.setRefreshControl()
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -73,6 +76,41 @@ class TaskListViewController: UIViewController, UITableViewDelegate, UITableView
         self.title = String(format: "Welcome, %@", commonmethodClass.retrieveusername())
         
         navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: LatoRegular, size: CGFloat(18.0))!, NSForegroundColorAttributeName : UIColor.white];
+    }
+    
+    func setRefreshControl()
+    {
+        let attributes = [ NSForegroundColorAttributeName : UIColor.darkGray ] as [String: Any]
+        
+        refreshControl.tintColor = UIColor.darkGray
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to Refresh...", attributes: attributes)
+        refreshControl.addTarget(self, action: #selector(TaskListViewController.refreshData(sender:)), for: .valueChanged)
+        
+        // Add to Table View
+        if #available(iOS 10.0, *) {
+            self.tbltasklist.refreshControl = refreshControl
+        } else {
+            self.tbltasklist.addSubview(refreshControl)
+        }
+    }
+    
+    func refreshData(sender: UIRefreshControl)
+    {
+        commonmethodClass.delayWithSeconds(1.0, completion: {
+            if(self.segmentedControl.selectedSegmentIndex==0)
+            {
+                self.getQueueList()
+            }
+            else if(self.segmentedControl.selectedSegmentIndex==1)
+            {
+                self.getMyBucketList()
+            }
+            else if(self.segmentedControl.selectedSegmentIndex==2)
+            {
+                self.getGroupList()
+            }
+            self.refreshControl.endRefreshing()
+        })
     }
     
     func loadbottomView()
@@ -229,6 +267,17 @@ class TaskListViewController: UIViewController, UITableViewDelegate, UITableView
             let filestring = String(format: "%@%@", kfilePath,(groupdictionary["logo"] as? String)!)
             let fileUrl = NSURL(string: filestring)
             cell.profileimage.imageURL = fileUrl as URL?
+            
+            let countstring = String(format: "%@", groupdictionary.value(forKey: "unread") as! CVarArg)
+            if countstring == "0"
+            {
+                cell.countlbl.isHidden = true
+            }
+            else
+            {
+                cell.countlbl.isHidden = false
+            }
+            cell.countlbl.text = countstring
             
             return cell
         }
