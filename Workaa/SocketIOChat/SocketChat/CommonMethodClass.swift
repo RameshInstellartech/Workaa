@@ -36,6 +36,17 @@ class CommonMethodClass: NSObject
         return UserDefaults.standard.value(forKey: Key) != nil
     }
     
+    func createAttributedString(fullString: String, fullStringColor: UIColor, subString: String, subStringColor: UIColor, fullfont: UIFont, subfont: UIFont) -> NSMutableAttributedString
+    {
+        let range = (fullString as NSString).range(of: subString)
+        let attributedString = NSMutableAttributedString(string:fullString)
+        attributedString.addAttribute(NSForegroundColorAttributeName, value: fullStringColor, range: NSRange(location: 0, length: fullString.characters.count))
+        attributedString.addAttribute(NSFontAttributeName, value: fullfont, range: NSRange(location: 0, length: fullString.characters.count))
+        attributedString.addAttribute(NSForegroundColorAttributeName, value: subStringColor, range: range)
+        attributedString.addAttribute(NSFontAttributeName, value: subfont, range: range)
+        return attributedString
+    }
+    
     func groupChatMsgExist(msgId : String) -> Bool
     {
         do {

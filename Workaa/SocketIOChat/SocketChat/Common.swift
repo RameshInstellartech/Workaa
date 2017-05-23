@@ -85,6 +85,8 @@ func getRandomColor() -> UIColor
     return UIColor(red: randomRed, green: randomGreen, blue: randomBlue, alpha: 1.0)
 }
 let cafeColor = UIColor(red: 126/255, green: 77/255, blue: 151/255, alpha: 1)
+let darkgrayColor = UIColor(red: 133/255, green: 133/255, blue: 133/255, alpha: 1)
+let textlightgrayColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
 
 // FONT Details
 

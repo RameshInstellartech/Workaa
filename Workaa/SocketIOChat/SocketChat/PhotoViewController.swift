@@ -781,7 +781,7 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate, UITextViewDel
                 else
                 {
                     self.theImageView.layer.cornerRadius = 10
-                    self.theImageView.frame = CGRect(x: CGFloat(originalImageRect.origin.x - 60), y: CGFloat(originalImageRect.origin.y - 10), width: CGFloat(originalImageRect.size.width), height: CGFloat(originalImageRect.size.height))
+                    self.theImageView.frame = CGRect(x: CGFloat(originalImageRect.origin.x), y: CGFloat(originalImageRect.origin.y), width: CGFloat(originalImageRect.size.width), height: CGFloat(originalImageRect.size.height))
                 }
                 self.view.backgroundColor = UIColor.clear
                 self.tempViewContainer.layer.transform = CATransform3DIdentity

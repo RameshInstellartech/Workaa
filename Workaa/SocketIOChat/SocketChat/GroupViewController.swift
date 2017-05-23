@@ -2378,7 +2378,9 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                     cell.rightcommentDetailslbl?.attributedText = attributedString
                     cell.rightcommentDetailslbl?.adjustsFontSizeToFitWidth = true
                     
-                    cell.rightcommentMsglbl?.text = cmtMsg as String!
+//                    cell.rightcommentMsglbl?.text = cmtMsg as String!
+                    
+                    cell.rightcommentMsglbl?.attributedText = commonmethodClass.createAttributedString(fullString: cmtMsg! as String, fullStringColor: UIColor.white, subString: "(edited)", subStringColor: UIColor(white: 1.0, alpha: 0.5), fullfont: UIFont (name: LatoRegular, size: 16)!, subfont: UIFont (name: LatoRegular, size: 12)!)
                     
                     if cmtfavstring == "0"
                     {
@@ -2431,8 +2433,10 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                     cell.leftcommentDetailslbl?.attributedText = attributedString
                     cell.leftcommentDetailslbl?.adjustsFontSizeToFitWidth = true
                     
-                    cell.leftcommentMsglbl?.text = cmtMsg as String!
+                    //cell.leftcommentMsglbl?.text = cmtMsg as String!
                     
+                    cell.leftcommentMsglbl?.attributedText = commonmethodClass.createAttributedString(fullString: cmtMsg! as String, fullStringColor: darkgrayColor, subString: "(edited)", subStringColor: textlightgrayColor, fullfont: UIFont (name: LatoRegular, size: 16)!, subfont: UIFont (name: LatoRegular, size: 12)!)
+
                     if cmtfavstring == "0"
                     {
                         cell.leftcommentstarimage?.isHidden = true
@@ -2482,13 +2486,8 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
 //                        
 //                        cell.righttextMessageView?.layer.masksToBounds = true
                         
-//                        let range = (message!).range(of: "(edited)" as String)
-//                        let attributedString = NSMutableAttributedString(string:message! as String)
-//                        attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.5) , range: range)
-//                        attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoRegular, size: 14.0)! , range: range)
-//                        cell.righttextMessagelbl?.attributedText = attributedString
-                        
-                        cell.righttextMessagelbl?.text = message as String?
+                        //cell.righttextMessagelbl?.text = message as String?
+                        cell.righttextMessagelbl?.attributedText = commonmethodClass.createAttributedString(fullString: message! as String, fullStringColor: UIColor.white, subString: "(edited)", subStringColor: UIColor(white: 1.0, alpha: 0.5), fullfont: UIFont (name: LatoRegular, size: 16)!, subfont: UIFont (name: LatoRegular, size: 12)!)
                         
                         cell.righttextDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                         
@@ -2553,7 +2552,9 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                         
                         cell.lefttextUserTagNamelbl?.text = String(format: "@%@", senderNickname!)
                         
-                        cell.lefttextMessagelbl?.text = message as String?
+                        //cell.lefttextMessagelbl?.text = message as String?
+                        
+                        cell.lefttextMessagelbl?.attributedText = commonmethodClass.createAttributedString(fullString: message! as String, fullStringColor: darkgrayColor, subString: "(edited)", subStringColor: textlightgrayColor, fullfont: UIFont (name: LatoRegular, size: 16)!, subfont: UIFont (name: LatoRegular, size: 12)!)
                         
                         cell.lefttextDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                         
