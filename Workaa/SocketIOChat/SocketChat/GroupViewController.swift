@@ -1711,7 +1711,7 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
         let caption = String(format: "%@", currentChatMessage.value(forKey: "filecaption") as! CVarArg)
         let flname = String(format: "%@", currentChatMessage.value(forKey: "flname") as! CVarArg)
 
-//        let cellheight = self.tableView(tableView, heightForRowAt: indexPath)
+        let cellheight = self.tableView(tableView, heightForRowAt: indexPath)
         
         let longPressGesture:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(GroupViewController.longPress(_:)))
         longPressGesture.minimumPressDuration = 0.5
@@ -2475,16 +2475,16 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                                                 
                         cell.righttextwidth?.constant = textwidth
                         
-//                        if cellheight>120
-//                        {
-//                            cell.righttextMessageView?.layer.cornerRadius = 20
-//                        }
-//                        else
-//                        {
-//                            cell.righttextMessageView?.layer.cornerRadius = (cellheight-20)/2
-//                        }
-//                        
-//                        cell.righttextMessageView?.layer.masksToBounds = true
+                        if cellheight>120
+                        {
+                            cell.righttextMessageView?.layer.cornerRadius = 20
+                        }
+                        else
+                        {
+                            cell.righttextMessageView?.layer.cornerRadius = (cellheight-20)/2
+                        }
+                        
+                        cell.righttextMessageView?.layer.masksToBounds = true
                         
                         //cell.righttextMessagelbl?.text = message as String?
                         cell.righttextMessagelbl?.attributedText = commonmethodClass.createAttributedString(fullString: message! as String, fullStringColor: UIColor.white, subString: "(edited)", subStringColor: UIColor(white: 1.0, alpha: 0.5), fullfont: UIFont (name: LatoRegular, size: 16)!, subfont: UIFont (name: LatoRegular, size: 12)!)
@@ -2537,16 +2537,16 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
                             cell.lefttextwidth?.constant = textwidth
                         }
                         
-//                        if cellheight>120
-//                        {
-//                            cell.lefttextMessageView?.layer.cornerRadius = 20
-//                        }
-//                        else
-//                        {
-//                            cell.lefttextMessageView?.layer.cornerRadius = (cellheight-20)/2
-//                        }
-//                        
-//                        cell.lefttextMessageView?.layer.masksToBounds = true
+                        if cellheight>120
+                        {
+                            cell.lefttextMessageView?.layer.cornerRadius = 20
+                        }
+                        else
+                        {
+                            cell.lefttextMessageView?.layer.cornerRadius = (cellheight-20)/2
+                        }
+                        
+                        cell.lefttextMessageView?.layer.masksToBounds = true
                         
                         cell.lefttextUserNamelbl?.text = flname
                         

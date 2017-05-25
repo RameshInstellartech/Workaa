@@ -438,46 +438,68 @@ and username on workaa.</string>
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="workaa-logo-black.png" translatesAutoresizingMaskIntoConstraints="NO" id="SgY-t2-GBf">
-                                <rect key="frame" x="50" y="70" width="220" height="55"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yn8-ln-s8n">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="230"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="workaa-logo-black.png" translatesAutoresizingMaskIntoConstraints="NO" id="SgY-t2-GBf">
+                                        <rect key="frame" x="80" y="95" width="160" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="Bbk-cO-JCg"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="55" id="Bbk-cO-JCg"/>
+                                    <constraint firstItem="SgY-t2-GBf" firstAttribute="leading" secondItem="Yn8-ln-s8n" secondAttribute="leading" constant="80" id="PGD-uI-wDc"/>
+                                    <constraint firstAttribute="height" constant="230" id="Uhm-3U-kuU"/>
+                                    <constraint firstItem="SgY-t2-GBf" firstAttribute="centerX" secondItem="Yn8-ln-s8n" secondAttribute="centerX" id="WCE-Zh-QrM"/>
+                                    <constraint firstItem="SgY-t2-GBf" firstAttribute="centerY" secondItem="Yn8-ln-s8n" secondAttribute="centerY" id="o0A-0e-dQa"/>
+                                    <constraint firstAttribute="trailing" secondItem="SgY-t2-GBf" secondAttribute="trailing" constant="80" id="vxp-oe-18a"/>
                                 </constraints>
-                            </imageView>
-                            <textField contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username or E-mail" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="4iP-J2-5BZ" customClass="TextFieldClass" customModule="Workaa" customModuleProvider="target">
-                                <rect key="frame" x="20" y="195" width="280" height="50"/>
+                            </view>
+                            <textField contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="E-mail" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="4iP-J2-5BZ" customClass="TextFieldClass" customModule="Workaa" customModuleProvider="target">
+                                <rect key="frame" x="40" y="230" width="240" height="45"/>
                                 <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="p25-aU-4Ak"/>
+                                    <constraint firstAttribute="height" constant="45" id="p25-aU-4Ak"/>
                                 </constraints>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="16"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress"/>
                                 <connections>
                                     <outlet property="delegate" destination="ddF-Bv-ZLi" id="wEv-Om-Z42"/>
                                 </connections>
                             </textField>
                             <textField contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="jRp-Da-zTH" customClass="TextFieldClass" customModule="Workaa" customModuleProvider="target">
-                                <rect key="frame" x="20" y="265" width="280" height="50"/>
+                                <rect key="frame" x="40" y="290" width="240" height="45"/>
                                 <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="dYR-Ko-s9l"/>
+                                    <constraint firstAttribute="height" constant="45" id="dYR-Ko-s9l"/>
                                 </constraints>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="16"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" secureTextEntry="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="ddF-Bv-ZLi" id="0Jo-8S-fQl"/>
                                 </connections>
                             </textField>
+                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Forgot Password? Click Here" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Np0-6F-mx2">
+                                <rect key="frame" x="0.0" y="350" width="320" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="tgC-6H-EeT"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="14"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mm2-PF-22z">
-                                <rect key="frame" x="75" y="365" width="170" height="45"/>
+                                <rect key="frame" x="87.5" y="415" width="145" height="45"/>
                                 <color key="backgroundColor" red="0.0" green="0.79215686269999996" blue="0.98823529409999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="c9Y-KM-aZy"/>
-                                    <constraint firstAttribute="width" constant="170" id="zPb-XG-d4t"/>
+                                    <constraint firstAttribute="width" constant="145" id="wpX-KK-mdn"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="20"/>
+                                <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="17"/>
                                 <state key="normal" title="Sign in">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -495,41 +517,33 @@ and username on workaa.</string>
                                     <action selector="signinWithSender:" destination="ddF-Bv-ZLi" eventType="touchUpInside" id="wE8-6H-VDs"/>
                                 </connections>
                             </button>
-                            <label hidden="YES" opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Don't have an account? Create Account" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RYQ-8y-vGr">
-                                <rect key="frame" x="0.0" y="440" width="320" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="WeL-Pv-v6P"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="15"/>
-                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="RYQ-8y-vGr" secondAttribute="trailing" id="8z2-Ab-Pue"/>
-                            <constraint firstAttribute="trailing" secondItem="SgY-t2-GBf" secondAttribute="trailing" constant="50" id="CQt-uf-1nr"/>
-                            <constraint firstItem="jRp-Da-zTH" firstAttribute="top" secondItem="4iP-J2-5BZ" secondAttribute="bottom" constant="20" id="Cbw-Uk-ibb"/>
-                            <constraint firstItem="mm2-PF-22z" firstAttribute="top" secondItem="jRp-Da-zTH" secondAttribute="bottom" constant="50" id="DrI-cy-69a"/>
-                            <constraint firstItem="SgY-t2-GBf" firstAttribute="top" secondItem="M0k-v4-XFi" secondAttribute="bottom" constant="50" id="Rcl-98-lEc"/>
-                            <constraint firstItem="4iP-J2-5BZ" firstAttribute="top" secondItem="SgY-t2-GBf" secondAttribute="bottom" constant="70" id="YFd-CX-Q0m"/>
-                            <constraint firstAttribute="trailing" secondItem="jRp-Da-zTH" secondAttribute="trailing" constant="20" id="afw-Re-7x3"/>
-                            <constraint firstItem="4iP-J2-5BZ" firstAttribute="leading" secondItem="Qvo-dW-cB9" secondAttribute="leading" constant="20" id="bP1-ep-mmP"/>
-                            <constraint firstItem="RYQ-8y-vGr" firstAttribute="top" secondItem="mm2-PF-22z" secondAttribute="bottom" constant="30" id="bor-i2-M8p"/>
-                            <constraint firstItem="RYQ-8y-vGr" firstAttribute="leading" secondItem="Qvo-dW-cB9" secondAttribute="leading" id="bpp-aM-aGW"/>
-                            <constraint firstItem="jRp-Da-zTH" firstAttribute="leading" secondItem="Qvo-dW-cB9" secondAttribute="leading" constant="20" id="cBm-Gd-NuQ"/>
-                            <constraint firstAttribute="trailing" secondItem="4iP-J2-5BZ" secondAttribute="trailing" constant="20" id="k41-5h-TVn"/>
+                            <constraint firstItem="Np0-6F-mx2" firstAttribute="top" secondItem="jRp-Da-zTH" secondAttribute="bottom" constant="15" id="AdP-dV-F1O"/>
+                            <constraint firstItem="jRp-Da-zTH" firstAttribute="top" secondItem="4iP-J2-5BZ" secondAttribute="bottom" constant="15" id="Cbw-Uk-ibb"/>
+                            <constraint firstItem="4iP-J2-5BZ" firstAttribute="top" secondItem="Yn8-ln-s8n" secondAttribute="bottom" id="EaE-oG-p5O"/>
+                            <constraint firstItem="mm2-PF-22z" firstAttribute="top" secondItem="Np0-6F-mx2" secondAttribute="bottom" constant="45" id="FVz-AQ-Xzg"/>
+                            <constraint firstItem="Yn8-ln-s8n" firstAttribute="top" secondItem="Qvo-dW-cB9" secondAttribute="top" id="PN6-1b-ulc"/>
+                            <constraint firstAttribute="trailing" secondItem="Yn8-ln-s8n" secondAttribute="trailing" id="RJF-2x-cZg"/>
+                            <constraint firstAttribute="trailing" secondItem="jRp-Da-zTH" secondAttribute="trailing" constant="40" id="afw-Re-7x3"/>
+                            <constraint firstItem="4iP-J2-5BZ" firstAttribute="leading" secondItem="Qvo-dW-cB9" secondAttribute="leading" constant="40" id="bP1-ep-mmP"/>
+                            <constraint firstItem="jRp-Da-zTH" firstAttribute="leading" secondItem="Qvo-dW-cB9" secondAttribute="leading" constant="40" id="cBm-Gd-NuQ"/>
+                            <constraint firstAttribute="trailing" secondItem="4iP-J2-5BZ" secondAttribute="trailing" constant="40" id="k41-5h-TVn"/>
+                            <constraint firstAttribute="trailing" secondItem="Np0-6F-mx2" secondAttribute="trailing" id="l76-ni-Ywv"/>
+                            <constraint firstItem="Yn8-ln-s8n" firstAttribute="leading" secondItem="Qvo-dW-cB9" secondAttribute="leading" id="opZ-zx-SMK"/>
+                            <constraint firstItem="Np0-6F-mx2" firstAttribute="leading" secondItem="Qvo-dW-cB9" secondAttribute="leading" id="pch-4k-chZ"/>
                             <constraint firstItem="mm2-PF-22z" firstAttribute="centerX" secondItem="Qvo-dW-cB9" secondAttribute="centerX" id="rA6-kh-hrA"/>
-                            <constraint firstItem="SgY-t2-GBf" firstAttribute="leading" secondItem="Qvo-dW-cB9" secondAttribute="leading" constant="50" id="zuv-fl-B8p"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="URS-Vc-hk9"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="emailtxtField" destination="4iP-J2-5BZ" id="pEw-hh-EpP"/>
+                        <outlet property="forgotlbl" destination="Np0-6F-mx2" id="7GU-Dz-g3Y"/>
                         <outlet property="logoheight" destination="Bbk-cO-JCg" id="vMg-b3-yAi"/>
+                        <outlet property="logoviewheight" destination="Uhm-3U-kuU" id="N7X-g9-mBd"/>
                         <outlet property="pwdtxtField" destination="jRp-Da-zTH" id="I2c-cy-mCm"/>
-                        <outlet property="signuplbl" destination="RYQ-8y-vGr" id="98D-mM-8bB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jNK-pW-iEQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2773,29 +2787,29 @@ and username on workaa.</string>
                                 <rect key="frame" x="0.0" y="64" width="320" height="444"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5fC-9e-ruL">
-                                        <rect key="frame" x="15" y="330" width="290" height="128"/>
+                                        <rect key="frame" x="10" y="340" width="300" height="128"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bucket" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CMj-Mg-v5x">
-                                                <rect key="frame" x="30" y="0.0" width="85" height="40"/>
+                                                <rect key="frame" x="35" y="0.0" width="85" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="85" id="CsT-Xw-rmn"/>
                                                     <constraint firstAttribute="height" constant="40" id="pKk-c0-s6F"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="17"/>
+                                                <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="15"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Today" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BzK-Pv-xVj">
-                                                <rect key="frame" x="215" y="0.0" width="45" height="40"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Today" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BzK-Pv-xVj">
+                                                <rect key="frame" x="225" y="0.0" width="45" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="45" id="TIt-FE-6hs"/>
                                                     <constraint firstAttribute="height" constant="40" id="i8y-j4-w34"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="17"/>
+                                                <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="12"/>
                                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="arW-U6-IAB">
-                                                <rect key="frame" x="0.0" y="40" width="290" height="1"/>
+                                                <rect key="frame" x="0.0" y="40" width="300" height="1"/>
                                                 <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="zOe-Cb-k8U"/>
@@ -2805,7 +2819,7 @@ and username on workaa.</string>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="128" id="B3O-x9-xYb"/>
-                                            <constraint firstItem="CMj-Mg-v5x" firstAttribute="leading" secondItem="5fC-9e-ruL" secondAttribute="leading" constant="30" id="IoQ-8e-8wb"/>
+                                            <constraint firstItem="CMj-Mg-v5x" firstAttribute="leading" secondItem="5fC-9e-ruL" secondAttribute="leading" constant="35" id="IoQ-8e-8wb"/>
                                             <constraint firstItem="CMj-Mg-v5x" firstAttribute="top" secondItem="5fC-9e-ruL" secondAttribute="top" id="MHs-vv-tdv"/>
                                             <constraint firstAttribute="trailing" secondItem="BzK-Pv-xVj" secondAttribute="trailing" constant="30" id="MOV-D6-ZsV"/>
                                             <constraint firstItem="arW-U6-IAB" firstAttribute="leading" secondItem="5fC-9e-ruL" secondAttribute="leading" id="Ocs-bJ-v5H"/>
@@ -2815,7 +2829,7 @@ and username on workaa.</string>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FSQ-1W-YHV" customClass="CardsSwipingView">
-                                        <rect key="frame" x="15" y="10" width="290" height="290"/>
+                                        <rect key="frame" x="10" y="0.0" width="300" height="290"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="290" id="1Wk-J2-5FM"/>
@@ -2823,14 +2837,14 @@ and username on workaa.</string>
                                     </view>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="5fC-9e-ruL" firstAttribute="leading" secondItem="38M-py-Its" secondAttribute="leading" constant="15" id="2Vl-Dx-9o9"/>
+                                    <constraint firstItem="5fC-9e-ruL" firstAttribute="leading" secondItem="38M-py-Its" secondAttribute="leading" constant="10" id="2Vl-Dx-9o9"/>
                                     <constraint firstItem="FSQ-1W-YHV" firstAttribute="centerX" secondItem="38M-py-Its" secondAttribute="centerX" id="9a3-So-ZWP"/>
-                                    <constraint firstItem="FSQ-1W-YHV" firstAttribute="leading" secondItem="38M-py-Its" secondAttribute="leading" constant="15" id="Fjz-T1-82v"/>
-                                    <constraint firstItem="5fC-9e-ruL" firstAttribute="top" secondItem="FSQ-1W-YHV" secondAttribute="bottom" constant="30" id="KSH-HW-YG6"/>
-                                    <constraint firstItem="FSQ-1W-YHV" firstAttribute="top" secondItem="38M-py-Its" secondAttribute="top" constant="10" id="ccn-BS-vAb"/>
+                                    <constraint firstItem="FSQ-1W-YHV" firstAttribute="leading" secondItem="38M-py-Its" secondAttribute="leading" constant="10" id="Fjz-T1-82v"/>
+                                    <constraint firstItem="5fC-9e-ruL" firstAttribute="top" secondItem="FSQ-1W-YHV" secondAttribute="bottom" constant="50" id="KSH-HW-YG6"/>
+                                    <constraint firstItem="FSQ-1W-YHV" firstAttribute="top" secondItem="38M-py-Its" secondAttribute="top" id="ccn-BS-vAb"/>
                                     <constraint firstAttribute="bottom" secondItem="5fC-9e-ruL" secondAttribute="bottom" constant="56" id="nTb-Mr-Fi2"/>
-                                    <constraint firstAttribute="trailing" secondItem="5fC-9e-ruL" secondAttribute="trailing" constant="15" id="tqR-ko-uoD"/>
-                                    <constraint firstAttribute="trailing" secondItem="FSQ-1W-YHV" secondAttribute="trailing" constant="15" id="yCb-lm-5TW"/>
+                                    <constraint firstAttribute="trailing" secondItem="5fC-9e-ruL" secondAttribute="trailing" constant="10" id="tqR-ko-uoD"/>
+                                    <constraint firstAttribute="trailing" secondItem="FSQ-1W-YHV" secondAttribute="trailing" constant="10" id="yCb-lm-5TW"/>
                                 </constraints>
                             </scrollView>
                         </subviews>
@@ -2878,7 +2892,7 @@ and username on workaa.</string>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2bw-vD-clJ">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="240"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="50B-t8-DpH">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="50B-t8-DpH">
                                                 <rect key="frame" x="0.0" y="20" width="60" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="60" id="ehp-e3-B7b"/>
@@ -3163,7 +3177,7 @@ and username on workaa.</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sQr-Qg-BrK">
-                                        <rect key="frame" x="145" y="110" width="85" height="20"/>
+                                        <rect key="frame" x="145" y="110" width="60" height="20"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellowstar.png" translatesAutoresizingMaskIntoConstraints="NO" id="BDJ-vX-oUg">
                                                 <rect key="frame" x="5" y="4" width="12" height="12"/>
@@ -3173,7 +3187,7 @@ and username on workaa.</string>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Priority" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eas-gt-jxc">
-                                                <rect key="frame" x="21" y="0.0" width="64" height="20"/>
+                                                <rect key="frame" x="21" y="0.0" width="39" height="20"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Lato-Italic" family="Lato" pointSize="11"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3183,7 +3197,7 @@ and username on workaa.</string>
                                         <color key="backgroundColor" red="1" green="0.22352941179999999" blue="0.23921568630000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstItem="BDJ-vX-oUg" firstAttribute="top" secondItem="sQr-Qg-BrK" secondAttribute="top" constant="4" id="15b-BF-2Mg"/>
-                                            <constraint firstAttribute="width" constant="85" id="43T-FG-5Rr"/>
+                                            <constraint firstAttribute="width" constant="60" id="43T-FG-5Rr"/>
                                             <constraint firstItem="Eas-gt-jxc" firstAttribute="top" secondItem="sQr-Qg-BrK" secondAttribute="top" id="Asy-x4-pOQ"/>
                                             <constraint firstAttribute="bottom" secondItem="Eas-gt-jxc" secondAttribute="bottom" id="IG7-YO-aPh"/>
                                             <constraint firstAttribute="height" constant="20" id="Msc-7h-6IW"/>
@@ -3454,7 +3468,7 @@ and username on workaa.</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="icj-yi-Kju">
-                                        <rect key="frame" x="145" y="110" width="85" height="20"/>
+                                        <rect key="frame" x="145" y="110" width="60" height="20"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellowstar.png" translatesAutoresizingMaskIntoConstraints="NO" id="FZM-zh-uHR">
                                                 <rect key="frame" x="5" y="4" width="12" height="12"/>
@@ -3464,7 +3478,7 @@ and username on workaa.</string>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Priority" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gI5-5b-2qm">
-                                                <rect key="frame" x="21" y="0.0" width="64" height="20"/>
+                                                <rect key="frame" x="21" y="0.0" width="39" height="20"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Lato-Italic" family="Lato" pointSize="11"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3480,7 +3494,7 @@ and username on workaa.</string>
                                             <constraint firstItem="gI5-5b-2qm" firstAttribute="leading" secondItem="FZM-zh-uHR" secondAttribute="trailing" constant="4" id="cp5-hN-DY2"/>
                                             <constraint firstAttribute="trailing" secondItem="gI5-5b-2qm" secondAttribute="trailing" id="g6S-qx-hg1"/>
                                             <constraint firstItem="FZM-zh-uHR" firstAttribute="top" secondItem="icj-yi-Kju" secondAttribute="top" constant="4" id="gXd-40-mzz"/>
-                                            <constraint firstAttribute="width" constant="85" id="qNs-Mb-a4f"/>
+                                            <constraint firstAttribute="width" constant="60" id="qNs-Mb-a4f"/>
                                         </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -4747,7 +4761,7 @@ and username on workaa.</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0uo-fO-rfU">
-                                        <rect key="frame" x="150" y="155" width="85" height="20"/>
+                                        <rect key="frame" x="150" y="155" width="60" height="20"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellowstar.png" translatesAutoresizingMaskIntoConstraints="NO" id="Z8m-jP-Gd6">
                                                 <rect key="frame" x="5" y="4" width="12" height="12"/>
@@ -4757,7 +4771,7 @@ and username on workaa.</string>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Priority" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sIn-Y8-Ssh">
-                                                <rect key="frame" x="21" y="0.0" width="64" height="20"/>
+                                                <rect key="frame" x="21" y="0.0" width="39" height="20"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="Lato-Italic" family="Lato" pointSize="11"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -4770,7 +4784,7 @@ and username on workaa.</string>
                                             <constraint firstItem="Z8m-jP-Gd6" firstAttribute="leading" secondItem="0uo-fO-rfU" secondAttribute="leading" constant="5" id="DYp-om-bG0"/>
                                             <constraint firstItem="sIn-Y8-Ssh" firstAttribute="top" secondItem="0uo-fO-rfU" secondAttribute="top" id="IeC-r3-B7z"/>
                                             <constraint firstAttribute="bottom" secondItem="sIn-Y8-Ssh" secondAttribute="bottom" id="fBh-hb-VHH"/>
-                                            <constraint firstAttribute="width" constant="85" id="qak-1p-4Ha"/>
+                                            <constraint firstAttribute="width" constant="60" id="qak-1p-4Ha"/>
                                             <constraint firstItem="Z8m-jP-Gd6" firstAttribute="top" secondItem="0uo-fO-rfU" secondAttribute="top" constant="4" id="qqO-Gc-VRs"/>
                                             <constraint firstAttribute="height" constant="20" id="smc-qe-fgT"/>
                                             <constraint firstAttribute="trailing" secondItem="sIn-Y8-Ssh" secondAttribute="trailing" id="zP4-5S-JZX"/>

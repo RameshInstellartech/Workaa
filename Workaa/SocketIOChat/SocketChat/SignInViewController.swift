@@ -12,8 +12,9 @@ class SignInViewController: UIViewController, UITextFieldDelegate, ConnectionPro
 {
     @IBOutlet weak var emailtxtField : TextFieldClass!
     @IBOutlet weak var pwdtxtField : TextFieldClass!
-    @IBOutlet weak var logoheight : NSLayoutConstraint!
-    @IBOutlet weak var signuplbl : UILabel!
+    @IBOutlet weak var logoheight = NSLayoutConstraint()
+    @IBOutlet weak var logoviewheight = NSLayoutConstraint()
+    @IBOutlet weak var forgotlbl = UILabel()
 
     var validationClass = ValidationClass()
     var alertClass = AlertClass()
@@ -33,22 +34,31 @@ class SignInViewController: UIViewController, UITextFieldDelegate, ConnectionPro
         
         if(IS_IPHONE_6)
         {
-            logoheight.constant = 69.0
+            logoheight?.constant = 54.0
         }
         if(IS_IPHONE_6P)
         {
-            logoheight.constant = 79.0
+            logoheight?.constant = 64.0
+        }
+        if(IS_IPHONE_6 || IS_IPHONE_6P)
+        {
+            var logvheight = CGFloat()
+            logvheight = (logoviewheight?.constant)!
+            logvheight = (screenWidth/320.0)*logvheight;
+            logvheight = ceil(logvheight)
+            
+            logoviewheight?.constant = logvheight
         }
         
-        let string = String(format: "%@", signuplbl.text!)
-        let range = (string as NSString).range(of: "Create Account")
+        let string = String(format: "%@", (forgotlbl?.text)!)
+        let range = (string as NSString).range(of: "Click Here")
         let attributedString = NSMutableAttributedString(string:string)
         attributedString.addAttribute(NSForegroundColorAttributeName, value: blueColor , range: range)
-        signuplbl.attributedText = attributedString
+        forgotlbl?.attributedText = attributedString
         
         let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SignInViewController.SignUpMethod))
         tapGesture.numberOfTapsRequired = 1
-        signuplbl.addGestureRecognizer(tapGesture)
+        forgotlbl?.addGestureRecognizer(tapGesture)
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -60,8 +70,8 @@ class SignInViewController: UIViewController, UITextFieldDelegate, ConnectionPro
     
     func SignUpMethod()
     {
-        let signUpObj = self.storyboard?.instantiateViewController(withIdentifier: "SignUpID") as? SignUpViewController
-        self.present(signUpObj!, animated: true, completion: nil)
+//        let signUpObj = self.storyboard?.instantiateViewController(withIdentifier: "SignUpID") as? SignUpViewController
+//        self.present(signUpObj!, animated: true, completion: nil)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool

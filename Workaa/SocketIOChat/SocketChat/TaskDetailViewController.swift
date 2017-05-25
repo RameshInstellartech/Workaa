@@ -65,7 +65,7 @@ class TaskDetailViewController: UIViewController, ConnectionProtocol, UITextView
     {
         let nameView = UIView()
         nameView.backgroundColor = UIColor.clear
-        nameView.frame = CGRect(x: CGFloat((screenWidth - 120.0) / 2.0), y: CGFloat(25.0), width: CGFloat(120.0), height: CGFloat(30.0))
+        nameView.frame = CGRect(x: CGFloat((screenWidth - 120.0) / 2.0), y: CGFloat(25.0), width: CGFloat(120.0), height: CGFloat(25.0))
         nameView.layer.borderColor = UIColor.white.cgColor
         nameView.layer.borderWidth = 1.0
         nameView.layer.cornerRadius = nameView.frame.size.height / 2.0
@@ -76,7 +76,7 @@ class TaskDetailViewController: UIViewController, ConnectionProtocol, UITextView
         let fileUrl = NSURL(string: filestring)
         
         let profileImage = AsyncImageView()
-        profileImage.frame = CGRect(x: CGFloat(5.0), y: CGFloat(5.0), width: CGFloat(20.0), height: CGFloat(20.0))
+        profileImage.frame = CGRect(x: CGFloat(3.5), y: CGFloat(3.5), width: CGFloat(18.0), height: CGFloat(18.0))
         profileImage.layer.cornerRadius = profileImage.frame.size.height / 2.0
         profileImage.layer.masksToBounds = true
         profileImage.backgroundColor = UIColor.clear
@@ -85,11 +85,14 @@ class TaskDetailViewController: UIViewController, ConnectionProtocol, UITextView
         profileImage.clipsToBounds = true
         nameView.addSubview(profileImage)
         
-        let namestring = String(format: "%@ %@", (taskDictionary["firstName"] as? String)!,(taskDictionary["lastName"] as? String)!)
+//        let namestring = String(format: "%@ %@", (taskDictionary["firstName"] as? String)!,(taskDictionary["lastName"] as? String)!)
+        let namestring = String(format: "%@", (taskDictionary["firstName"] as? String)!)
         
         let namelbl = UILabel()
-        namelbl.frame = CGRect(x: CGFloat(profileImage.frame.maxX + 8.0), y: CGFloat(0.0), width: CGFloat((nameView.frame.size.width - (profileImage.frame.maxX + 5.0)) - 5), height: CGFloat(nameView.frame.size.height))
-        namelbl.font = UIFont(name: LatoRegular, size: CGFloat(13.0))
+        namelbl.text = namestring
+//        namelbl.frame = CGRect(x: CGFloat(profileImage.frame.maxX + 8.0), y: CGFloat(0.0), width: CGFloat((nameView.frame.size.width - (profileImage.frame.maxX + 5.0)) - 5), height: CGFloat(nameView.frame.size.height))
+        namelbl.frame = CGRect(x: CGFloat(profileImage.frame.maxX + 8.0), y: CGFloat(0.0), width: CGFloat(namelbl.intrinsicContentSize.width), height: CGFloat(nameView.frame.size.height))
+        namelbl.font = UIFont(name: LatoRegular, size: CGFloat(12.0))
         namelbl.backgroundColor = UIColor.clear
         namelbl.textColor = UIColor.white
         namelbl.text = namestring
@@ -97,19 +100,19 @@ class TaskDetailViewController: UIViewController, ConnectionProtocol, UITextView
         
         /*----------------------------------------------------------*/
         
-        priorityView.frame = CGRect(x: CGFloat((tasktopView.frame.size.width - 100.0) / 2.0), y: CGFloat(nameView.frame.maxY + 10.0), width: CGFloat(100.0), height: CGFloat(20.0))
+        priorityView.frame = CGRect(x: CGFloat((tasktopView.frame.size.width - 60.0) / 2.0), y: CGFloat(nameView.frame.maxY + 10.0), width: CGFloat(60.0), height: CGFloat(15.0))
         priorityView.layer.cornerRadius = priorityView.frame.size.height / 2.0
         priorityView.layer.masksToBounds = true
         tasktopView.addSubview(priorityView)
         
         let starImage = UIImageView()
-        starImage.frame = CGRect(x: CGFloat(5.0), y: CGFloat(3.0), width: CGFloat(14.0), height: CGFloat(14.0))
+        starImage.frame = CGRect(x: CGFloat(5.0), y: CGFloat(2.5), width: CGFloat(10.0), height: CGFloat(10.0))
         starImage.backgroundColor = UIColor.clear
         priorityView.addSubview(starImage)
         
         let prioritylbl = UILabel()
         prioritylbl.frame = CGRect(x: CGFloat(starImage.frame.maxX + 8.0), y: CGFloat(0.0), width: CGFloat((priorityView.frame.size.width - (starImage.frame.maxX + 5.0)) - 5), height: CGFloat(priorityView.frame.size.height))
-        prioritylbl.font = UIFont(name: LatoItalic, size: CGFloat(12.0))
+        prioritylbl.font = UIFont(name: LatoItalic, size: CGFloat(10.0))
         prioritylbl.backgroundColor = UIColor.clear
         prioritylbl.textColor = UIColor.white
         priorityView.addSubview(prioritylbl)

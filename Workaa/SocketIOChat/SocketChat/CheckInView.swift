@@ -100,7 +100,7 @@ class CheckInView: UIView, ConnectionProtocol
                     if(view2.frame.size.height==26.0)
                     {
                         view2.layer.borderWidth = 1.0
-                        view2.layer.borderColor = UIColor.lightGray.cgColor
+                        view2.layer.borderColor = UIColor(red: 210/255, green: 210/255, blue: 210/255, alpha: 1).cgColor
                     }
                 }
             }
@@ -172,7 +172,7 @@ class CheckInView: UIView, ConnectionProtocol
                             if(view2.frame.size.height==26.0)
                             {
                                 view2.layer.borderWidth = 1.0
-                                view2.layer.borderColor = UIColor.darkGray.cgColor
+                                view2.layer.borderColor = UIColor.black.cgColor
                             }
                             for view3 : UIView in view2.subviews
                             {
@@ -191,7 +191,7 @@ class CheckInView: UIView, ConnectionProtocol
                             if(view2.frame.size.height==26.0)
                             {
                                 view2.layer.borderWidth = 1.0
-                                view2.layer.borderColor = UIColor.lightGray.cgColor
+                                view2.layer.borderColor = UIColor(red: 210/255, green: 210/255, blue: 210/255, alpha: 1).cgColor
                             }
                             for view3 : UIView in view2.subviews
                             {

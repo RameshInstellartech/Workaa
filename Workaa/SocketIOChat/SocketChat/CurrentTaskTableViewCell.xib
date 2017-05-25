@@ -53,7 +53,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LBr-RA-rcB">
-                        <rect key="frame" x="150" y="115" width="85" height="20"/>
+                        <rect key="frame" x="150" y="115" width="60" height="20"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellowstar.png" translatesAutoresizingMaskIntoConstraints="NO" id="0g7-LR-01x">
                                 <rect key="frame" x="5" y="4" width="12" height="12"/>
@@ -63,7 +63,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Priority" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RDF-ZI-qXf">
-                                <rect key="frame" x="21" y="0.0" width="64" height="20"/>
+                                <rect key="frame" x="21" y="0.0" width="39" height="20"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" name="Lato-Italic" family="Lato" pointSize="11"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -77,7 +77,7 @@
                             <constraint firstItem="RDF-ZI-qXf" firstAttribute="top" secondItem="LBr-RA-rcB" secondAttribute="top" id="VyG-sp-t5d"/>
                             <constraint firstItem="RDF-ZI-qXf" firstAttribute="leading" secondItem="0g7-LR-01x" secondAttribute="trailing" constant="4" id="XVo-Q0-H46"/>
                             <constraint firstItem="0g7-LR-01x" firstAttribute="leading" secondItem="LBr-RA-rcB" secondAttribute="leading" constant="5" id="pD6-6h-Mgq"/>
-                            <constraint firstAttribute="width" constant="85" id="qEu-P6-45O"/>
+                            <constraint firstAttribute="width" constant="60" id="qEu-P6-45O"/>
                             <constraint firstAttribute="bottom" secondItem="RDF-ZI-qXf" secondAttribute="bottom" id="qYz-Qw-GyE"/>
                             <constraint firstItem="0g7-LR-01x" firstAttribute="top" secondItem="LBr-RA-rcB" secondAttribute="top" constant="4" id="xP8-tK-Vf0"/>
                         </constraints>

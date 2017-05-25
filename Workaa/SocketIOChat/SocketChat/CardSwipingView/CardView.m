@@ -68,7 +68,7 @@ static const NSUInteger kCornerRadius = 20.0f;
     
     UIView *nameView = [[UIView alloc] init];
     nameView.backgroundColor = [UIColor clearColor];
-    nameView.frame = CGRectMake((_topMatterView.frame.size.width-130.0)/2.0, 15.0, 130.0, 35.0);
+    nameView.frame = CGRectMake((_topMatterView.frame.size.width-130.0)/2.0, 15.0, 130.0, 30.0);
     nameView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
     nameView.layer.borderWidth = 0.5f;
     nameView.layer.cornerRadius = nameView.frame.size.height/2.0;
@@ -78,7 +78,7 @@ static const NSUInteger kCornerRadius = 20.0f;
     NSString *imagestring = [NSString stringWithFormat:@"%@%@",filepath,[queueDictionary valueForKey:@"userPic"]];
     
     AsyncImageView *profileImage = [[AsyncImageView alloc] init];
-    profileImage.frame = CGRectMake(3.5, 3.5, 28.0, 28.0);
+    profileImage.frame = CGRectMake(3.5, 3.5, 23.0, 23.0);
     profileImage.layer.cornerRadius = profileImage.frame.size.height/2.0;
     profileImage.layer.masksToBounds = YES;
     profileImage.backgroundColor = [UIColor clearColor];
@@ -87,16 +87,20 @@ static const NSUInteger kCornerRadius = 20.0f;
     profileImage.clipsToBounds = YES;
     [nameView addSubview:profileImage];
     
-    NSString *namestring = [NSString stringWithFormat:@"%@ %@",[queueDictionary valueForKey:@"firstName"],[queueDictionary valueForKey:@"lastName"]];
-    
+//    NSString *namestring = [NSString stringWithFormat:@"%@ %@",[queueDictionary valueForKey:@"firstName"],[queueDictionary valueForKey:@"lastName"]];
+    NSString *namestring = [NSString stringWithFormat:@"%@",[queueDictionary valueForKey:@"firstName"]];
+
     UILabel *namelbl = [[UILabel alloc] init];
-    namelbl.frame = CGRectMake(CGRectGetMaxX(profileImage.frame)+8.0, 0.0, (nameView.frame.size.width-(CGRectGetMaxX(profileImage.frame)+5.0))-5, nameView.frame.size.height);
-    namelbl.font = [UIFont fontWithName:@"Lato-Regular" size:14.0];
+    namelbl.text = namestring;
+//    namelbl.frame = CGRectMake(CGRectGetMaxX(profileImage.frame)+8.0, 0.0, (nameView.frame.size.width-(CGRectGetMaxX(profileImage.frame)+5.0))-5, nameView.frame.size.height);
+    namelbl.frame = CGRectMake(CGRectGetMaxX(profileImage.frame)+8.0, 0.0, namelbl.intrinsicContentSize.width, nameView.frame.size.height);
+    namelbl.font = [UIFont fontWithName:@"Lato-Regular" size:13.5];
     namelbl.backgroundColor = [UIColor clearColor];
     namelbl.textColor = [UIColor blackColor];
-    namelbl.text = namestring;
     [nameView addSubview:namelbl];
     
+    nameView.frame = CGRectMake((_topMatterView.frame.size.width-(CGRectGetMaxX(namelbl.frame)+5.0))/2.0, 15.0, CGRectGetMaxX(namelbl.frame)+5.0, 30.0);
+
     /*-----------------------------------------------------*/
     
     CGFloat descYpos = CGRectGetMaxY(nameView.frame)+15.0;
@@ -106,20 +110,20 @@ static const NSUInteger kCornerRadius = 20.0f;
     {
         UIView *priorityView = [[UIView alloc] init];
         priorityView.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:57.0/255.0 blue:61.0/255.0 alpha:1.0];
-        priorityView.frame = CGRectMake((_topMatterView.frame.size.width-100.0)/2.0, CGRectGetMaxY(nameView.frame)+8.0, 100.0, 20.0);
+        priorityView.frame = CGRectMake((_topMatterView.frame.size.width-60.0)/2.0, CGRectGetMaxY(nameView.frame)+8.0, 60.0, 15.0);
         priorityView.layer.cornerRadius = priorityView.frame.size.height/2.0;
         priorityView.layer.masksToBounds = YES;
         [_topMatterView addSubview:priorityView];
         
         UIImageView *starImage = [[UIImageView alloc] init];
-        starImage.frame = CGRectMake(5.0, 3.0, 14.0, 14.0);
+        starImage.frame = CGRectMake(5.0, 2.5, 10.0, 10.0);
         starImage.backgroundColor = [UIColor clearColor];
         starImage.image = [UIImage imageNamed:@"yellowstar.png"];
         [priorityView addSubview:starImage];
         
         UILabel *prioritylbl = [[UILabel alloc] init];
-        prioritylbl.frame = CGRectMake(CGRectGetMaxX(starImage.frame)+8.0, 0.0, (priorityView.frame.size.width-(CGRectGetMaxX(starImage.frame)+5.0))-5, priorityView.frame.size.height);
-        prioritylbl.font = [UIFont fontWithName:@"Lato-Italic" size:12.0];
+        prioritylbl.frame = CGRectMake(CGRectGetMaxX(starImage.frame)+5.0, 0.0, (priorityView.frame.size.width-(CGRectGetMaxX(starImage.frame)+5.0))-5, priorityView.frame.size.height);
+        prioritylbl.font = [UIFont fontWithName:@"Lato-Italic" size:10.0];
         prioritylbl.backgroundColor = [UIColor clearColor];
         prioritylbl.textColor = [UIColor whiteColor];
         prioritylbl.text = @"Priority";
@@ -144,7 +148,7 @@ static const NSUInteger kCornerRadius = 20.0f;
     
     UILabel *datelbl = [[UILabel alloc] init];
     datelbl.frame = CGRectMake(_topMatterView.frame.size.width-55.0, 20.0, 45.0, 21.0);
-    datelbl.font = [UIFont fontWithName:@"Lato-Regular" size:12.0];
+    datelbl.font = [UIFont fontWithName:@"Lato-Regular" size:11.0];
     datelbl.backgroundColor = [UIColor clearColor];
     datelbl.textColor = [UIColor lightGrayColor];
     datelbl.text = newDate;
@@ -163,29 +167,30 @@ static const NSUInteger kCornerRadius = 20.0f;
     /*-----------------------------------------------------*/
     
     UIView *btnView = [[UIView alloc] init];
-    btnView.backgroundColor = [UIColor clearColor];
-    btnView.frame = CGRectMake(25.0, _topMatterView.frame.size.height-50.0, _topMatterView.frame.size.width-50.0, 35.0);
+    btnView.backgroundColor = [UIColor colorWithRed:249.0/255.0 green:248.0/255.0 blue:248.0/255.0 alpha:1.0];
+    btnView.frame = CGRectMake(0.0, _topMatterView.frame.size.height-60.0, _topMatterView.frame.size.width, 60.0);
     [_topMatterView addSubview:btnView];
     
-    CGFloat btnwidth = (btnView.frame.size.width/2.0)-5.0;
+    CGFloat btnwidth = (btnView.frame.size.width-75.0)/2.0;
+    NSLog(@"btnwidth = %f",btnwidth);
     
     UIButton *laterbutton = [UIButton buttonWithType:UIButtonTypeSystem];
-    laterbutton.frame = CGRectMake(0.0, 0.0, btnwidth, btnView.frame.size.height);
+    laterbutton.frame = CGRectMake(25.0, (btnView.frame.size.height-30.0)/2.0, btnwidth, 30.0);
     laterbutton.backgroundColor = [UIColor redColor];
     [laterbutton setTitle:@"Later" forState:UIControlStateNormal];
     [laterbutton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    laterbutton.titleLabel.font = [UIFont fontWithName:@"Lato-Regular" size:16.0];
+    laterbutton.titleLabel.font = [UIFont fontWithName:@"Lato-Regular" size:13.0];
     laterbutton.layer.cornerRadius = laterbutton.frame.size.height/2.0;
     laterbutton.layer.masksToBounds = YES;
     [laterbutton addTarget:self.superview action:@selector(dismissTopCardToLeft) forControlEvents:UIControlEventTouchUpInside];
     [btnView addSubview:laterbutton];
     
     UIButton *taskbutton = [UIButton buttonWithType:UIButtonTypeSystem];
-    taskbutton.frame = CGRectMake(CGRectGetMaxX(laterbutton.frame)+10.0, 0.0, btnwidth, btnView.frame.size.height);
+    taskbutton.frame = CGRectMake(CGRectGetMaxX(laterbutton.frame)+25.0, (btnView.frame.size.height-30.0)/2.0, btnwidth, 30.0);
     taskbutton.backgroundColor = [UIColor colorWithRed:24.0/255.0 green:208.0/255.0 blue:124.0/255.0 alpha:1.0];
     [taskbutton setTitle:@"Assign Task" forState:UIControlStateNormal];
     [taskbutton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    taskbutton.titleLabel.font = [UIFont fontWithName:@"Lato-Regular" size:16.0];
+    taskbutton.titleLabel.font = [UIFont fontWithName:@"Lato-Regular" size:13.0];
     taskbutton.layer.cornerRadius = taskbutton.frame.size.height/2.0;
     taskbutton.layer.masksToBounds = YES;
     [taskbutton addTarget:self action:@selector(expandaction) forControlEvents:UIControlEventTouchUpInside];
@@ -204,7 +209,7 @@ static const NSUInteger kCornerRadius = 20.0f;
     
     UIView *groupnameView = [[UIView alloc] init];
     groupnameView.backgroundColor = [UIColor clearColor];
-    groupnameView.frame = CGRectMake(25.0, btnView.frame.origin.y-50.0, _topMatterView.frame.size.width-50.0, 25.0);
+    groupnameView.frame = CGRectMake(0.0, btnView.frame.origin.y-35.0, _topMatterView.frame.size.width, 20.0);
     [_topMatterView addSubview:groupnameView];
     
     NSString *groupimagestring = [NSString stringWithFormat:@"%@%@",filepath,[queueDictionary valueForKey:@"groupLogo"]];
@@ -222,15 +227,16 @@ static const NSUInteger kCornerRadius = 20.0f;
     NSString *groupnamestring = [NSString stringWithFormat:@"%@",[queueDictionary valueForKey:@"groupName"]];
     
     UILabel *titlelbl = [[UILabel alloc] init];
-    titlelbl.frame = CGRectMake(CGRectGetMaxX(groupImage.frame)+8.0, 0.0, (groupnameView.frame.size.width-(CGRectGetMaxX(groupImage.frame)+5.0))-5, groupnameView.frame.size.height);
-    titlelbl.font = [UIFont fontWithName:@"Lato-Regular" size:14.0];
+    titlelbl.text = groupnamestring;
+//    titlelbl.frame = CGRectMake(CGRectGetMaxX(groupImage.frame)+5.0, 0.0, (groupnameView.frame.size.width-(CGRectGetMaxX(groupImage.frame)+5.0))-5, groupnameView.frame.size.height);
+    titlelbl.frame = CGRectMake(CGRectGetMaxX(groupImage.frame)+5.0, 0.0, titlelbl.intrinsicContentSize.width, groupnameView.frame.size.height);
+    titlelbl.font = [UIFont fontWithName:@"Lato-Regular" size:13.0];
     titlelbl.backgroundColor = [UIColor clearColor];
     titlelbl.textColor = [UIColor lightGrayColor];
-    titlelbl.text = groupnamestring;
     [groupnameView addSubview:titlelbl];
     
-    CGFloat groupwidth = titlelbl.intrinsicContentSize.width + 40.0;
-    groupnameView.frame = CGRectMake((_topMatterView.frame.size.width-groupwidth)/2.0, btnView.frame.origin.y-50.0, groupwidth, 25.0);
+    CGFloat groupwidth = titlelbl.intrinsicContentSize.width + 35.0;
+    groupnameView.frame = CGRectMake((_topMatterView.frame.size.width-groupwidth)/2.0, btnView.frame.origin.y-35.0, groupwidth, 20.0);
     
     /*-----------------------------------------------------*/
     
@@ -240,7 +246,7 @@ static const NSUInteger kCornerRadius = 20.0f;
     
     UILabel *desclbl = [[UILabel alloc] init];
     desclbl.frame = CGRectMake(0.0, descYpos, _topMatterView.frame.size.width, descheight);
-    desclbl.font = [UIFont fontWithName:@"Lato-Regular" size:16.0];
+    desclbl.font = [UIFont fontWithName:@"Lato-Regular" size:15.0];
     desclbl.backgroundColor = [UIColor clearColor];
     desclbl.textColor = [UIColor blackColor];
     desclbl.text = taskstring;
@@ -251,7 +257,7 @@ static const NSUInteger kCornerRadius = 20.0f;
     /*-----------------------------------------------------*/
     
     UIButton *overlaybutton = [UIButton buttonWithType:UIButtonTypeCustom];
-    overlaybutton.frame = CGRectMake(0.0, 0.0, _topMatterView.frame.size.width, _topMatterView.frame.size.height-btnView.frame.size.height-20.0);
+    overlaybutton.frame = CGRectMake(0.0, 0.0, _topMatterView.frame.size.width, _topMatterView.frame.size.height-btnView.frame.size.height);
     overlaybutton.backgroundColor = [UIColor clearColor];
     [overlaybutton addTarget:self action:@selector(expandaction) forControlEvents:UIControlEventTouchUpInside];
     [_topMatterView addSubview:overlaybutton];

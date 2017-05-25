@@ -47,6 +47,22 @@ class CommonMethodClass: NSObject
         return attributedString
     }
     
+    func ovalAnimation(_ view: UIView, center: CGPoint, colorFrom: UIColor, colorTo: UIColor, withradius radius: CGFloat)
+    {
+        let ripple = UIView(frame: CGRect(x: CGFloat(0.0), y: CGFloat(0.0), width: radius, height: radius))
+        ripple.layer.cornerRadius = radius * 0.5
+        ripple.backgroundColor = colorFrom
+        ripple.alpha = 1.0
+        view.insertSubview(ripple, at: 0)
+        ripple.center = center
+        let scale: CGFloat = 8.0
+        UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseOut, animations: {() -> Void in
+            ripple.transform = CGAffineTransform(scaleX: scale, y: scale)
+            ripple.backgroundColor = colorTo
+        }, completion: {(_ finished: Bool) -> Void in
+        })
+    }
+    
     func groupChatMsgExist(msgId : String) -> Bool
     {
         do {

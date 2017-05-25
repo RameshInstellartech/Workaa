@@ -140,6 +140,8 @@ class HomeDetailViewController: UIViewController, CardsSwipingViewDelegate, call
                     checkInView.frame = CGRect(x: 0.0, y: 0.0, width: screenWidth, height: screenHeight-60.0)
                     checkInView.loadCheckInView()
                     self.view.addSubview(checkInView)
+                    
+                    //self.commonmethodClass.ovalAnimation(self.checkInView, center: CGPoint(x: CGFloat(screenWidth / 2.0), y: CGFloat(self.checkInView.frame.size.height / 2.0)), colorFrom: UIColor(white: 1.0, alpha: 0.8), colorTo: UIColor(white: 1.0, alpha: 0.8), withradius: 120.0)
                 }
             }
         }
@@ -156,6 +158,8 @@ class HomeDetailViewController: UIViewController, CardsSwipingViewDelegate, call
                 checkInView.frame = CGRect(x: 0.0, y: 0.0, width: screenWidth, height: screenHeight-60.0)
                 checkInView.loadCheckInView()
                 self.view.addSubview(checkInView)
+                
+//                self.commonmethodClass.ovalAnimation(self.checkInView, center: CGPoint(x: CGFloat(screenWidth / 2.0), y: CGFloat(self.checkInView.frame.size.height / 2.0)), colorFrom: UIColor(white: 1.0, alpha: 0.8), colorTo: UIColor(white: 1.0, alpha: 0.8), withradius: 120.0)
             }
         }
     }
@@ -196,12 +200,12 @@ class HomeDetailViewController: UIViewController, CardsSwipingViewDelegate, call
             let bucketdictionary = taskarray[i] as! NSDictionary
             let taskname = String(format: "%@", bucketdictionary.value(forKey: "task") as! CVarArg)
             
-            var txtheight = commonmethodClass.dynamicHeight(width: screenWidth-100, font: UIFont (name: LatoRegular, size: 15)!, string: taskname as String)
+            var txtheight = commonmethodClass.dynamicHeight(width: screenWidth-120, font: UIFont (name: LatoRegular, size: 14)!, string: taskname as String)
             txtheight = ceil(txtheight)
             txtheight = txtheight + 25.0
 
             let subtaskView = UIView()
-            subtaskView.frame = CGRect(x: CGFloat(0.0), y: Ypos, width: screenWidth-30.0, height: CGFloat(txtheight))
+            subtaskView.frame = CGRect(x: CGFloat(0.0), y: Ypos, width: screenWidth-20.0, height: CGFloat(txtheight))
             subtaskView.backgroundColor = UIColor.clear
             tasklistView.addSubview(subtaskView)
             
@@ -212,19 +216,27 @@ class HomeDetailViewController: UIViewController, CardsSwipingViewDelegate, call
             circleView.layer.masksToBounds = true
             subtaskView.addSubview(circleView)
             
-            let tasklbl = UILabel(frame: CGRect(x: CGFloat(40.0), y: CGFloat(10.0), width: CGFloat(subtaskView.frame.size.width-70.0), height: subtaskView.frame.size.height-20.0))
-            tasklbl.font = UIFont(name: LatoRegular, size: CGFloat(15))
+            let tasklbl = UILabel(frame: CGRect(x: CGFloat(40.0), y: CGFloat(10.0), width: CGFloat(subtaskView.frame.size.width-90.0), height: subtaskView.frame.size.height-20.0))
+            tasklbl.font = UIFont(name: LatoRegular, size: CGFloat(14))
             tasklbl.text = taskname
             tasklbl.backgroundColor = UIColor.clear
             tasklbl.textColor = UIColor.darkGray
             tasklbl.numberOfLines = 100000
-            tasklbl.textAlignment = .justified
+//            tasklbl.textAlignment = .justified
             subtaskView.addSubview(tasklbl)
+            
+            let arrowlbl = UILabel(frame: CGRect(x: CGFloat(tasklbl.frame.maxX), y: CGFloat(0.0), width: CGFloat(20.0), height: subtaskView.frame.size.height))
+            arrowlbl.font = UIFont(name: Workaa_Font, size: CGFloat(20))
+            arrowlbl.text = solidrightarrowIcon
+            arrowlbl.backgroundColor = UIColor.clear
+            arrowlbl.textColor = UIColor.lightGray
+            arrowlbl.textAlignment = .right
+            subtaskView.addSubview(arrowlbl)
             
             if i != taskarray.count - 1
             {
                 let lineView = UIView()
-                lineView.frame = CGRect(x: CGFloat(tasklbl.frame.origin.x), y: subtaskView.frame.size.height-0.5, width: tasklbl.frame.size.width, height: CGFloat(0.5))
+                lineView.frame = CGRect(x: CGFloat(tasklbl.frame.origin.x), y: subtaskView.frame.size.height-0.5, width: subtaskView.frame.size.width-70.0, height: CGFloat(0.5))
                 lineView.backgroundColor = UIColor(red: CGFloat(230.0/255.0), green: CGFloat(230.0/255.0), blue: CGFloat(230.0/255.0), alpha: CGFloat(1.0))
                 subtaskView.addSubview(lineView)
             }
@@ -251,7 +263,7 @@ class HomeDetailViewController: UIViewController, CardsSwipingViewDelegate, call
         }
         
         commonmethodClass.delayWithSeconds(0.1, completion: {
-            self.scrollView.contentSize = CGSize(width: screenWidth, height: self.tasklistheight.constant+self.cardheight.constant+60.0)
+            self.scrollView.contentSize = CGSize(width: screenWidth, height: self.tasklistheight.constant+self.cardheight.constant+70.0)
         })
     }
     
@@ -279,18 +291,18 @@ class HomeDetailViewController: UIViewController, CardsSwipingViewDelegate, call
         self.cardsSwipingView?.isHidden = false
         
         var Ypos : CGFloat!
-        Ypos = 15.0
+        Ypos = 30.0
         for i in startcount ..< cardcount
         {
             let bucketdictionary = queueArray[i] as! NSDictionary as? [AnyHashable: Any] ?? [:]
             
-            let card = CardView(frame: CGRect(x: CGFloat(0), y: CGFloat(Ypos), width: CGFloat(screenWidth - 30), height: cardheight.constant))
+            let card = CardView(frame: CGRect(x: CGFloat(0), y: CGFloat(Ypos), width: CGFloat(screenWidth - 20), height: cardheight.constant))
             card.delegate = self
             card.queueDictionary = bucketdictionary
             card.filepath = kfilePath
             self.cardsSwipingView?.enqueueCard(card)
                 
-            Ypos = Ypos - 5.0
+            Ypos = Ypos - 10.0
         }
     }
     
