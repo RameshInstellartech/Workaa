@@ -233,7 +233,8 @@ class GroupDetailViewController: UIViewController, UITableViewDelegate, UITableV
         
         cell.lbltasktitle.text = taskdictionary["task"] as? String
         
-        cell.lbltaskdesc.text = taskdictionary["info"] as? String
+        let taskdesc = String(format: "%@", taskdictionary.value(forKey: "info") as! CVarArg)
+        cell.lbltaskdesc.text = taskdesc
         
 //        cell.lblusername.text = String(format: "Assigned by %@ %@", taskdictionary.value(forKey: "assignFirstName") as! CVarArg, taskdictionary.value(forKey: "assignLastName") as! CVarArg)
         cell.lblusername.text = String(format: "Assigned by %@", taskdictionary.value(forKey: "assignFirstName") as! CVarArg)
@@ -251,12 +252,39 @@ class GroupDetailViewController: UIViewController, UITableViewDelegate, UITableV
         let time = String(format: "%@", taskdictionary.value(forKey: "time") as! CVarArg)
         cell.lbldate.text = String(format: "%@", commonmethodClass.convertDateInCell(date: time))
         
+        var height = commonmethodClass.dynamicHeight(width: screenWidth-30, font: UIFont (name: LatoRegular, size: 13.5)!, string: taskdesc as String)
+        height = ceil(height)
+        height = height + 10
+        if height > 70.0
+        {
+            height = 70.0
+        }
+        cell.textheight?.constant = height
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
-        return 150.0
+        var taskdictionary = NSDictionary()
+        if(segmentedControl.selectedSegmentIndex==0)
+        {
+            taskdictionary = pastTaskArray[indexPath.row] as! NSDictionary
+        }
+        else
+        {
+            taskdictionary = currentTaskArray[indexPath.row] as! NSDictionary
+        }
+        let taskdesc = String(format: "%@", taskdictionary.value(forKey: "info") as! CVarArg)
+        var height = commonmethodClass.dynamicHeight(width: screenWidth-30, font: UIFont (name: LatoRegular, size: 13.5)!, string: taskdesc as String)
+        height = ceil(height)
+        height = height + 10
+        if height > 70.0
+        {
+            height = 70.0
+        }
+        
+        return height+80.0
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)

@@ -41,6 +41,7 @@
 		13431A481DC9F1B70016C024 /* ConnectionClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13431A471DC9F1B70016C024 /* ConnectionClass.swift */; };
 		13431A4A1DC9F3A80016C024 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13431A491DC9F3A80016C024 /* Common.swift */; };
 		1344B3A11E28ADE70012DDAC /* ImageUploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1344B3A01E28ADE70012DDAC /* ImageUploadViewController.swift */; };
+		13466B741ED867D5000A69D6 /* splash.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 13466B731ED867D5000A69D6 /* splash.jpg */; };
 		13490A7A1E41C38000B46EE5 /* EditCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13490A791E41C38000B46EE5 /* EditCommentView.swift */; };
 		13490A7C1E41C3EA00B46EE5 /* EditCommentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13490A7B1E41C3EA00B46EE5 /* EditCommentView.xib */; };
 		134AAECE1E67F0B700CA7991 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134AAECD1E67F0B700CA7991 /* WelcomeViewController.swift */; };
@@ -232,6 +233,7 @@
 		13431A471DC9F1B70016C024 /* ConnectionClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionClass.swift; sourceTree = "<group>"; };
 		13431A491DC9F3A80016C024 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		1344B3A01E28ADE70012DDAC /* ImageUploadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageUploadViewController.swift; sourceTree = "<group>"; };
+		13466B731ED867D5000A69D6 /* splash.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = splash.jpg; sourceTree = "<group>"; };
 		13490A791E41C38000B46EE5 /* EditCommentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditCommentView.swift; sourceTree = "<group>"; };
 		13490A7B1E41C3EA00B46EE5 /* EditCommentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditCommentView.xib; sourceTree = "<group>"; };
 		134AAECD1E67F0B700CA7991 /* WelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
@@ -575,6 +577,7 @@
 		1379501E1E55792100D8FEFD /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				13466B731ED867D5000A69D6 /* splash.jpg */,
 				1379501F1E55792100D8FEFD /* workaa-logo-black.png */,
 				1342899F1E72ACCA00346EA9 /* switchToggle.png */,
 				134289A01E72ACCA00346EA9 /* switchToggle@2x.png */,
@@ -949,6 +952,7 @@
 				1357B4251E83AF040079E2CE /* yellowstar.png in Resources */,
 				1341D4A61EC1AFF200738FBE /* zip.png in Resources */,
 				13FBBFC91E72B5A4002E0840 /* switchRed@2x.png in Resources */,
+				13466B741ED867D5000A69D6 /* splash.jpg in Resources */,
 				13FBBFC71E72B5A4002E0840 /* switchMask@2x.png in Resources */,
 				13490A7C1E41C3EA00B46EE5 /* EditCommentView.xib in Resources */,
 				C075D7221C5E0E81009F9044 /* Main.storyboard in Resources */,

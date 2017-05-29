@@ -54,7 +54,8 @@ class GroupTaskDetailViewController: UIViewController
             tasktitleheight.constant = tasktitleheight.constant + 20.0
         }
         
-        assignlbl.text = String(format: "by %@ %@", taskDictionary.value(forKey: "assignFirstName") as! CVarArg, taskDictionary.value(forKey: "assignLastName") as! CVarArg)
+//        assignlbl.text = String(format: "by %@ %@", taskDictionary.value(forKey: "assignFirstName") as! CVarArg, taskDictionary.value(forKey: "assignLastName") as! CVarArg)
+        assignlbl.text = String(format: "by %@", taskDictionary.value(forKey: "assignFirstName") as! CVarArg)
         
         let priority = String(format: "%@", taskDictionary.value(forKey: "priority") as! CVarArg)
         if priority == "1"
@@ -132,7 +133,7 @@ class GroupTaskDetailViewController: UIViewController
             memberscrollView.addSubview(userImage)
             
             let titlelbl = UILabel()
-            titlelbl.frame = CGRect(x: CGFloat(Xpos), y: CGFloat(userImage.frame.maxY + 5.0), width: CGFloat(40.0), height: CGFloat(20.0))
+            titlelbl.frame = CGRect(x: CGFloat(Xpos-2.5), y: CGFloat(userImage.frame.maxY + 5.0), width: CGFloat(45.0), height: CGFloat(20.0))
             titlelbl.font = UIFont(name: LatoRegular, size: CGFloat(12.0))
             titlelbl.backgroundColor = UIColor.clear
             titlelbl.textColor = UIColor.black
@@ -166,7 +167,7 @@ class GroupTaskDetailViewController: UIViewController
                 button.backgroundColor = UIColor.clear
             }
             
-            Xpos = Xpos + 60.0
+            Xpos = Xpos + 62.0
             
 //            if(IS_IPHONE_6)
 //            {

@@ -12,5 +12,6 @@
 
 @property (nonatomic, strong) UIImage *trackImageOn UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) UIImage *trackImageOff UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) NSString *viewstring;
 
 @end

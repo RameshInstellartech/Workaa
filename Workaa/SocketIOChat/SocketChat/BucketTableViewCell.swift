@@ -12,6 +12,7 @@ class BucketTableViewCell: UITableViewCell
 {
     @IBOutlet weak var lbltaskdesc: UILabel!
     @IBOutlet weak var profileimage: AsyncImageView!
+    @IBOutlet weak var lblarrow: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()

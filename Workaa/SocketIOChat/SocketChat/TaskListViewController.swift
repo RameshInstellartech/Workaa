@@ -241,6 +241,16 @@ class TaskListViewController: UIViewController, UITableViewDelegate, UITableView
             
             cell.lblarrow.text = rightarrowIcon
             
+            var height = commonmethodClass.dynamicHeight(width: screenWidth-50, font: UIFont (name: LatoRegular, size: 14)!, string: taskname as String)
+            height = ceil(height)
+            if height > 35.0
+            {
+                height = 35.0
+            }
+            
+            cell.arrowheight?.constant = height
+            cell.textheight?.constant = height
+            
             return cell
         }
         else if(segmentedControl.selectedSegmentIndex==1)
@@ -255,6 +265,8 @@ class TaskListViewController: UIViewController, UITableViewDelegate, UITableView
             let fileUrl = NSURL(string: filestring)
             cell.profileimage.imageURL = fileUrl as URL?
             
+            cell.lblarrow.text = rightarrowIcon
+            
             return cell
         }
         else
@@ -268,6 +280,21 @@ class TaskListViewController: UIViewController, UITableViewDelegate, UITableView
             let fileUrl = NSURL(string: filestring)
             cell.profileimage.imageURL = fileUrl as URL?
             
+            cell.lbltask.text = String(format: "%@ Ongoing tasks", groupdictionary.value(forKey: "ongoingTask") as! CVarArg)
+            
+            let status = String(format: "%@", groupdictionary.value(forKey: "criticalTask") as! CVarArg)
+            cell.lblstatus.text = String(format: "%@ Priority", status)
+            if status == "0"
+            {
+                cell.lblstatus.isHidden = true
+                cell.circleView.isHidden = true
+            }
+            else
+            {
+                cell.lblstatus.isHidden = false
+                cell.circleView.isHidden = false
+            }
+            
             let countstring = String(format: "%@", groupdictionary.value(forKey: "unread") as! CVarArg)
             if countstring == "0"
             {
@@ -279,6 +306,8 @@ class TaskListViewController: UIViewController, UITableViewDelegate, UITableView
             }
             cell.countlbl.text = countstring
             
+            cell.lblarrow.text = rightarrowIcon
+            
             return cell
         }
     }
@@ -287,11 +316,25 @@ class TaskListViewController: UIViewController, UITableViewDelegate, UITableView
     {
         if(segmentedControl.selectedSegmentIndex==0)
         {
-            return 110.0
+            let queuedictionary = queueArray[indexPath.row] as! NSDictionary
+            let taskname = String(format: "%@", queuedictionary.value(forKey: "task") as! CVarArg)
+            
+            var height = commonmethodClass.dynamicHeight(width: screenWidth-50, font: UIFont (name: LatoRegular, size: 14)!, string: taskname as String)
+            height = ceil(height)
+            if height > 35.0
+            {
+                height = 35.0
+            }
+            
+            return height+50.0
+        }
+        else if(segmentedControl.selectedSegmentIndex==1)
+        {
+            return 55.0
         }
         else
         {
-            return 80.0
+            return 65.0
         }
     }
     

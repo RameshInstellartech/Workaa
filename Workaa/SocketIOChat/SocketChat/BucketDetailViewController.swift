@@ -40,9 +40,11 @@ class BucketDetailViewController: UIViewController
         groupNamelbl.text = String(format: "%@", myBucketDictionary.value(forKey: "groupName") as! CVarArg)
         
         tasktitlelbl.text = String(format: "%@", myBucketDictionary.value(forKey: "task") as! CVarArg)
-        tasktitleheight.constant = commonmethodClass.dynamicHeight(width: screenWidth-40, font: tasktitlelbl.font, string: tasktitlelbl.text!)
-        
-        assignlbl.text = String(format: "by %@ %@", myBucketDictionary.value(forKey: "assignFirstName") as! CVarArg, myBucketDictionary.value(forKey: "assignLastName") as! CVarArg)
+        tasktitleheight.constant = commonmethodClass.dynamicHeight(width: screenWidth-30, font: tasktitlelbl.font, string: tasktitlelbl.text!)
+        tasktitleheight.constant = tasktitleheight.constant + 5.0
+
+//        assignlbl.text = String(format: "by %@ %@", myBucketDictionary.value(forKey: "assignFirstName") as! CVarArg, myBucketDictionary.value(forKey: "assignLastName") as! CVarArg)
+        assignlbl.text = String(format: "by %@", myBucketDictionary.value(forKey: "assignFirstName") as! CVarArg)
         
         let priority = String(format: "%@", myBucketDictionary.value(forKey: "priority") as! CVarArg)
         if priority == "1"

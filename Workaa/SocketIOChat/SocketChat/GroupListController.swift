@@ -197,7 +197,18 @@ class GroupListController: UIViewController, ConnectionProtocol, UITableViewDele
         
         cell.lbltask.text = String(format: "%@ Ongoing tasks", groupdictionary.value(forKey: "ongoingTask") as! CVarArg)
         
-        cell.lblstatus.text = String(format: "%@ critical", groupdictionary.value(forKey: "criticalTask") as! CVarArg)
+        let status = String(format: "%@", groupdictionary.value(forKey: "criticalTask") as! CVarArg)
+        cell.lblstatus.text = String(format: "%@ Priority", status)
+        if status == "0"
+        {
+            cell.lblstatus.isHidden = true
+            cell.circleView.isHidden = true
+        }
+        else
+        {
+            cell.lblstatus.isHidden = false
+            cell.circleView.isHidden = false
+        }
         
         let countstring = String(format: "%@", groupdictionary.value(forKey: "unread") as! CVarArg)
         if countstring == "0"
@@ -210,12 +221,14 @@ class GroupListController: UIViewController, ConnectionProtocol, UITableViewDele
         }
         cell.countlbl.text = countstring
         
+        cell.lblarrow.text = rightarrowIcon
+
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
-        return 80.0
+        return 65.0
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)

@@ -15,7 +15,8 @@ class CurrentTaskTableViewCell: UITableViewCell
     @IBOutlet weak var lblusername: UILabel!
     @IBOutlet weak var statusView: UIView!
     @IBOutlet weak var lbldate: UILabel!
-    
+    @IBOutlet weak var textheight = NSLayoutConstraint()
+
     override func awakeFromNib()
     {
         super.awakeFromNib()

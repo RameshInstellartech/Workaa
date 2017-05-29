@@ -17,6 +17,7 @@
 @end
 
 @implementation TTFadeSwitch
+@synthesize viewstring;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -99,11 +100,41 @@
 
     if(self.on)
     {
-        self.trackImageView.backgroundColor = [UIColor colorWithRed:24.0/255.0 green:208.0/255.0 blue:124.0/255.0 alpha:1.0];
+        if([viewstring isEqualToString:@"myTask"] || [viewstring isEqualToString:@"addQueue"])
+        {
+            self.trackImageView.backgroundColor = [UIColor colorWithRed:24.0/255.0 green:208.0/255.0 blue:124.0/255.0 alpha:1.0];
+        }
+        else if([viewstring isEqualToString:@"groupType"])
+        {
+            self.trackImageView.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:202.0/255.0 blue:252.0/255.0 alpha:1.0];
+        }
+        else
+        {
+            self.trackImageView.backgroundColor = [UIColor colorWithRed:24.0/255.0 green:208.0/255.0 blue:124.0/255.0 alpha:1.0];
+        }
     }
     else
     {
-        self.trackImageView.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:202.0/255.0 blue:252.0/255.0 alpha:1.0];
+        if([viewstring isEqualToString:@"myTask"])
+        {
+            self.trackImageView.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:162.0/255.0 blue:0.0/255.0 alpha:1.0];
+        }
+        else if([viewstring isEqualToString:@"addQueue"])
+        {
+            self.trackImageView.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:57.0/255.0 blue:61.0/255.0 alpha:1.0];
+        }
+        else if([viewstring isEqualToString:@"groupType"])
+        {
+            self.trackImageView.backgroundColor = [UIColor colorWithRed:24.0/255.0 green:208.0/255.0 blue:124.0/255.0 alpha:1.0];
+        }
+        else if([viewstring isEqualToString:@"hours"])
+        {
+            self.trackImageView.backgroundColor = [UIColor lightGrayColor];
+        }
+        else
+        {
+            self.trackImageView.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:202.0/255.0 blue:252.0/255.0 alpha:1.0];
+        }
     }
 }
 

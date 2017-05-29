@@ -105,13 +105,14 @@ class CreateTaskViewController: UIViewController, UITextFieldDelegate, UITextVie
         switchtype.thumbImage = UIImage(named: "switchToggle")
         switchtype.thumbHighlightImage = UIImage(named: "switchToggleHigh")
         switchtype.trackMaskImage = UIImage(named: "switchMask")
+        switchtype.viewstring = "myTask"
         switchtype.onString = "   DONE"
         switchtype.offString = "ONGOING"
-        switchtype.onLabel.font = UIFont(name: LatoBold, size: CGFloat(12.0))!
-        switchtype.offLabel.font = UIFont(name: LatoBold, size: CGFloat(12.0))!
+        switchtype.onLabel.font = UIFont(name: LatoBlack, size: CGFloat(11.0))!
+        switchtype.offLabel.font = UIFont(name: LatoBlack, size: CGFloat(11.0))!
         switchtype.onLabel.textColor = UIColor.white
         switchtype.offLabel.textColor = UIColor.white
-        switchtype.labelsEdgeInsets = UIEdgeInsetsMake(0.0, 10.0, 0.0, 7.0)
+        switchtype.labelsEdgeInsets = UIEdgeInsetsMake(0.0, 15.0, 0.0, 10.0)
         switchtype.thumbInsetX = -3.0
         switchtype.thumbOffsetY = 2.0
         switchtype.isOn = false
@@ -120,17 +121,18 @@ class CreateTaskViewController: UIViewController, UITextFieldDelegate, UITextVie
         criticalswitchtype.thumbImage = UIImage(named: "switchToggle")
         criticalswitchtype.thumbHighlightImage = UIImage(named: "switchToggleHigh")
         criticalswitchtype.trackMaskImage = UIImage(named: "switchMask")
+        criticalswitchtype.viewstring = "addQueue"
         criticalswitchtype.onString = "NORMAL"
         criticalswitchtype.offString = "HIGH  "
-        criticalswitchtype.onLabel.font = UIFont(name: LatoBold, size: CGFloat(13.0))!
-        criticalswitchtype.offLabel.font = UIFont(name: LatoBold, size: CGFloat(13.0))!
+        criticalswitchtype.onLabel.font = UIFont(name: LatoBlack, size: CGFloat(11.0))!
+        criticalswitchtype.offLabel.font = UIFont(name: LatoBlack, size: CGFloat(11.0))!
         criticalswitchtype.onLabel.textColor = UIColor.white
         criticalswitchtype.offLabel.textColor = UIColor.white
-        criticalswitchtype.labelsEdgeInsets = UIEdgeInsetsMake(0.0, 10.0, 0.0, 22.0)
+        criticalswitchtype.labelsEdgeInsets = UIEdgeInsetsMake(0.0, 13.0, 0.0, 26.0)
         criticalswitchtype.thumbInsetX = -3.0
         criticalswitchtype.thumbOffsetY = 2.0
         criticalswitchtype.isOn = true
-        
+
         hourFieldheight.constant = 60.0
         hourField.isHidden = true
         
@@ -374,7 +376,7 @@ class CreateTaskViewController: UIViewController, UITextFieldDelegate, UITextVie
             memberscrollView.addSubview(userImage)
             
             let titlelbl = UILabel()
-            titlelbl.frame = CGRect(x: CGFloat(Xpos), y: CGFloat(userImage.frame.maxY + 5.0), width: CGFloat(40.0), height: CGFloat(20.0))
+            titlelbl.frame = CGRect(x: CGFloat(Xpos-2.5), y: CGFloat(userImage.frame.maxY + 5.0), width: CGFloat(45.0), height: CGFloat(20.0))
             titlelbl.font = UIFont(name: LatoRegular, size: CGFloat(12.0))
             titlelbl.backgroundColor = UIColor.clear
             titlelbl.textColor = UIColor.black
@@ -387,7 +389,7 @@ class CreateTaskViewController: UIViewController, UITextFieldDelegate, UITextVie
             tapGesture.numberOfTapsRequired = 1
             userImage.addGestureRecognizer(tapGesture)
             
-            Xpos = Xpos + 60.0
+            Xpos = Xpos + 62.0
             
 //            if(IS_IPHONE_6)
 //            {
@@ -405,7 +407,7 @@ class CreateTaskViewController: UIViewController, UITextFieldDelegate, UITextVie
         
         //memberscrollView.isScrollEnabled = false
         
-        userscrollheight.constant = 120.0
+        userscrollheight.constant = 135.0
         memberscrollView.isHidden = false
         
         morebtn = UIButton()
@@ -683,19 +685,19 @@ class CreateTaskViewController: UIViewController, UITextFieldDelegate, UITextVie
                     if(queueArray.count>0)
                     {
                         noofqueueview.isHidden = false
-                        noofqueueviewheight.constant = 60.0
+                        noofqueueviewheight.constant = 50.0
                     }
                     
                     for view : UIView in noofqueueview.subviews
                     {
                         if let btn = view as? UIButton
                         {
-                            if(queueArray.count==1)
-                            {
-                                btn.isHidden = true
-                            }
-                            else
-                            {
+//                            if(queueArray.count==1)
+//                            {
+//                                btn.isHidden = true
+//                            }
+//                            else
+//                            {
                                 if(btn.tag==1)
                                 {
                                     btn.isHidden = false
@@ -704,7 +706,7 @@ class CreateTaskViewController: UIViewController, UITextFieldDelegate, UITextVie
                                 {
                                     btn.isHidden = true
                                 }
-                            }
+                            //}
                         }
                         if let lbl = view as? UILabel
                         {
@@ -823,19 +825,19 @@ class CreateTaskViewController: UIViewController, UITextFieldDelegate, UITextVie
                     if(myTaskArray.count>0)
                     {
                         nooftaskview.isHidden = false
-                        nooftaskviewheight.constant = 60.0
+                        nooftaskviewheight.constant = 50.0
                     }
                     
                     for view : UIView in nooftaskview.subviews
                     {
                         if let btn = view as? UIButton
                         {
-                            if(myTaskArray.count==1)
-                            {
-                                btn.isHidden = true
-                            }
-                            else
-                            {
+//                            if(myTaskArray.count==1)
+//                            {
+//                                btn.isHidden = true
+//                            }
+//                            else
+//                            {
                                 if(btn.tag==1)
                                 {
                                     btn.isHidden = false
@@ -844,7 +846,7 @@ class CreateTaskViewController: UIViewController, UITextFieldDelegate, UITextVie
                                 {
                                     btn.isHidden = true
                                 }
-                            }
+                            //}
                         }
                         if let lbl = view as? UILabel
                         {
@@ -976,7 +978,7 @@ class CreateTaskViewController: UIViewController, UITextFieldDelegate, UITextVie
         let taskdictionary = myTaskArray[mytaskcounter] as! NSDictionary
         print("taskdictionary =>\(taskdictionary)")
         
-        mytaskgrouplogowidth.constant = 40.0
+        mytaskgrouplogowidth.constant = 30.0
         mytaskgrouplogo.isHidden = false
         
         mygoruplbl.text = String(format: "%@",taskdictionary.value(forKey: "group_name") as! CVarArg)
@@ -1105,7 +1107,7 @@ class CreateTaskViewController: UIViewController, UITextFieldDelegate, UITextVie
         let queuedictionary = queueArray[queuecounter] as! NSDictionary
         print("queuedictionary =>\(queuedictionary)")
         
-        queuegrouplogowidth.constant = 40.0
+        queuegrouplogowidth.constant = 30.0
         queuegrouplogo.isHidden = false
         
         goruplbl.text = String(format: "%@",queuedictionary.value(forKey: "group_name") as! CVarArg)
@@ -1132,7 +1134,7 @@ class CreateTaskViewController: UIViewController, UITextFieldDelegate, UITextVie
         
         if(userArray.count>0)
         {
-            userscrollheight.constant = 120.0
+            userscrollheight.constant = 135.0
             memberscrollView.isHidden = false
         }
         
@@ -1163,7 +1165,7 @@ class CreateTaskViewController: UIViewController, UITextFieldDelegate, UITextVie
             memberscrollView.addSubview(userImage)
             
             let titlelbl = UILabel()
-            titlelbl.frame = CGRect(x: CGFloat(Xpos), y: CGFloat(userImage.frame.maxY + 5.0), width: CGFloat(40.0), height: CGFloat(20.0))
+            titlelbl.frame = CGRect(x: CGFloat(Xpos-2.5), y: CGFloat(userImage.frame.maxY + 5.0), width: CGFloat(45.0), height: CGFloat(20.0))
             titlelbl.font = UIFont(name: LatoRegular, size: CGFloat(12.0))
             titlelbl.backgroundColor = UIColor.clear
             titlelbl.textColor = UIColor.black
@@ -1188,7 +1190,7 @@ class CreateTaskViewController: UIViewController, UITextFieldDelegate, UITextVie
                 userImage.addSubview(titlelbl)
             }
             
-            Xpos = Xpos + 60.0
+            Xpos = Xpos + 62.0
         }
         
         self.memberscrollView.contentSize = CGSize(width: Xpos, height: self.memberscrollView.frame.size.height)
@@ -1220,7 +1222,7 @@ class CreateTaskViewController: UIViewController, UITextFieldDelegate, UITextVie
         if(segmentedControl.selectedSegmentIndex==0)
         {
             goruplbl.text = groupdictionary["name"] as? String
-            queuegrouplogowidth.constant = 40.0
+            queuegrouplogowidth.constant = 30.0
             queuegrouplogo.isHidden = false
             
             let filestring = String(format: "%@%@", kfilePath,groupdictionary.value(forKey: "logo") as! CVarArg)
@@ -1232,7 +1234,7 @@ class CreateTaskViewController: UIViewController, UITextFieldDelegate, UITextVie
         else if(segmentedControl.selectedSegmentIndex==1)
         {
             mygoruplbl.text = groupdictionary["name"] as? String
-            mytaskgrouplogowidth.constant = 40.0
+            mytaskgrouplogowidth.constant = 30.0
             mytaskgrouplogo.isHidden = false
             
             let filestring = String(format: "%@%@", kfilePath,groupdictionary.value(forKey: "logo") as! CVarArg)

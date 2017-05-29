@@ -59,7 +59,8 @@ class QueueDetailViewController: UIViewController, ConnectionProtocol, UITextVie
             tasktitleheight.constant = tasktitleheight.constant + 20.0
         }
         
-        assignlbl.text = String(format: "by %@ %@", queueDictionary.value(forKey: "firstName") as! CVarArg, queueDictionary.value(forKey: "lastName") as! CVarArg)
+//        assignlbl.text = String(format: "by %@ %@", queueDictionary.value(forKey: "firstName") as! CVarArg, queueDictionary.value(forKey: "lastName") as! CVarArg)
+        assignlbl.text = String(format: "by %@", queueDictionary.value(forKey: "firstName") as! CVarArg)
         
         let priority = String(format: "%@", queueDictionary.value(forKey: "priority") as! CVarArg)
         if priority == "1"
@@ -91,38 +92,38 @@ class QueueDetailViewController: UIViewController, ConnectionProtocol, UITextVie
         
         self.loadbottomView()
         
-        titleediticonbtn.setTitle(editIcon, for: .normal)
-        descediticonbtn.setTitle(editIcon, for: .normal)
-        
-        let assignString = String(format: "%@", queueDictionary.value(forKey: "assign") as! CVarArg)
-        if assignString == "0"
-        {
-            titleediticonbtn.isHidden = true
-            descediticonbtn.isHidden = true
-        }
-        else
-        {
-            titleediticonbtn.isHidden = false
-            descediticonbtn.isHidden = false
-        }
-        
-        for view : UIView in self.view.subviews
-        {
-            for view1 : UIView in view.subviews
-            {
-                if view1.frame.size.height==40
-                {
-                    if assignString == "0"
-                    {
-                        view1.isHidden = true
-                    }
-                    else
-                    {
-                        view1.isHidden = false
-                    }
-                }
-            }
-        }
+//        titleediticonbtn.setTitle(editIcon, for: .normal)
+//        descediticonbtn.setTitle(editIcon, for: .normal)
+//        
+//        let assignString = String(format: "%@", queueDictionary.value(forKey: "assign") as! CVarArg)
+//        if assignString == "0"
+//        {
+//            titleediticonbtn.isHidden = true
+//            descediticonbtn.isHidden = true
+//        }
+//        else
+//        {
+//            titleediticonbtn.isHidden = false
+//            descediticonbtn.isHidden = false
+//        }
+//        
+//        for view : UIView in self.view.subviews
+//        {
+//            for view1 : UIView in view.subviews
+//            {
+//                if view1.frame.size.height==40
+//                {
+//                    if assignString == "0"
+//                    {
+//                        view1.isHidden = true
+//                    }
+//                    else
+//                    {
+//                        view1.isHidden = false
+//                    }
+//                }
+//            }
+//        }
     }
 
     override func viewWillAppear(_ animated: Bool)
@@ -175,7 +176,7 @@ class QueueDetailViewController: UIViewController, ConnectionProtocol, UITextVie
             memberscrollView.addSubview(userImage)
             
             let titlelbl = UILabel()
-            titlelbl.frame = CGRect(x: CGFloat(Xpos), y: CGFloat(userImage.frame.maxY + 5.0), width: CGFloat(40.0), height: CGFloat(20.0))
+            titlelbl.frame = CGRect(x: CGFloat(Xpos-2.5), y: CGFloat(userImage.frame.maxY + 5.0), width: CGFloat(45.0), height: CGFloat(20.0))
             titlelbl.font = UIFont(name: LatoRegular, size: CGFloat(12.0))
             titlelbl.backgroundColor = UIColor.clear
             titlelbl.textColor = UIColor.black
@@ -188,7 +189,7 @@ class QueueDetailViewController: UIViewController, ConnectionProtocol, UITextVie
             tapGesture.numberOfTapsRequired = 1
             userImage.addGestureRecognizer(tapGesture)
             
-            Xpos = Xpos + 60.0
+            Xpos = Xpos + 62.0
             
 //            if(IS_IPHONE_6)
 //            {

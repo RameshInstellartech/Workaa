@@ -15,6 +15,8 @@ class QueueTableViewCell: UITableViewCell
     @IBOutlet weak var statusView: UIView!
     @IBOutlet weak var lbldate: UILabel!
     @IBOutlet weak var lblarrow: UILabel!
+    @IBOutlet weak var arrowheight = NSLayoutConstraint()
+    @IBOutlet weak var textheight = NSLayoutConstraint()
 
     override func awakeFromNib() {
         super.awakeFromNib()

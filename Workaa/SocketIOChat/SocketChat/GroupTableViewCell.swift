@@ -16,6 +16,7 @@ class GroupTableViewCell: UITableViewCell
     @IBOutlet weak var lblstatus: UILabel!
     @IBOutlet weak var circleView: UIView!
     @IBOutlet weak var countlbl: UILabel!
+    @IBOutlet weak var lblarrow: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()

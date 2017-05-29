@@ -30,42 +30,43 @@
                         <constraints>
                             <constraint firstAttribute="height" constant="25" id="NEV-QN-axV"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="16"/>
+                        <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="15"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8eZ-1D-prX">
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="8eZ-1D-prX">
                         <rect key="frame" x="10" y="35" width="300" height="70"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="70" id="Mjf-VR-uo8"/>
                         </constraints>
-                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                        <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="16"/>
+                        <color key="textColor" red="0.52156862745098043" green="0.52156862745098043" blue="0.52156862745098043" alpha="1" colorSpace="calibratedRGB"/>
+                        <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="13.5"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     </textView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e3l-DQ-X8l">
-                        <rect key="frame" x="15" y="115" width="130" height="21"/>
+                        <rect key="frame" x="15" y="115" width="130" height="16"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="130" id="6JU-rw-wRa"/>
-                            <constraint firstAttribute="height" constant="21" id="gOh-dg-Iyh"/>
+                            <constraint firstAttribute="height" constant="16" id="gOh-dg-Iyh"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="Lato-Italic" family="Lato" pointSize="13"/>
+                        <fontDescription key="fontDescription" name="Lato-Italic" family="Lato" pointSize="12"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LBr-RA-rcB">
-                        <rect key="frame" x="150" y="115" width="60" height="20"/>
+                        <rect key="frame" x="150" y="115" width="60" height="15"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellowstar.png" translatesAutoresizingMaskIntoConstraints="NO" id="0g7-LR-01x">
-                                <rect key="frame" x="5" y="4" width="12" height="12"/>
+                                <rect key="frame" x="5" y="2.5" width="10" height="10"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="12" id="Do4-oj-dK5"/>
-                                    <constraint firstAttribute="width" constant="12" id="eAd-Ua-ehA"/>
+                                    <constraint firstAttribute="height" constant="10" id="Do4-oj-dK5"/>
+                                    <constraint firstAttribute="width" constant="10" id="eAd-Ua-ehA"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Priority" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RDF-ZI-qXf">
-                                <rect key="frame" x="21" y="0.0" width="39" height="20"/>
+                                <rect key="frame" x="20" y="0.0" width="40" height="15"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" name="Lato-Italic" family="Lato" pointSize="11"/>
+                                <fontDescription key="fontDescription" name="Lato-Italic" family="Lato" pointSize="10"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -73,28 +74,28 @@
                         <color key="backgroundColor" red="1" green="0.22352941176470587" blue="0.23921568627450979" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="RDF-ZI-qXf" secondAttribute="trailing" id="HCh-Gu-C4R"/>
-                            <constraint firstAttribute="height" constant="20" id="JuG-ae-e37"/>
+                            <constraint firstAttribute="height" constant="15" id="JuG-ae-e37"/>
                             <constraint firstItem="RDF-ZI-qXf" firstAttribute="top" secondItem="LBr-RA-rcB" secondAttribute="top" id="VyG-sp-t5d"/>
-                            <constraint firstItem="RDF-ZI-qXf" firstAttribute="leading" secondItem="0g7-LR-01x" secondAttribute="trailing" constant="4" id="XVo-Q0-H46"/>
+                            <constraint firstItem="RDF-ZI-qXf" firstAttribute="leading" secondItem="0g7-LR-01x" secondAttribute="trailing" constant="5" id="XVo-Q0-H46"/>
                             <constraint firstItem="0g7-LR-01x" firstAttribute="leading" secondItem="LBr-RA-rcB" secondAttribute="leading" constant="5" id="pD6-6h-Mgq"/>
                             <constraint firstAttribute="width" constant="60" id="qEu-P6-45O"/>
                             <constraint firstAttribute="bottom" secondItem="RDF-ZI-qXf" secondAttribute="bottom" id="qYz-Qw-GyE"/>
-                            <constraint firstItem="0g7-LR-01x" firstAttribute="top" secondItem="LBr-RA-rcB" secondAttribute="top" constant="4" id="xP8-tK-Vf0"/>
+                            <constraint firstItem="0g7-LR-01x" firstAttribute="top" secondItem="LBr-RA-rcB" secondAttribute="top" constant="2.5" id="xP8-tK-Vf0"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                <integer key="value" value="10"/>
+                                <real key="value" value="7.5"/>
                             </userDefinedRuntimeAttribute>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                         </userDefinedRuntimeAttributes>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Scl-yt-QnH">
-                        <rect key="frame" x="240" y="115" width="70" height="21"/>
+                        <rect key="frame" x="235" y="115" width="70" height="15"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="70" id="82D-dS-Avc"/>
-                            <constraint firstAttribute="height" constant="21" id="UJy-PT-oGW"/>
+                            <constraint firstAttribute="height" constant="15" id="UJy-PT-oGW"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="12"/>
+                        <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="10"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -121,7 +122,7 @@
                     <constraint firstItem="8eZ-1D-prX" firstAttribute="top" secondItem="KDP-IY-fdu" secondAttribute="bottom" id="lR3-Y0-A8b"/>
                     <constraint firstItem="e3l-DQ-X8l" firstAttribute="top" secondItem="8eZ-1D-prX" secondAttribute="bottom" constant="10" id="vP3-Qq-u8n"/>
                     <constraint firstItem="e3l-DQ-X8l" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="wru-pg-hjq"/>
-                    <constraint firstAttribute="trailing" secondItem="Scl-yt-QnH" secondAttribute="trailing" constant="10" id="ycw-kY-Kkh"/>
+                    <constraint firstAttribute="trailing" secondItem="Scl-yt-QnH" secondAttribute="trailing" constant="15" id="ycw-kY-Kkh"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
@@ -130,6 +131,7 @@
                 <outlet property="lbltasktitle" destination="KDP-IY-fdu" id="Tq1-iq-czy"/>
                 <outlet property="lblusername" destination="e3l-DQ-X8l" id="qei-er-VsO"/>
                 <outlet property="statusView" destination="LBr-RA-rcB" id="dhc-0s-EDa"/>
+                <outlet property="textheight" destination="Mjf-VR-uo8" id="2Nl-Zs-6dc"/>
             </connections>
         </tableViewCell>
     </objects>

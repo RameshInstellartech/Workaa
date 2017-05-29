@@ -69,18 +69,19 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate, UITextVi
         
         connectionClass.delegate = self
         
-        groupnametxtField.attributedPlaceholder = NSAttributedString(string: groupnametxtField.placeholder!, attributes: [NSForegroundColorAttributeName:UIColor.black])
+        groupnametxtField.attributedPlaceholder = NSAttributedString(string: groupnametxtField.placeholder!, attributes: [NSForegroundColorAttributeName:UIColor.darkGray])
         
         switchtype.thumbImage = UIImage(named: "switchToggle")
         switchtype.thumbHighlightImage = UIImage(named: "switchToggleHigh")
         switchtype.trackMaskImage = UIImage(named: "switchMask")
+        switchtype.viewstring = "groupType"
         switchtype.onString = " PUBLIC"
         switchtype.offString = "PRIVATE"
-        switchtype.onLabel.font = UIFont(name: LatoBold, size: CGFloat(14.0))!
-        switchtype.offLabel.font = UIFont(name: LatoBold, size: CGFloat(14.0))!
+        switchtype.onLabel.font = UIFont(name: LatoBlack, size: CGFloat(11.0))!
+        switchtype.offLabel.font = UIFont(name: LatoBlack, size: CGFloat(11.0))!
         switchtype.onLabel.textColor = UIColor.white
         switchtype.offLabel.textColor = UIColor.white
-        switchtype.labelsEdgeInsets = UIEdgeInsetsMake(0.0, 10.0, 0.0, 10.0)
+        switchtype.labelsEdgeInsets = UIEdgeInsetsMake(0.0, 16.0, 0.0, 16.0)
         switchtype.thumbInsetX = -3.0
         switchtype.thumbOffsetY = 2.0
         switchtype.isOn = true
@@ -88,13 +89,14 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate, UITextVi
         hourswitchtype.thumbImage = UIImage(named: "switchToggle")
         hourswitchtype.thumbHighlightImage = UIImage(named: "switchToggleHigh")
         hourswitchtype.trackMaskImage = UIImage(named: "switchMask")
+        hourswitchtype.viewstring = "hours"
         hourswitchtype.onString = "YES"
         hourswitchtype.offString = "NO "
-        hourswitchtype.onLabel.font = UIFont(name: LatoBold, size: CGFloat(15.0))!
-        hourswitchtype.offLabel.font = UIFont(name: LatoBold, size: CGFloat(15.0))!
+        hourswitchtype.onLabel.font = UIFont(name: LatoBlack, size: CGFloat(12.0))!
+        hourswitchtype.offLabel.font = UIFont(name: LatoBlack, size: CGFloat(12.0))!
         hourswitchtype.onLabel.textColor = UIColor.white
         hourswitchtype.offLabel.textColor = UIColor.white
-        hourswitchtype.labelsEdgeInsets = UIEdgeInsetsMake(0.0, 27.0, 0.0, 27.0)
+        hourswitchtype.labelsEdgeInsets = UIEdgeInsetsMake(0.0, 30.0, 0.0, 32.0)
         hourswitchtype.thumbInsetX = -3.0
         hourswitchtype.thumbOffsetY = 2.0
         hourswitchtype.isOn = false
@@ -424,7 +426,8 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate, UITextVi
         cell.closebtn.tag = indexPath.row
         cell.closebtn.contentEdgeInsets = UIEdgeInsetsMake(0.0, 6.0, 0.0, 0.0)
         
-        cell.lblusername.text = String(format: "%@ %@", userdictionary.value(forKey: "firstName") as! CVarArg, userdictionary.value(forKey: "lastName") as! CVarArg)
+//        cell.lblusername.text = String(format: "%@ %@", userdictionary.value(forKey: "firstName") as! CVarArg, userdictionary.value(forKey: "lastName") as! CVarArg)
+        cell.lblusername.text = String(format: "%@", userdictionary.value(forKey: "firstName") as! CVarArg)
         
         let levelstring = String(format: "%@",userdictionary.value(forKey: "admin") as! CVarArg)
         if levelstring == "1"
@@ -472,18 +475,18 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate, UITextVi
         headerView.backgroundColor = UIColor(red: 249/255, green: 249/255, blue: 249/255, alpha: 1)
         
         let personlbl = UILabel()
-        personlbl.frame = CGRect(x: CGFloat(20.0), y: CGFloat(0.0), width: CGFloat(30.0), height: CGFloat(headerheight))
+        personlbl.frame = CGRect(x: CGFloat(15.0), y: CGFloat(0.0), width: CGFloat(30.0), height: CGFloat(headerheight))
         personlbl.font = UIFont(name: Workaa_Font, size: CGFloat(25.0))
         personlbl.backgroundColor = UIColor.clear
-        personlbl.textColor = UIColor.black
+        personlbl.textColor = UIColor.darkGray
         personlbl.text = adduserIcon
         headerView.addSubview(personlbl)
         
         let memberslbl = UILabel()
         memberslbl.frame = CGRect(x: CGFloat(personlbl.frame.maxX+10.0), y: CGFloat(0.0), width: CGFloat(110.0), height: CGFloat(headerheight))
-        memberslbl.font = UIFont(name: LatoRegular, size: CGFloat(17.0))
+        memberslbl.font = UIFont(name: LatoRegular, size: CGFloat(16.0))
         memberslbl.backgroundColor = UIColor.clear
-        memberslbl.textColor = UIColor.black
+        memberslbl.textColor = UIColor.darkGray
         memberslbl.text = "Add Members"
         headerView.addSubview(memberslbl)
         

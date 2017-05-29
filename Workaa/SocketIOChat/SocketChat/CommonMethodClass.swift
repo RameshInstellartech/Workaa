@@ -395,7 +395,7 @@ class CommonMethodClass: NSObject
         
         if let dateformat = date
         {
-            dateFormatter.dateFormat = "dd/MM/yyyy"
+            dateFormatter.dateFormat = "dd-MMM-yyyy"
             let datestring = dateFormatter.string(from: dateformat)
             return datestring
         }
