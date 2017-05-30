@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -25,7 +25,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="49.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Phs-Hr-fgf" customClass="AsyncImageView">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Phs-Hr-fgf" customClass="AsyncImageView">
                         <rect key="frame" x="15" y="10" width="30" height="30"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="30" id="5Ji-66-LNO"/>
@@ -39,12 +39,13 @@
                         </userDefinedRuntimeAttributes>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cvM-Y3-paP">
-                        <rect key="frame" x="55" y="0.0" width="215" height="50"/>
+                        <rect key="frame" x="55" y="0.0" width="212" height="50"/>
                         <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="15"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lpM-10-lTB">
-                        <rect key="frame" x="280" y="12" width="25" height="25"/>
+                        <rect key="frame" x="277" y="12" width="25" height="25"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="25" id="Ikj-p2-dTY"/>
                             <constraint firstAttribute="height" constant="25" id="ZBp-OT-d0h"/>
@@ -57,7 +58,7 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="cvM-Y3-paP" secondAttribute="bottom" id="7i7-Kk-nWC"/>
-                    <constraint firstAttribute="trailing" secondItem="lpM-10-lTB" secondAttribute="trailing" constant="15" id="B6i-KF-R8l"/>
+                    <constraint firstAttribute="trailing" secondItem="lpM-10-lTB" secondAttribute="trailing" constant="18" id="B6i-KF-R8l"/>
                     <constraint firstItem="lpM-10-lTB" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="FbG-Wy-vbW"/>
                     <constraint firstItem="lpM-10-lTB" firstAttribute="leading" secondItem="cvM-Y3-paP" secondAttribute="trailing" constant="10" id="S6C-uH-jwK"/>
                     <constraint firstItem="cvM-Y3-paP" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="kSb-Wk-iU9"/>

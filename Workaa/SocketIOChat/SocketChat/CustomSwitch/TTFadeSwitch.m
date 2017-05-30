@@ -129,7 +129,7 @@
         }
         else if([viewstring isEqualToString:@"hours"])
         {
-            self.trackImageView.backgroundColor = [UIColor lightGrayColor];
+            self.trackImageView.backgroundColor = [UIColor colorWithRed:209.0/255.0 green:209.0/255.0 blue:209.0/255.0 alpha:1.0];
         }
         else
         {

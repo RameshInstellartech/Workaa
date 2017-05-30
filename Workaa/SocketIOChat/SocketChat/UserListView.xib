@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -26,35 +26,36 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="utT-9l-Lfb">
-                    <rect key="frame" x="15" y="60" width="290" height="350"/>
+                    <rect key="frame" x="10" y="60" width="300" height="350"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3H5-jN-Vvo">
-                            <rect key="frame" x="0.0" y="0.0" width="290" height="60"/>
+                            <rect key="frame" x="0.0" y="0.0" width="300" height="60"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Members in this Group" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="grU-rk-jwq">
                                     <rect key="frame" x="20" y="0.0" width="190" height="60"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="190" id="k6v-z5-Hex"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="17"/>
+                                    <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="16"/>
+                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hco-V5-cFB">
-                                    <rect key="frame" x="230" y="0.0" width="60" height="60"/>
+                                    <rect key="frame" x="240" y="0.0" width="60" height="60"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="60" id="58J-6F-PA9"/>
                                         <constraint firstAttribute="height" constant="60" id="EOw-fk-7uI"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="icomoon" family="icomoon" pointSize="24"/>
                                     <state key="normal">
-                                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="titleColor" red="0.84313725490196079" green="0.84313725490196079" blue="0.84313725490196079" alpha="1" colorSpace="calibratedRGB"/>
                                     </state>
                                     <connections>
                                         <action selector="closeActionWithSender:" destination="6eZ-qC-fzM" eventType="touchUpInside" id="qHJ-b7-3Dd"/>
                                     </connections>
                                 </button>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9LF-7N-hNW">
-                                    <rect key="frame" x="0.0" y="59" width="290" height="1"/>
+                                    <rect key="frame" x="0.0" y="59" width="300" height="1"/>
                                     <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="6s2-Vw-WxM"/>
@@ -76,7 +77,7 @@
                             </constraints>
                         </view>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="dzP-wc-y3A">
-                            <rect key="frame" x="0.0" y="60" width="290" height="215"/>
+                            <rect key="frame" x="0.0" y="60" width="300" height="215"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <inset key="separatorInset" minX="20" minY="0.0" maxX="20" maxY="0.0"/>
                             <connections>
@@ -85,13 +86,13 @@
                             </connections>
                         </tableView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wO2-Sc-OSO">
-                            <rect key="frame" x="95" y="290" width="100" height="40"/>
+                            <rect key="frame" x="100" y="290" width="100" height="40"/>
                             <color key="backgroundColor" red="0.0" green="0.79215686269999996" blue="0.98823529409999999" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="100" id="0CN-wY-6cv"/>
                                 <constraint firstAttribute="height" constant="40" id="UWD-XE-uFU"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="19"/>
+                            <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="17"/>
                             <state key="normal" title="Okay">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -132,9 +133,9 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="utT-9l-Lfb" firstAttribute="leading" secondItem="6eZ-qC-fzM" secondAttribute="leading" constant="15" id="Nw2-N4-RgH"/>
+                <constraint firstItem="utT-9l-Lfb" firstAttribute="leading" secondItem="6eZ-qC-fzM" secondAttribute="leading" constant="10" id="Nw2-N4-RgH"/>
                 <constraint firstItem="utT-9l-Lfb" firstAttribute="top" secondItem="6eZ-qC-fzM" secondAttribute="top" constant="60" id="Oj8-kp-oI4"/>
-                <constraint firstAttribute="trailing" secondItem="utT-9l-Lfb" secondAttribute="trailing" constant="15" id="pjq-xg-9gp"/>
+                <constraint firstAttribute="trailing" secondItem="utT-9l-Lfb" secondAttribute="trailing" constant="10" id="pjq-xg-9gp"/>
             </constraints>
             <connections>
                 <outlet property="closebtn" destination="hco-V5-cFB" id="WZC-24-hna"/>

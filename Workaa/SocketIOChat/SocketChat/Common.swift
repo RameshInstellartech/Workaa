@@ -149,6 +149,7 @@ let kdirectMessageStarred = "directMessageStarred/"
 let kcafeMessageStarred = "cafeMessageStarred/"
 let kdirectFileList = "directFileList/"
 let kcafeFileList = "cafeFileList/"
+let kqueueEdit = "queueEdit/"
 
 // Icon Codes
 

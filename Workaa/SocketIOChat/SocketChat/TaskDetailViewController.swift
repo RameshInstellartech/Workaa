@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TaskDetailViewController: UIViewController, ConnectionProtocol, UITextViewDelegate
+class TaskDetailViewController: UIViewController, ConnectionProtocol, UITextViewDelegate, QueueUpdate
 {
     @IBOutlet weak var tasktopView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -21,7 +21,7 @@ class TaskDetailViewController: UIViewController, ConnectionProtocol, UITextView
 //    var tasktitle: UITextView!
     var morebtn: UIButton!
     var commonmethodClass = CommonMethodClass()
-    var taskDictionary = NSDictionary()
+    var taskDictionary = NSMutableDictionary()
     var userArray = NSArray()
     var emailArray = NSMutableArray()
     var connectionClass = ConnectionClass()
@@ -128,7 +128,7 @@ class TaskDetailViewController: UIViewController, ConnectionProtocol, UITextView
         if priority == "0"
         {
             priorityView.isHidden = true
-            priorityView.frame = CGRect(x: CGFloat((tasktopView.frame.size.width - 60.0) / 2.0), y: CGFloat(nameView.frame.maxY), width: CGFloat(60.0), height: CGFloat(0.0))
+//            priorityView.frame = CGRect(x: CGFloat((tasktopView.frame.size.width - 60.0) / 2.0), y: CGFloat(nameView.frame.maxY), width: CGFloat(60.0), height: CGFloat(0.0))
 
 //            starImage.image = UIImage(named: "grey_star.png")
 //            priorityView.backgroundColor = UIColor.clear
@@ -287,7 +287,7 @@ class TaskDetailViewController: UIViewController, ConnectionProtocol, UITextView
         descediticonbtn.setTitleColor(UIColor.darkGray, for: .normal)
         descediticonbtn.setTitle(editIcon, for: .normal)
         descediticonbtn.addTarget(self, action: #selector(TaskDetailViewController.desceditaction), for: .touchUpInside)
-        //scrollView.addSubview(descediticonbtn)
+        scrollView.addSubview(descediticonbtn)
         
         /*----------------------------------------------------------*/
 
@@ -502,6 +502,42 @@ class TaskDetailViewController: UIViewController, ConnectionProtocol, UITextView
     func desceditaction()
     {
         //taskdesc.isEditable = true
+        
+        let queueeditObj = self.storyboard?.instantiateViewController(withIdentifier: "QueueEditViewID") as? QueueEditViewController
+        queueeditObj?.taskDictionary = taskDictionary
+        queueeditObj?.delegate = self
+        let navController = UINavigationController(rootViewController: queueeditObj!)
+        navController.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: LatoRegular, size: CGFloat(18.0))!, NSForegroundColorAttributeName : UIColor.white];
+        navController.navigationBar.barTintColor = blueColor
+        navController.navigationBar.isTranslucent = false
+        self.present(navController, animated: true, completion: nil)
+    }
+    
+    func refreshTaskDetails()
+    {
+        print("refreshTaskDetails =>\(taskDictionary)")
+        
+        priority = String(format: "%@", taskDictionary.value(forKey: "priority") as! CVarArg)
+        tasktitlelbl.text = String(format: "%@", taskDictionary.value(forKey: "task") as! CVarArg)
+        taskdesc.text = String(format: "%@", taskDictionary.value(forKey: "info") as! CVarArg)
+        taskdescheight.constant = commonmethodClass.dynamicHeight(width: screenWidth-40, font: taskdesc.font!, string: taskdesc.text!)
+        if(taskdescheight.constant<30.0)
+        {
+            taskdescheight.constant = 30.0
+        }
+        else
+        {
+            taskdescheight.constant = taskdescheight.constant + 20.0
+        }
+        
+        if priority == "0"
+        {
+            priorityView.isHidden = true
+        }
+        else
+        {
+            priorityView.isHidden = false
+        }
     }
     
     @IBAction func closeaction(sender : AnyObject)
@@ -524,10 +560,10 @@ class TaskDetailViewController: UIViewController, ConnectionProtocol, UITextView
         {
             self.showAlert(alerttitle: "Info", alertmsg: queueToTaskReponse.value(forKey: "taskLength") as! String)
         }
-        else if(taskdesc.text.characters.count==0)
-        {
-            self.showAlert(alerttitle: "Info", alertmsg: queueToTaskReponse.value(forKey: "infoRequired") as! String)
-        }
+//        else if(taskdesc.text.characters.count==0)
+//        {
+//            self.showAlert(alerttitle: "Info", alertmsg: queueToTaskReponse.value(forKey: "infoRequired") as! String)
+//        }
         else if(emailArray.count==0)
         {
             self.showAlert(alerttitle: "Info", alertmsg: queueToTaskReponse.value(forKey: "usersRequired") as! String)

@@ -60,13 +60,14 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
         switchtype.thumbImage = UIImage(named: "switchToggle")
         switchtype.thumbHighlightImage = UIImage(named: "switchToggleHigh")
         switchtype.trackMaskImage = UIImage(named: "switchMask")
+        switchtype.viewstring = "groupType"
         switchtype.onString = " PUBLIC"
         switchtype.offString = "PRIVATE"
-        switchtype.onLabel.font = UIFont(name: LatoBold, size: CGFloat(14.0))!
-        switchtype.offLabel.font = UIFont(name: LatoBold, size: CGFloat(14.0))!
+        switchtype.onLabel.font = UIFont(name: LatoBlack, size: CGFloat(11.0))!
+        switchtype.offLabel.font = UIFont(name: LatoBlack, size: CGFloat(11.0))!
         switchtype.onLabel.textColor = UIColor.white
         switchtype.offLabel.textColor = UIColor.white
-        switchtype.labelsEdgeInsets = UIEdgeInsetsMake(0.0, 10.0, 0.0, 10.0)
+        switchtype.labelsEdgeInsets = UIEdgeInsetsMake(0.0, 16.0, 0.0, 16.0)
         switchtype.thumbInsetX = -3.0
         switchtype.thumbOffsetY = 2.0
         switchtype.addTarget(self, action: #selector(typeswitchValueDidChange), for: .valueChanged)
@@ -83,13 +84,14 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
         hourswitchtype.thumbImage = UIImage(named: "switchToggle")
         hourswitchtype.thumbHighlightImage = UIImage(named: "switchToggleHigh")
         hourswitchtype.trackMaskImage = UIImage(named: "switchMask")
+        hourswitchtype.viewstring = "hours"
         hourswitchtype.onString = "YES"
         hourswitchtype.offString = "NO "
-        hourswitchtype.onLabel.font = UIFont(name: LatoBold, size: CGFloat(15.0))!
-        hourswitchtype.offLabel.font = UIFont(name: LatoBold, size: CGFloat(15.0))!
+        hourswitchtype.onLabel.font = UIFont(name: LatoBlack, size: CGFloat(12.0))!
+        hourswitchtype.offLabel.font = UIFont(name: LatoBlack, size: CGFloat(12.0))!
         hourswitchtype.onLabel.textColor = UIColor.white
         hourswitchtype.offLabel.textColor = UIColor.white
-        hourswitchtype.labelsEdgeInsets = UIEdgeInsetsMake(0.0, 27.0, 0.0, 27.0)
+        hourswitchtype.labelsEdgeInsets = UIEdgeInsetsMake(0.0, 30.0, 0.0, 32.0)
         hourswitchtype.thumbInsetX = -3.0
         hourswitchtype.thumbOffsetY = 2.0
         hourswitchtype.addTarget(self, action: #selector(hoursswitchValueDidChange), for: .valueChanged)
@@ -530,7 +532,7 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
             cell.levelView.isHidden = true
         }
         
-        cell.levelView.layer.borderColor = UIColor.lightGray.cgColor
+        cell.levelView.layer.borderColor = lightgrayColor.cgColor
         cell.levelView.layer.borderWidth = 1.0
         
         let adminstring = String(format: "%@", groupdictionary.value(forKey: "admin") as! CVarArg)
@@ -608,15 +610,15 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
         personlbl.frame = CGRect(x: CGFloat(15.0), y: CGFloat(0.0), width: CGFloat(30.0), height: CGFloat(headerheight))
         personlbl.font = UIFont(name: Workaa_Font, size: CGFloat(25.0))
         personlbl.backgroundColor = UIColor.clear
-        personlbl.textColor = UIColor.black
+        personlbl.textColor = UIColor.darkGray
         personlbl.text = adduserIcon
         headerView.addSubview(personlbl)
         
         let memberslbl = UILabel()
         memberslbl.frame = CGRect(x: CGFloat(personlbl.frame.maxX+10.0), y: CGFloat(0.0), width: CGFloat(110.0), height: CGFloat(headerheight))
-        memberslbl.font = UIFont(name: LatoRegular, size: CGFloat(17.0))
+        memberslbl.font = UIFont(name: LatoRegular, size: CGFloat(16.0))
         memberslbl.backgroundColor = UIColor.clear
-        memberslbl.textColor = UIColor.black
+        memberslbl.textColor = UIColor.darkGray
         memberslbl.text = "Add Members"
         headerView.addSubview(memberslbl)
         
@@ -627,11 +629,17 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
             plusiconbtn.frame = CGRect(x: CGFloat(screenWidth-55.0), y: CGFloat(0.0), width: CGFloat(40.0), height: CGFloat(headerheight))
             plusiconbtn.titleLabel?.font = UIFont(name: Workaa_Font, size: CGFloat(27.0))
             plusiconbtn.backgroundColor = UIColor.clear
-            plusiconbtn.setTitleColor(UIColor.darkGray, for: .normal)
+            plusiconbtn.setTitleColor(UIColor.lightGray, for: .normal)
             plusiconbtn.setTitle(roundplusIcon, for: .normal)
-            plusiconbtn.addTarget(self, action: #selector(GroupDetailsInfoViewController.getUseraction), for: .touchUpInside)
+            //        plusiconbtn.addTarget(self, action: #selector(CreateGroupViewController.getUseraction), for: .touchUpInside)
             plusiconbtn.contentHorizontalAlignment = .right
             headerView.addSubview(plusiconbtn)
+            
+            let overlaybtn = UIButton()
+            overlaybtn.frame = CGRect(x: CGFloat(0.0), y: CGFloat(0.0), width: CGFloat(screenWidth), height: CGFloat(headerheight))
+            overlaybtn.backgroundColor = UIColor.clear
+            overlaybtn.addTarget(self, action: #selector(CreateGroupViewController.getUseraction), for: .touchUpInside)
+            headerView.addSubview(overlaybtn)
         }
         
         return headerView

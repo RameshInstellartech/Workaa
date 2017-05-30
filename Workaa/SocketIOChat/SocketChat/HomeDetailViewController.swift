@@ -281,7 +281,7 @@ class HomeDetailViewController: UIViewController, CardsSwipingViewDelegate, call
     func callDetailPage(_ dictionary: [AnyHashable : Any]!)
     {
         let taskdetailObj = self.storyboard?.instantiateViewController(withIdentifier: "TaskDetailViewID") as? TaskDetailViewController
-        taskdetailObj?.taskDictionary = dictionary as NSDictionary
+        taskdetailObj?.taskDictionary = NSMutableDictionary(dictionary: dictionary)
         self.present(taskdetailObj!, animated: true, completion: nil)
     }
     

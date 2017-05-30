@@ -424,7 +424,7 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate, UITextVi
         cell.closebtn.setTitle(closeIcon, for: .normal)
         cell.closebtn.addTarget(self, action: #selector(self.usercloseaction(sender:)), for: .touchUpInside)
         cell.closebtn.tag = indexPath.row
-        cell.closebtn.contentEdgeInsets = UIEdgeInsetsMake(0.0, 6.0, 0.0, 0.0)
+        cell.closebtn.contentEdgeInsets = UIEdgeInsetsMake(0.0, 12.0, 0.0, 0.0)
         
 //        cell.lblusername.text = String(format: "%@ %@", userdictionary.value(forKey: "firstName") as! CVarArg, userdictionary.value(forKey: "lastName") as! CVarArg)
         cell.lblusername.text = String(format: "%@", userdictionary.value(forKey: "firstName") as! CVarArg)
@@ -439,9 +439,9 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate, UITextVi
         }
         else
         {
-            cell.levelView.layer.borderColor = UIColor.lightGray.cgColor
-            cell.levelLbl.textColor = UIColor.lightGray
-            cell.arrowLbl.textColor = UIColor.lightGray
+            cell.levelView.layer.borderColor = lightgrayColor.cgColor
+            cell.levelLbl.textColor = UIColor(red: 133.0/255.0, green: 133.0/255.0, blue: 133.0/255.0, alpha: 1.0)
+            cell.arrowLbl.textColor = lightgrayColor
             cell.levelLbl.text = "Normal"
         }
         cell.levelView.layer.borderWidth = 1.0
@@ -494,11 +494,17 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate, UITextVi
         plusiconbtn.frame = CGRect(x: CGFloat(screenWidth-55.0), y: CGFloat(0.0), width: CGFloat(40.0), height: CGFloat(headerheight))
         plusiconbtn.titleLabel?.font = UIFont(name: Workaa_Font, size: CGFloat(27.0))
         plusiconbtn.backgroundColor = UIColor.clear
-        plusiconbtn.setTitleColor(UIColor.darkGray, for: .normal)
+        plusiconbtn.setTitleColor(UIColor.lightGray, for: .normal)
         plusiconbtn.setTitle(roundplusIcon, for: .normal)
-        plusiconbtn.addTarget(self, action: #selector(CreateGroupViewController.getUseraction), for: .touchUpInside)
+//        plusiconbtn.addTarget(self, action: #selector(CreateGroupViewController.getUseraction), for: .touchUpInside)
         plusiconbtn.contentHorizontalAlignment = .right
         headerView.addSubview(plusiconbtn)
+        
+        let overlaybtn = UIButton()
+        overlaybtn.frame = CGRect(x: CGFloat(0.0), y: CGFloat(0.0), width: CGFloat(screenWidth), height: CGFloat(headerheight))
+        overlaybtn.backgroundColor = UIColor.clear
+        overlaybtn.addTarget(self, action: #selector(CreateGroupViewController.getUseraction), for: .touchUpInside)
+        headerView.addSubview(overlaybtn)
         
         return headerView
     }

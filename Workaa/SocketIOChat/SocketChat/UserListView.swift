@@ -122,7 +122,7 @@ class UserListView: UIView, ConnectionProtocol, UITableViewDelegate, UITableView
             sender.setTitle("", for: .normal)
             sender.layer.cornerRadius = sender.frame.size.height / 2.0
             sender.layer.masksToBounds = true
-            sender.layer.borderColor = UIColor.darkGray.cgColor
+            sender.layer.borderColor = UIColor.lightGray.cgColor
             sender.layer.borderWidth = 1.0
             
             selecteduserArray.remove(userArray[sender.tag])
@@ -152,7 +152,8 @@ class UserListView: UIView, ConnectionProtocol, UITableViewDelegate, UITableView
         let fileUrl = NSURL(string: filestring)
         cell.profileimage.imageURL = fileUrl as URL?
                 
-        cell.lblusername.text = String(format: "%@ %@", userdictionary.value(forKey: "firstName") as! CVarArg, userdictionary.value(forKey: "lastName") as! CVarArg)
+//        cell.lblusername.text = String(format: "%@ %@", userdictionary.value(forKey: "firstName") as! CVarArg, userdictionary.value(forKey: "lastName") as! CVarArg)
+        cell.lblusername.text = String(format: "%@", userdictionary.value(forKey: "firstName") as! CVarArg)
         
         cell.tickbtn.addTarget(self, action: #selector(self.tickaction(sender:)), for: .touchUpInside)
         cell.tickbtn.tag = indexPath.row
@@ -172,7 +173,7 @@ class UserListView: UIView, ConnectionProtocol, UITableViewDelegate, UITableView
                 cell.tickbtn.setTitle("", for: .normal)
                 cell.tickbtn.layer.cornerRadius = cell.tickbtn.frame.size.height / 2.0
                 cell.tickbtn.layer.masksToBounds = true
-                cell.tickbtn.layer.borderColor = UIColor.darkGray.cgColor
+                cell.tickbtn.layer.borderColor = UIColor.lightGray.cgColor
                 cell.tickbtn.layer.borderWidth = 1.0
             }
         }
@@ -181,7 +182,7 @@ class UserListView: UIView, ConnectionProtocol, UITableViewDelegate, UITableView
             cell.tickbtn.setTitle("", for: .normal)
             cell.tickbtn.layer.cornerRadius = cell.tickbtn.frame.size.height / 2.0
             cell.tickbtn.layer.masksToBounds = true
-            cell.tickbtn.layer.borderColor = UIColor.darkGray.cgColor
+            cell.tickbtn.layer.borderColor = UIColor.lightGray.cgColor
             cell.tickbtn.layer.borderWidth = 1.0
         }
         

@@ -377,6 +377,24 @@ class ConnectionClass: NSObject
         self.getRequest(request: request)
     }
     
+    func queueEdit(groupId:String, taskid:String, taskname:String, taskdescription:String, priority:String)
+    {
+        let urlpath = String(format: "%@%@", kBaseURL,kqueueEdit)
+        
+        let request : ASIFormDataRequest = ASIFormDataRequest(url: NSURL(string: urlpath)! as URL)
+        request.requestMethod = "POST"
+        request.addPostValue(commonmethodClass.retrieveUsernameToken(), forKey: "token")
+        request.addPostValue(groupId as NSObjectProtocol!, forKey: "groupid")
+        request.addPostValue(taskid as NSObjectProtocol!, forKey: "id")
+        request.addPostValue(taskname as NSObjectProtocol!, forKey: "task")
+        request.addPostValue(taskdescription as NSObjectProtocol!, forKey: "info")
+        request.addPostValue(priority as NSObjectProtocol!, forKey: "priority")
+        request.addHeader("Accept", value: "application/json")
+        request.startSynchronous()
+        
+        self.getRequest(request: request)
+    }
+    
     func getNonGroupUserList(groupId:String)
     {
         let urlpath = String(format: "%@%@", kBaseURL,knongroupuserlist)

@@ -144,6 +144,7 @@
 		139635861E24E54200ED9329 /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 139635821E24E54200ED9329 /* Lato-Bold.ttf */; };
 		139635871E24E54200ED9329 /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 139635831E24E54200ED9329 /* Lato-Light.ttf */; };
 		139635881E24E54200ED9329 /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 139635841E24E54200ED9329 /* Lato-Regular.ttf */; };
+		13999E5D1EDC5DBE00F9B3F9 /* QueueEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13999E5C1EDC5DBE00F9B3F9 /* QueueEditViewController.swift */; };
 		13A458521E9216D200229454 /* TeamCheckingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A458511E9216D200229454 /* TeamCheckingViewController.swift */; };
 		13A9F92A1DC1D59700E71942 /* SocketIOClientSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A9F9291DC1D59700E71942 /* SocketIOClientSpec.swift */; };
 		13A9F92C1DC1D6B100E71942 /* SSLSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A9F92B1DC1D6B100E71942 /* SSLSecurity.swift */; };
@@ -365,6 +366,7 @@
 		139635821E24E54200ED9329 /* Lato-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bold.ttf"; sourceTree = "<group>"; };
 		139635831E24E54200ED9329 /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Light.ttf"; sourceTree = "<group>"; };
 		139635841E24E54200ED9329 /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
+		13999E5C1EDC5DBE00F9B3F9 /* QueueEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueEditViewController.swift; sourceTree = "<group>"; };
 		13A458511E9216D200229454 /* TeamCheckingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamCheckingViewController.swift; sourceTree = "<group>"; };
 		13A9F9291DC1D59700E71942 /* SocketIOClientSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketIOClientSpec.swift; sourceTree = "<group>"; };
 		13A9F92B1DC1D6B100E71942 /* SSLSecurity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSLSecurity.swift; sourceTree = "<group>"; };
@@ -709,6 +711,7 @@
 				136F97861E5860F500AE1579 /* HomeViewController.swift */,
 				137343991E5EE11100818530 /* HomeDetailViewController.swift */,
 				135E296B1E6068D300C8FF0C /* TaskDetailViewController.swift */,
+				13999E5C1EDC5DBE00F9B3F9 /* QueueEditViewController.swift */,
 				136FAB491DD3078C00B04A2A /* GroupListController.swift */,
 				131261481EBDE19C0039F394 /* GroupDetailsInfoViewController.swift */,
 				1377F1E41E768D6F0049D5D2 /* NonGroupUserListViewController.swift */,
@@ -1096,6 +1099,7 @@
 				135162731EC081E1006B7DFE /* FavMsgViewController.swift in Sources */,
 				13521FE01E86659B005CCCFB /* ProfileInfoTableViewCell.swift in Sources */,
 				13F8214E1DED6C0900905A86 /* AsyncImageView.m in Sources */,
+				13999E5D1EDC5DBE00F9B3F9 /* QueueEditViewController.swift in Sources */,
 				1363C5BC1E17E19200534234 /* CreateTaskViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

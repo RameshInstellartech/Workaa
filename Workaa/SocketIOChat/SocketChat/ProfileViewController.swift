@@ -343,6 +343,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     imgData = nil
                     profileString = profilestring
                     commonmethodClass.saveprofileimg(profileImg: profilestring as NSString)
+                    
+                    imageBool = true
+                    imagecount = 1
                 }
                 else
                 {
@@ -423,9 +426,12 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         if textField.placeholder == "Gender"
         {
-            pickView.isHidden = false
-            datepickView.isHidden = true
-            pickerView.reloadAllComponents()
+            if genderArray.count>0
+            {
+                pickView.isHidden = false
+                datepickView.isHidden = true
+                pickerView.reloadAllComponents()
+            }
             
             commonmethodClass.delayWithSeconds(0.0, completion: {
                 textField.resignFirstResponder()
