@@ -92,7 +92,11 @@ open class ICTokenField: UIView, UITextFieldDelegate, ICBackspaceTextFieldDelega
       if let text = newValue {
         attributedPlaceholder = NSAttributedString(
           string: text,
-          attributes: [NSForegroundColorAttributeName: UIColor(red: 0.78, green: 0.78, blue: 0.80, alpha: 0.9)]
+//          attributes: [NSForegroundColorAttributeName: UIColor(red: 0.78, green: 0.78, blue: 0.80, alpha: 0.9)]
+            attributes: [
+                NSForegroundColorAttributeName: UIColor(red: 0.78, green: 0.78, blue: 0.80, alpha: 0.9),
+                NSFontAttributeName: UIFont (name: LatoRegular, size: 15)!
+            ]
         )
       } else {
         attributedPlaceholder = nil

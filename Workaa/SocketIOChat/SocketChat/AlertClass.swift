@@ -27,7 +27,7 @@ class AlertClass: UIView, ConnectionProtocol, UITextViewDelegate
         
         let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(defaultAction)
-        navigation().present(alertController, animated: true, completion: nil)
+        rootViewController?.present(alertController, animated: true, completion: nil)
     }
     
     func profileAttachment()

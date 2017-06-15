@@ -16,6 +16,12 @@ class CommonMethodClass: NSObject
         let userEncodedObject = NSKeyedArchiver.archivedData(withRootObject: reponse)
         UserDefaults.standard.setValue(userEncodedObject, forKey: "user_details")
         UserDefaults.standard.synchronize()
+        
+        let userDecodedObject = UserDefaults.standard.value(forKey: "user_details") as! Data
+        let userdetails = NSKeyedUnarchiver.unarchiveObject(with: userDecodedObject) as! NSDictionary
+        let userdata = userdetails.value(forKey: "userData") as! NSDictionary
+        let adminstring = String(format: "%@", userdata.value(forKey: "admin") as! CVarArg)
+        self.saveteamadmin(admin: adminstring)
     }
     
     func saveteamdetails(reponse : NSDictionary)
@@ -63,6 +69,28 @@ class CommonMethodClass: NSObject
         })
     }
     
+    func directChatMsgExist(msgId : String) -> Bool
+    {
+        do {
+            let fetchRequest:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "OneToOne")
+            fetchRequest.returnsObjectsAsFaults = false
+            
+            let predicate = NSPredicate(format: "msgid = %@", msgId)
+            fetchRequest.predicate = predicate
+            
+            let results =
+                try managedContext.fetch(fetchRequest)
+            let messages = results as! [NSManagedObject]
+            if messages.count>0
+            {
+                return true
+            }
+        } catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
+        return false
+    }
+    
     func groupChatMsgExist(msgId : String) -> Bool
     {
         do {
@@ -107,7 +135,7 @@ class CommonMethodClass: NSObject
         return false
     }
     
-    func groupChatCmtDetailsExist(msgId : String) -> Bool
+    func groupChatCmtDetailsExist(msgId : String, cmtId : String) -> Bool
     {
         do {
             let fetchRequest:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "GroupChat")
@@ -117,14 +145,94 @@ class CommonMethodClass: NSObject
             fetchRequest.predicate = predicate
             
             let results = try managedContext.fetch(fetchRequest) as! [NSManagedObject]
-            
             if results.count > 0
             {
-                let currentChatMessage = results[0]
-                if let cmtDetails = currentChatMessage.value(forKey: "commentdetails") as? NSDictionary
+                for i in 0 ..< results.count
                 {
-                    print("cmtDetails CMT =>\(cmtDetails)")
-                    return true
+                    let getmanageObj = results[i]
+                    if let cmtDetails = getmanageObj.value(forKey: "commentdetails") as? NSDictionary
+                    {
+                        let cmtid = cmtDetails.value(forKey: "cmtid") as? String
+                        if cmtid==cmtId
+                        {
+                            return true
+                        }
+                    }
+                }
+            }
+        } catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
+        return false
+    }
+    
+    func cafeChatMsgExist(msgId : String) -> Bool
+    {
+        do {
+            let fetchRequest:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CafeChat")
+            fetchRequest.returnsObjectsAsFaults = false
+            
+            let predicate = NSPredicate(format: "msgid = %@", msgId)
+            fetchRequest.predicate = predicate
+            
+            let results =
+                try managedContext.fetch(fetchRequest)
+            let messages = results as! [NSManagedObject]
+            if messages.count>0
+            {
+                return true
+            }
+        } catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
+        return false
+    }
+    
+    func cafeChatCmtMsgExist(cmtId : String) -> Bool
+    {
+        do {
+            let fetchRequest:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CafeComment")
+            fetchRequest.returnsObjectsAsFaults = false
+            
+            let predicate = NSPredicate(format: "cmtid = %@", cmtId)
+            fetchRequest.predicate = predicate
+            
+            let results =
+                try managedContext.fetch(fetchRequest)
+            let messages = results as! [NSManagedObject]
+            if messages.count>0
+            {
+                return true
+            }
+        } catch let error as NSError {
+            print("Could not fetch \(error), \(error.userInfo)")
+        }
+        return false
+    }
+    
+    func cafeChatCmtDetailsExist(msgId : String, cmtId : String) -> Bool
+    {
+        do {
+            let fetchRequest:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CafeChat")
+            fetchRequest.returnsObjectsAsFaults = false
+            
+            let predicate = NSPredicate(format: "msgid = %@", msgId)
+            fetchRequest.predicate = predicate
+            
+            let results = try managedContext.fetch(fetchRequest) as! [NSManagedObject]
+            if results.count > 0
+            {
+                for i in 0 ..< results.count
+                {
+                    let getmanageObj = results[i]
+                    if let cmtDetails = getmanageObj.value(forKey: "commentdetails") as? NSDictionary
+                    {
+                        let cmtid = cmtDetails.value(forKey: "cmtid") as? String
+                        if cmtid==cmtId
+                        {
+                            return true
+                        }
+                    }
                 }
             }
         } catch let error as NSError {
@@ -174,19 +282,43 @@ class CommonMethodClass: NSObject
     
     func retrieveteamid() -> NSString
     {
-        let teamDecodedObject = UserDefaults.standard.value(forKey: "team_details") as! Data
-        let teamdetails = NSKeyedUnarchiver.unarchiveObject(with: teamDecodedObject) as! NSDictionary
-        let teamid = teamdetails.value(forKey: "uniqueId") as! NSString
-        return teamid
+        if AlreadyExist(Key: "team_details")
+        {
+            let teamDecodedObject = UserDefaults.standard.value(forKey: "team_details") as! Data
+            let teamdetails = NSKeyedUnarchiver.unarchiveObject(with: teamDecodedObject) as! NSDictionary
+            if let teamid = teamdetails.value(forKey: "uniqueId") as? NSString
+            {
+                return teamid
+            }
+            else
+            {
+                return ""
+            }
+        }
+        else
+        {
+            return ""
+        }
     }
     
     func retrieveteamadmin() -> String
     {
-        let userDecodedObject = UserDefaults.standard.value(forKey: "user_details") as! Data
-        let userdetails = NSKeyedUnarchiver.unarchiveObject(with: userDecodedObject) as! NSDictionary
-        let userdata = userdetails.value(forKey: "userData") as! NSDictionary
-        let adminstring = String(format: "%@", userdata.value(forKey: "admin") as! CVarArg)
+//        let userDecodedObject = UserDefaults.standard.value(forKey: "user_details") as! Data
+//        let userdetails = NSKeyedUnarchiver.unarchiveObject(with: userDecodedObject) as! NSDictionary
+//        let userdata = userdetails.value(forKey: "userData") as! NSDictionary
+//        let adminstring = String(format: "%@", userdata.value(forKey: "admin") as! CVarArg)
+//        return adminstring as String
+        
+        let adminObject = UserDefaults.standard.value(forKey: "team_admin") as! Data
+        let adminstring = NSKeyedUnarchiver.unarchiveObject(with: adminObject) as! String
         return adminstring as String
+    }
+    
+    func saveteamadmin(admin : String)
+    {
+        let adminObject = NSKeyedArchiver.archivedData(withRootObject: admin)
+        UserDefaults.standard.setValue(adminObject, forKey: "team_admin")
+        UserDefaults.standard.synchronize()
     }
     
     func retrieveteamdomain() -> NSString
@@ -329,10 +461,23 @@ class CommonMethodClass: NSObject
     
     func retrieveUsernameToken() -> NSString
     {
-        let userDecodedObject = UserDefaults.standard.value(forKey: "user_details") as! Data
-        let userdetails = NSKeyedUnarchiver.unarchiveObject(with: userDecodedObject) as! NSDictionary
-        let token = userdetails.value(forKey: "token") as! NSString
-        return token
+        if AlreadyExist(Key: "user_details")
+        {
+            let userDecodedObject = UserDefaults.standard.value(forKey: "user_details") as! Data
+            let userdetails = NSKeyedUnarchiver.unarchiveObject(with: userDecodedObject) as! NSDictionary
+            if let token = userdetails.value(forKey: "token") as? NSString
+            {
+                return token
+            }
+            else
+            {
+                return ""
+            }
+        }
+        else
+        {
+            return ""
+        }
     }
         
     func retrievesessionid() -> NSString

@@ -138,7 +138,7 @@ class TaskListViewController: UIViewController, UITableViewDelegate, UITableView
     
     func loadSegment()
     {
-        segmentedControl = HMSegmentedControl(sectionTitles: ["Queue", "Tasks", "Groups"])
+        segmentedControl = HMSegmentedControl(sectionTitles: ["Queue", "My Tasks", "Groups"])
         segmentedControl.autoresizingMask = [.flexibleRightMargin, .flexibleWidth]
         segmentedControl.backgroundColor = UIColor.white
         segmentedControl.frame = CGRect(x: CGFloat(0.0), y: CGFloat(0.0), width: CGFloat(screenWidth), height: CGFloat(45.0))
@@ -347,7 +347,7 @@ class TaskListViewController: UIViewController, UITableViewDelegate, UITableView
         if(segmentedControl.selectedSegmentIndex==0)
         {
             let queuedetailObj = self.storyboard?.instantiateViewController(withIdentifier: "QueueDetailViewID") as? QueueDetailViewController
-            queuedetailObj?.queueDictionary = queueArray[indexPath.row] as! NSDictionary
+            queuedetailObj?.queueDictionary = NSMutableDictionary(dictionary: queueArray[indexPath.row] as! NSDictionary)
             self.navigationController?.pushViewController(queuedetailObj!, animated: true)
         }
         else if(segmentedControl.selectedSegmentIndex==1)

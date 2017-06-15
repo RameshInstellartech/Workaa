@@ -17,6 +17,7 @@ class MenuTableViewController: UIViewController, UITableViewDelegate, UITableVie
     var menuArray = NSArray()
     var connectionClass = ConnectionClass()
     var selIndex = NSInteger()
+    var overlayView = UIView()
 
     override func viewDidLoad()
     {
@@ -33,17 +34,42 @@ class MenuTableViewController: UIViewController, UITableViewDelegate, UITableVie
         super.viewWillAppear(animated)
         
         self.loadArray()
+        
+        overlayView = UIView()
+        overlayView.backgroundColor = UIColor.clear
+        overlayView.frame = CGRect(x: CGFloat(0.0), y: CGFloat(0.0), width: CGFloat(screenWidth), height: CGFloat(screenHeight))
+        overlayView.backgroundColor = UIColor.clear
+        self.revealViewController().frontViewController.view.addSubview(overlayView)
+        
+        let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.closeView))
+        tapGesture.numberOfTapsRequired = 1
+        overlayView.addGestureRecognizer(tapGesture)
+        
+//        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(self.closeView))
+//        overlayView.addGestureRecognizer(panGestureRecognizer)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool)
+    {
+        super.viewWillDisappear(animated)
+        
+        overlayView.removeFromSuperview()
+    }
+    
+    func closeView()
+    {
+        self.revealViewController().revealToggle(animated: true)
     }
     
     func loadArray()
     {
         if appDelegate.checkInString == "1"
         {
-            menuArray = ["Tasks","Messenger","Groups","Check-Out","Logout"]
+            menuArray = ["Bucket","Messenger","Groups","Check-Out","Logout"]
         }
         else
         {
-            menuArray = ["Tasks","Messenger","Groups","Check-In","Logout"]
+            menuArray = ["Bucket","Messenger","Groups","Check-In","Logout"]
         }
         
         if menuList != nil
@@ -191,39 +217,7 @@ class MenuTableViewController: UIViewController, UITableViewDelegate, UITableVie
         else if(indexPath.row==5)
         {
             connectionClass.logOut()
-        }
-    }
-    
-    func loadCheckInView()
-    {
-        for v: UIView in checkInView.subviews {
-            v.removeFromSuperview()
-        }
-        checkInView.removeFromSuperview()
-        
-        checkInView = Bundle.main.loadNibNamed("CheckInView", owner: nil, options: nil)?[0] as! CheckInView
-        checkInView.frame = CGRect(x: 0.0, y: 0.0, width: screenWidth, height: screenHeight)
-        checkInView.loadCheckInView()
-        appDelegate.window?.addSubview(checkInView)
-    }
-    
-    func GetFailureReponseMethod(errorreponse: String)
-    {
-        print("GetFailureReponseMethod")
-    }
-    
-    func GetReponseMethod(reponse : NSDictionary)
-    {
-        print("reponse => \(reponse)")
-        
-        if(selIndex==4)
-        {
-            appDelegate.checkInString = "2"
             
-            self.loadArray()
-        }
-        if(selIndex==5)
-        {
             self.revealViewController().revealToggle(animated: false)
             commonmethodClass.removeallkey()
             
@@ -251,6 +245,67 @@ class MenuTableViewController: UIViewController, UITableViewDelegate, UITableVie
                 let welcomeObj = storyboard?.instantiateViewController(withIdentifier: "WelcomeViewID") as? WelcomeViewController
                 navigation().pushViewController(welcomeObj!, animated: false)
             }
+        }
+    }
+    
+    func loadCheckInView()
+    {
+        for v: UIView in checkInView.subviews {
+            v.removeFromSuperview()
+        }
+        checkInView.removeFromSuperview()
+        
+        checkInView = Bundle.main.loadNibNamed("CheckInView", owner: nil, options: nil)?[0] as! CheckInView
+        checkInView.frame = CGRect(x: 0.0, y: 0.0, width: screenWidth, height: screenHeight)
+        checkInView.loadCheckInView()
+        //appDelegate.window?.addSubview(checkInView)
+        self.revealViewController().view.addSubview(checkInView)
+    }
+    
+    func GetFailureReponseMethod(errorreponse: String)
+    {
+        print("GetFailureReponseMethod")
+    }
+    
+    func GetReponseMethod(reponse : NSDictionary)
+    {
+        print("reponse => \(reponse)")
+        
+        if(selIndex==4)
+        {
+            appDelegate.checkInString = "2"
+            
+            self.loadArray()
+        }
+        if(selIndex==5)
+        {
+//            self.revealViewController().revealToggle(animated: false)
+//            commonmethodClass.removeallkey()
+//            
+//            var isView : Bool!
+//            isView = false
+//            
+//            var viewcontroller = UIViewController()
+//            
+//            for aviewcontroller : UIViewController in navigation().viewControllers
+//            {
+//                if aviewcontroller is WelcomeViewController
+//                {
+//                    viewcontroller = aviewcontroller
+//                    isView = true
+//                    break
+//                }
+//            }
+//            
+//            if isView==true
+//            {
+//                navigation().popToViewController(viewcontroller, animated: false)
+//            }
+//            else
+//            {
+//                let welcomeObj = storyboard?.instantiateViewController(withIdentifier: "WelcomeViewID") as? WelcomeViewController
+//                navigation().pushViewController(welcomeObj!, animated: false)
+//            }
         }
     }
 

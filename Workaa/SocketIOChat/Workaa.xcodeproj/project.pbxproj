@@ -80,6 +80,7 @@
 		1359313A1DC9CA8C00D1AA27 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135931391DC9CA8C00D1AA27 /* SignUpViewController.swift */; };
 		135AE7DD1E712D3E003A6D36 /* TeamInviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135AE7DC1E712D3E003A6D36 /* TeamInviteViewController.swift */; };
 		135CE30E1E6585D0003C36AE /* QueueDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135CE30D1E6585D0003C36AE /* QueueDetailViewController.swift */; };
+		135D61511EE7EEDC00FE7B8D /* AlphaGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 135D61501EE7EEDC00FE7B8D /* AlphaGradientView.m */; };
 		135E296C1E6068D300C8FF0C /* TaskDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135E296B1E6068D300C8FF0C /* TaskDetailViewController.swift */; };
 		135ED47E1DD196CA002A9BF4 /* CommonMethodClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135ED47D1DD196CA002A9BF4 /* CommonMethodClass.swift */; };
 		135ED4801DD1C9ED002A9BF4 /* TeamListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135ED47F1DD1C9ED002A9BF4 /* TeamListViewController.swift */; };
@@ -139,6 +140,9 @@
 		13853F3F1E69A857005ECC08 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13853F3E1E69A857005ECC08 /* UserNotifications.framework */; };
 		138B12CB1E94B9CF007984A1 /* CheckInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138B12CA1E94B9CF007984A1 /* CheckInView.swift */; };
 		138B12CD1E94BCF2007984A1 /* CheckInView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 138B12CC1E94BCF2007984A1 /* CheckInView.xib */; };
+		1390331A1EF176090061FB5E /* ForgotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 139033191EF176080061FB5E /* ForgotViewController.swift */; };
+		1390331D1EF1860E0061FB5E /* forgotimg1.png in Resources */ = {isa = PBXBuildFile; fileRef = 1390331B1EF1860E0061FB5E /* forgotimg1.png */; };
+		1390331E1EF1860E0061FB5E /* forgotimg2.png in Resources */ = {isa = PBXBuildFile; fileRef = 1390331C1EF1860E0061FB5E /* forgotimg2.png */; };
 		13906CCD1E3B143600792C05 /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13906CCC1E3B143600792C05 /* PhotoViewController.swift */; };
 		139635851E24E54200ED9329 /* Lato-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 139635811E24E54200ED9329 /* Lato-Black.ttf */; };
 		139635861E24E54200ED9329 /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 139635821E24E54200ED9329 /* Lato-Bold.ttf */; };
@@ -276,6 +280,8 @@
 		135931391DC9CA8C00D1AA27 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		135AE7DC1E712D3E003A6D36 /* TeamInviteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamInviteViewController.swift; sourceTree = "<group>"; };
 		135CE30D1E6585D0003C36AE /* QueueDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueDetailViewController.swift; sourceTree = "<group>"; };
+		135D614F1EE7EEDC00FE7B8D /* AlphaGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlphaGradientView.h; sourceTree = "<group>"; };
+		135D61501EE7EEDC00FE7B8D /* AlphaGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlphaGradientView.m; sourceTree = "<group>"; };
 		135E296B1E6068D300C8FF0C /* TaskDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskDetailViewController.swift; sourceTree = "<group>"; };
 		135ED47D1DD196CA002A9BF4 /* CommonMethodClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonMethodClass.swift; sourceTree = "<group>"; };
 		135ED47F1DD1C9ED002A9BF4 /* TeamListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamListViewController.swift; sourceTree = "<group>"; };
@@ -361,6 +367,9 @@
 		13853F3E1E69A857005ECC08 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		138B12CA1E94B9CF007984A1 /* CheckInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckInView.swift; sourceTree = "<group>"; };
 		138B12CC1E94BCF2007984A1 /* CheckInView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CheckInView.xib; sourceTree = "<group>"; };
+		139033191EF176080061FB5E /* ForgotViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotViewController.swift; sourceTree = "<group>"; };
+		1390331B1EF1860E0061FB5E /* forgotimg1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = forgotimg1.png; sourceTree = "<group>"; };
+		1390331C1EF1860E0061FB5E /* forgotimg2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = forgotimg2.png; sourceTree = "<group>"; };
 		13906CCC1E3B143600792C05 /* PhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		139635811E24E54200ED9329 /* Lato-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Black.ttf"; sourceTree = "<group>"; };
 		139635821E24E54200ED9329 /* Lato-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bold.ttf"; sourceTree = "<group>"; };
@@ -486,6 +495,15 @@
 			path = TokenField;
 			sourceTree = "<group>";
 		};
+		135D614E1EE7EEA200FE7B8D /* AlphaGradient */ = {
+			isa = PBXGroup;
+			children = (
+				135D614F1EE7EEDC00FE7B8D /* AlphaGradientView.h */,
+				135D61501EE7EEDC00FE7B8D /* AlphaGradientView.m */,
+			);
+			name = AlphaGradient;
+			sourceTree = "<group>";
+		};
 		135ED4BB1DD1FE27002A9BF4 /* AsiHttpRequest */ = {
 			isa = PBXGroup;
 			children = (
@@ -579,6 +597,8 @@
 		1379501E1E55792100D8FEFD /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				1390331B1EF1860E0061FB5E /* forgotimg1.png */,
+				1390331C1EF1860E0061FB5E /* forgotimg2.png */,
 				13466B731ED867D5000A69D6 /* splash.jpg */,
 				1379501F1E55792100D8FEFD /* workaa-logo-black.png */,
 				1342899F1E72ACCA00346EA9 /* switchToggle.png */,
@@ -664,6 +684,7 @@
 		C075D71B1C5E0E81009F9044 /* SocketChat */ = {
 			isa = PBXGroup;
 			children = (
+				135D614E1EE7EEA200FE7B8D /* AlphaGradient */,
 				13521FF41E86B061005CCCFB /* TokenField */,
 				1377F1DD1E768D1D0049D5D2 /* PopUp */,
 				134289971E729A4400346EA9 /* CustomSwitch */,
@@ -700,6 +721,7 @@
 				13D4B73F1E93E1A1007115FA /* CreateTeamPasswordViewController.swift */,
 				13639AC71DD0470200731682 /* SignInViewController.swift */,
 				135931391DC9CA8C00D1AA27 /* SignUpViewController.swift */,
+				139033191EF176080061FB5E /* ForgotViewController.swift */,
 				134AAEEB1E682C5600CA7991 /* MenuTableViewController.swift */,
 				135931371DC9BB3400D1AA27 /* CreateTeamViewController.swift */,
 				135ED47F1DD1C9ED002A9BF4 /* TeamListViewController.swift */,
@@ -928,6 +950,7 @@
 				134FA45F1E64668800647B3D /* Lato-Italic.ttf in Resources */,
 				C075D7271C5E0E81009F9044 /* LaunchScreen.storyboard in Resources */,
 				13AF10171E2CD185004B34A6 /* ImageUploadProgressView.xib in Resources */,
+				1390331E1EF1860E0061FB5E /* forgotimg2.png in Resources */,
 				13EA738D1EB8C9230054B218 /* teamUserTableViewCell.xib in Resources */,
 				1357B4211E83A3DC0079E2CE /* CurrentTaskTableViewCell.xib in Resources */,
 				1350CEB31E65620E006E9763 /* GroupTableViewCell.xib in Resources */,
@@ -946,6 +969,7 @@
 				137950201E55792100D8FEFD /* workaa-logo-black.png in Resources */,
 				13521FE11E86659B005CCCFB /* ProfileInfoTableViewCell.xib in Resources */,
 				1375616C1E88F71800C7C78A /* UserTableViewCell.xib in Resources */,
+				1390331D1EF1860E0061FB5E /* forgotimg1.png in Resources */,
 				1357B4241E83AF040079E2CE /* grey_star.png in Resources */,
 				13FBBFC51E72B5A4002E0840 /* switchGreen@2x.png in Resources */,
 				134289A51E72ACCA00346EA9 /* switchToggleHigh.png in Resources */,
@@ -1006,11 +1030,13 @@
 				1357B4271E83D0820079E2CE /* GroupTaskDetailViewController.swift in Sources */,
 				13D4B73E1E9381CB007115FA /* CreateTeamCodeViewController.swift in Sources */,
 				1342899E1E729A9F00346EA9 /* TTSwitch.m in Sources */,
+				135D61511EE7EEDC00FE7B8D /* AlphaGradientView.m in Sources */,
 				13A9F92A1DC1D59700E71942 /* SocketIOClientSpec.swift in Sources */,
 				135ED4E01DD1FE27002A9BF4 /* ASIAuthenticationDialog.m in Sources */,
 				C075D7611C5E17DD009F9044 /* SocketFixUTF8.swift in Sources */,
 				135ED4E21DD1FE27002A9BF4 /* ASIDataDecompressor.m in Sources */,
 				136558151DFA813400B32386 /* StringExtension.swift in Sources */,
+				1390331A1EF176090061FB5E /* ForgotViewController.swift in Sources */,
 				C075D7571C5E17DD009F9044 /* SocketAckManager.swift in Sources */,
 				135931381DC9BB3400D1AA27 /* CreateTeamViewController.swift in Sources */,
 				13AF10151E2CCEF4004B34A6 /* ImageUploadProgressView.swift in Sources */,

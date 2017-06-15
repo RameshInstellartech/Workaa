@@ -26,7 +26,7 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate, UITextVi
     var alertClass = AlertClass()
     var connectionClass = ConnectionClass()
     var commonmethodClass = CommonMethodClass()
-    var imgData : NSData!
+    var imgData = NSData()
     var userListView = UserListView()
     var selecteduserArray = NSMutableArray()
 
@@ -271,10 +271,10 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate, UITextVi
         {
             alertClass.showAlert(alerttitle: "Info", alertmsg: groupCreateReponse.value(forKey: "nameRequired") as! String)
         }
-        else if (profileimage.image == nil)
-        {
-            alertClass.showAlert(alerttitle: "Info", alertmsg: groupCreateReponse.value(forKey: "imageRequired") as! String)
-        }
+//        else if (profileimage.image == nil)
+//        {
+//            alertClass.showAlert(alerttitle: "Info", alertmsg: groupCreateReponse.value(forKey: "imageRequired") as! String)
+//        }
         else if !validationClass.containsAlphaNumeric(input: groupnametxtField.text!)
         {
             alertClass.showAlert(alerttitle: "Info", alertmsg: groupCreateReponse.value(forKey: "invalidName") as! String)

@@ -20,6 +20,7 @@ class GroupDetailViewController: UIViewController, UITableViewDelegate, UITableV
     var connectionClass = ConnectionClass()
     var commonmethodClass = CommonMethodClass()
     var bottomView : BottomView!
+    var refreshControl = UIRefreshControl()
 
     override func viewDidLoad()
     {
@@ -53,6 +54,8 @@ class GroupDetailViewController: UIViewController, UITableViewDelegate, UITableV
         self.getCurrentTask()
         
         self.loadbottomView()
+        
+        self.setRefreshControl()
         
         print("groupdictionary =>\(groupdictionary)")
     }
@@ -100,6 +103,37 @@ class GroupDetailViewController: UIViewController, UITableViewDelegate, UITableV
         titleView.backgroundColor = UIColor.clear
         
         return titleView
+    }
+    
+    func setRefreshControl()
+    {
+        let attributes = [ NSForegroundColorAttributeName : UIColor.darkGray ] as [String: Any]
+        
+        refreshControl.tintColor = UIColor.darkGray
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to Refresh...", attributes: attributes)
+        refreshControl.addTarget(self, action: #selector(TaskListViewController.refreshData(sender:)), for: .valueChanged)
+        
+        // Add to Table View
+        if #available(iOS 10.0, *) {
+            self.tbltasklist.refreshControl = refreshControl
+        } else {
+            self.tbltasklist.addSubview(refreshControl)
+        }
+    }
+    
+    func refreshData(sender: UIRefreshControl)
+    {
+        commonmethodClass.delayWithSeconds(1.0, completion: {
+            if(self.segmentedControl.selectedSegmentIndex==0)
+            {
+                self.getPastTask()
+            }
+            else if(self.segmentedControl.selectedSegmentIndex==1)
+            {
+                self.getCurrentTask()
+            }
+            self.refreshControl.endRefreshing()
+        })
     }
     
     func loadGroupDetails()
@@ -252,15 +286,22 @@ class GroupDetailViewController: UIViewController, UITableViewDelegate, UITableV
         let time = String(format: "%@", taskdictionary.value(forKey: "time") as! CVarArg)
         cell.lbldate.text = String(format: "%@", commonmethodClass.convertDateInCell(date: time))
         
-        var height = commonmethodClass.dynamicHeight(width: screenWidth-30, font: UIFont (name: LatoRegular, size: 13.5)!, string: taskdesc as String)
-        height = ceil(height)
-        height = height + 10
-        if height > 70.0
+        if taskdesc == ""
         {
-            height = 70.0
+            cell.textheight?.constant = 0.0
         }
-        cell.textheight?.constant = height
-        
+        else
+        {
+            var height = commonmethodClass.dynamicHeight(width: screenWidth-30, font: UIFont (name: LatoRegular, size: 13.5)!, string: taskdesc as String)
+            height = ceil(height)
+            height = height + 10
+            if height > 70.0
+            {
+                height = 75.0
+            }
+            cell.textheight?.constant = height
+        }
+
         return cell
     }
     
@@ -276,12 +317,20 @@ class GroupDetailViewController: UIViewController, UITableViewDelegate, UITableV
             taskdictionary = currentTaskArray[indexPath.row] as! NSDictionary
         }
         let taskdesc = String(format: "%@", taskdictionary.value(forKey: "info") as! CVarArg)
-        var height = commonmethodClass.dynamicHeight(width: screenWidth-30, font: UIFont (name: LatoRegular, size: 13.5)!, string: taskdesc as String)
-        height = ceil(height)
-        height = height + 10
-        if height > 70.0
+        var height = CGFloat()
+        if taskdesc == ""
         {
-            height = 70.0
+            height = 0.0
+        }
+        else
+        {
+            height = commonmethodClass.dynamicHeight(width: screenWidth-30, font: UIFont (name: LatoRegular, size: 13.5)!, string: taskdesc as String)
+            height = ceil(height)
+            height = height + 10
+            if height > 70.0
+            {
+                height = 75.0
+            }
         }
         
         return height+80.0

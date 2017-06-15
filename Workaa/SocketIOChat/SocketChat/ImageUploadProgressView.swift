@@ -84,6 +84,17 @@ class ImageUploadProgressView: UIView
     {
         uploadLbl.text = "Cancelled"
         
-        (self.next?.next as? GroupViewController)?.cancelrequest()
+        if self.next?.next is GroupViewController
+        {
+            (self.next?.next as? GroupViewController)?.cancelrequest()
+        }
+        if self.next?.next is OneToOneChatViewController
+        {
+            (self.next?.next as? OneToOneChatViewController)?.cancelrequest()
+        }
+        if self.next?.next is CafeViewController
+        {
+            (self.next?.next as? CafeViewController)?.cancelrequest()
+        }
     }
 }

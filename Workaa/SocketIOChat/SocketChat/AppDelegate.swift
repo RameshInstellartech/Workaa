@@ -165,6 +165,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
                 {
                     kChatBaseURL = chatUrl
                 }
+                if let fileUploadUrl = urlreponse.value(forKey: "chatFileUploadUrl") as? String
+                {
+                    kfileUploadPath = fileUploadUrl
+                }
                 
                 if kChatBaseURL != ""
                 {
@@ -306,13 +310,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             if let notifidictionary = reponse.value(forKey: "notificationResponse") as? NSDictionary
             {
                 let tag = String(format: "%@", notifidictionary.value(forKey: "tag") as! CVarArg)
-                
+                let key = String(format: "%@", notifidictionary.value(forKey: "key") as! CVarArg)
+
                 if tag == "chat"
                 {
                     if let datadictionary = notifidictionary.value(forKey: "data") as? NSDictionary
                     {
-                        let key = String(format: "%@", notifidictionary.value(forKey: "key") as! CVarArg)
-                        
                         if key == "groupMessage"
                         {
                             self.groupmsg(messageInfo: datadictionary)
@@ -410,6 +413,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
                             self.cafesharemsg(messageInfo: datadictionary)
                         }
                     }
+                    if let groupdictionary = notifidictionary.value(forKey: "groupInfo") as? NSDictionary
+                    {
+                        if key == "groupMessage" || key == "groupMessageEdit" || key == "groupMessageDelete" || key == "groupImage" || key == "groupComment" || key == "groupCommentEdit" || key == "groupCommentDelete" || key == "groupShare"
+                        {
+                            self.commonmethodClass.delayWithSeconds(0.0, completion: {
+                                if(!self.commonmethodClass.getGroupChatVisibleViewcontroller())
+                                {
+                                    let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                    let groupViewObj = storyBoard.instantiateViewController(withIdentifier: "GroupViewID") as? GroupViewController
+                                    groupViewObj?.groupdictionary = groupdictionary
+                                    navigation().pushViewController(groupViewObj!, animated: false)
+                                }
+                            })
+                        }
+                    }
+                    if key == "CafeMessage" || key == "CafeMessageEdit" || key == "CafeMessageDelete" || key == "CafeImage" || key == "CafeComment" || key == "CafeCommentEdit" || key == "CafeCommentDelete" || key == "CafeShare"
+                    {
+                        self.commonmethodClass.delayWithSeconds(0.0, completion: {
+                            if(!self.commonmethodClass.getCafeChatVisibleViewcontroller())
+                            {
+                                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                let cafeViewObj = storyBoard.instantiateViewController(withIdentifier: "CafeViewID") as? CafeViewController
+                                navigation().pushViewController(cafeViewObj!, animated: false)
+                            }
+                        })
+                    }
+                    if let directdictionary = notifidictionary.value(forKey: "directInfo") as? NSDictionary
+                    {
+                        if key == "DirectMessage" || key == "DirectMessageEdit" || key == "DirectMessageDelete" || key == "DirectImage" || key == "DirectComment" || key == "DirectCommentEdit" || key == "DirectCommentDelete" || key == "DirectShare"
+                        {
+                            self.commonmethodClass.delayWithSeconds(0.0, completion: {
+                                if(!self.commonmethodClass.getDirectChatVisibleViewcontroller())
+                                {
+                                    appDelegate.userdictionary = directdictionary
+                                    
+                                    let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                    let onetooneObj = storyBoard.instantiateViewController(withIdentifier: "OneToOneChatViewID") as? OneToOneChatViewController
+                                    onetooneObj?.userdictionary = appDelegate.userdictionary
+                                    navigation().pushViewController(onetooneObj!, animated: false)
+                                }
+                            })
+                        }
+                    }
                 }
             }
         }
@@ -464,8 +510,159 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
                             UIApplication.shared.scheduleLocalNotification(notification)
                         }
                     }
+                    else if key == "groupUserRemoveAdmin"
+                    {
+                        self.showAlert(message: key, key: key)
+                    }
+                    else if key == "groupUserMarkAdmin"
+                    {
+                        self.showAlert(message: key, key: key)
+                    }
+                    else if key == "teamUserMarkAdmin"
+                    {
+                        self.showAlert(message: key, key: key)
+                    }
+                    else if key == "teamUserRemoveAdmin"
+                    {
+                        self.showAlert(message: key, key: key)
+                    }
+                    else if key == "groupCreate"
+                    {
+                        self.showAlert(message: key, key: key)
+                    }
+                    else if key == "queueAdd"
+                    {
+                        self.showAlert(message: key, key: key)
+                    }
+                    else if key == "groupInvite"
+                    {
+                        self.showAlert(message: key, key: key)
+                    }
+                    else
+                    {
+                        if key != "userStatus"
+                        {
+                            self.showAlert(message: key, key: key)
+                        }
+                    }
                 }
             }
+        }
+    }
+    
+    func showAlert(message : String, key : String)
+    {
+        // Display message alert body in a alert dialog window
+        let alertController = UIAlertController(title: "", message: message, preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "Ok", style: .default) { (action:UIAlertAction!) in
+            print("Ok button tapped");
+            if key == "groupUserRemoveAdmin"
+            {
+                if let objView = navigation().visibleViewController as? GroupListController
+                {
+                    objView.refreshObj()
+                }
+            }
+            else if key == "groupUserMarkAdmin"
+            {
+                if let objView = navigation().visibleViewController as? GroupListController
+                {
+                    objView.refreshObj()
+                }
+            }
+            else if key == "teamUserMarkAdmin"
+            {
+                self.commonmethodClass.saveteamadmin(admin: "1")
+                
+                if let objView = navigation().visibleViewController as? HomeDetailViewController
+                {
+                    objView.getQueueList()
+                    objView.getMyBucketList()
+                }
+                if let objView = navigation().visibleViewController as? TaskListViewController
+                {
+                    objView.getQueueList()
+                    objView.getMyBucketList()
+                    objView.getGroupList()
+                }
+                if let objView = navigation().visibleViewController as? GroupListController
+                {
+                    objView.refreshObj()
+                }
+            }
+            else if key == "teamUserRemoveAdmin"
+            {
+                self.commonmethodClass.saveteamadmin(admin: "0")
+                
+                if let objView = navigation().visibleViewController as? HomeDetailViewController
+                {
+                    objView.getQueueList()
+                    objView.getMyBucketList()
+                }
+                if let objView = navigation().visibleViewController as? TaskListViewController
+                {
+                    objView.getQueueList()
+                    objView.getMyBucketList()
+                    objView.getGroupList()
+                }
+                if let objView = navigation().visibleViewController as? GroupListController
+                {
+                    objView.refreshObj()
+                }
+            }
+            else if key == "groupCreate"
+            {
+                if let objView = navigation().visibleViewController as? GroupListController
+                {
+                    objView.refreshObj()
+                }
+                else
+                {
+                    
+                }
+            }
+            else if key == "queueAdd"
+            {
+                //self.gotoHome()
+            }
+            else if key == "groupInvite"
+            {
+                
+            }
+        }
+        alertController.addAction(okAction)
+        
+        // Present dialog window to user
+        window?.rootViewController?.present(alertController, animated: true, completion:nil)
+    }
+    
+    func gotoHome()
+    {
+        var isView : Bool!
+        isView = false
+        
+        var viewcontroller = UIViewController()
+        
+        for aviewcontroller : UIViewController in navigation().viewControllers
+        {
+            if aviewcontroller is WelcomeViewController
+            {
+                viewcontroller = aviewcontroller
+                isView = true
+                break
+            }
+        }
+        
+        if isView==true
+        {
+            navigation().popToViewController(viewcontroller, animated: false)
+        }
+        else
+        {
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let welcomeObj = storyBoard.instantiateViewController(withIdentifier: "WelcomeViewID") as? WelcomeViewController
+            navigation().pushViewController(welcomeObj!, animated: false)
         }
     }
     
@@ -679,54 +876,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             let title = String(format: "%@", filedictionary.value(forKey: "title") as! CVarArg)
             let caption = String(format: "%@", filedictionary.value(forKey: "caption") as! CVarArg)
             let flname = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg,messageInfo.value(forKey: "sendLastName") as! CVarArg)
-            
+            var filesize = String(format: "%@", filedictionary.value(forKey: "size") as! CVarArg)
             var username = ""
             if let uname = messageInfo.value(forKey: "sendUsername") as? String
             {
                 username = uname
             }
             
-            var data : NSData!
-            
-            do {
-                
-                let imagestring = String(format: "%@%@", kfilePath,imagepath)
-                let fileUrl = NSURL(string: imagestring)
-                data = try NSData(contentsOf: fileUrl! as URL, options: NSData.ReadingOptions())
-                
-                if let image = UIImage(data: data as Data)
-                {
-                    let resizeimage : UIImage
-                    
-                    if (image.size.width)>screenWidth
-                    {
-                        resizeimage = image.resizeWith(width: screenWidth)!
-                    }
-                    else
-                    {
-                        resizeimage = image
-                    }
-                    
-                    print("resizeimage => \(resizeimage)")
-                    
-                    self.createfilefolder(imageData: (resizeimage.lowestQualityJPEGNSData), imagepath: (fileUrl?.lastPathComponent)!)
-                }
-                else
-                {
-                    if data.length > 0
-                    {
-                        self.createfilefolder(imageData: data, imagepath: (fileUrl?.lastPathComponent)!)
-                    }
-                }
-                
-            } catch {
-                print(error)
-            }
-            
             let formatter = ByteCountFormatter()
             formatter.allowedUnits = ByteCountFormatter.Units.useAll
-            let filesize = formatter.string(fromByteCount: Int64((data?.length)!))
-            print("filesize =>\(filesize)")
+            filesize = formatter.string(fromByteCount: Int64(filesize)!)
             
             let chatdetails = ["userid":userid, "username":username, "message":"", "date":date, "teamid":teamid, "imagepath":imagepath, "msgid":String(format: "%@", messageInfo.value(forKey: "messageId") as! CVarArg), "imagetitle":title, "filesize":filesize, "filecaption":caption, "starmsg":"0", "flname" : flname] as [String : Any]
             
@@ -868,7 +1027,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
                 let formatter = ByteCountFormatter()
                 formatter.allowedUnits = ByteCountFormatter.Units.useAll
                 filesize = formatter.string(fromByteCount: Int64((data?.length)!))
-                print("filesize =>\(filesize)")
+//                print("filesize =>\(filesize)")
             }
             var cmtid = ""
             if infostring == "comment"
@@ -934,9 +1093,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             //                }
             
             let chatcmtdetails = ["username":username, "userid":userid, "cmtmsg":cmtmsg, "senderusername":username, "senderuserid":userid, "cmtid":cmtId, "starmsg":"0", "flname" : flname] as [String : Any]
-            print("chatcmtdetails =>\(chatcmtdetails)")
+//            print("chatcmtdetails =>\(chatcmtdetails)")
             
-            self.saveCafeChatCmtDetails(cmtdetails: chatcmtdetails as NSDictionary, msgId: msgid)
+            self.saveCafeChatCmtDetails(cmtdetails: chatcmtdetails as NSDictionary, msgId: msgid, date: date)
         }
     }
     
@@ -1140,7 +1299,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             let formatter = ByteCountFormatter()
             formatter.allowedUnits = ByteCountFormatter.Units.useAll
             let filesize = formatter.string(fromByteCount: Int64((data?.length)!))
-            print("filesize =>\(filesize)")
+//            print("filesize =>\(filesize)")
             
             let chatdetails = ["userid":userid, "username":username, "message":"", "date":date, "teamid":teamid, "imagepath":imagepath, "msgid":String(format: "%@", messageInfo.value(forKey: "messageId") as! CVarArg), "imagetitle":title, "filesize":filesize, "filecaption":caption, "type":filetype, "sendertype":"left", "senderuserid":userid, "starmsg":"0", "flname" : flname] as [String : Any]
             
@@ -1282,7 +1441,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
                 let formatter = ByteCountFormatter()
                 formatter.allowedUnits = ByteCountFormatter.Units.useAll
                 filesize = formatter.string(fromByteCount: Int64((data?.length)!))
-                print("filesize =>\(filesize)")
+//                print("filesize =>\(filesize)")
             }
             var cmtid = ""
             if infostring == "comment"
@@ -1340,7 +1499,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             self.saveOneToOneCommentDetails(chatdetails: cmtdetails as NSDictionary)
             
             let chatcmtdetails = ["username":username, "userid":userid, "cmtmsg":cmtmsg, "senderusername":username, "senderuserid":userid, "cmtid":cmtId, "starmsg":"0", "flname" : flname] as [String : Any]
-            print("chatcmtdetails =>\(chatcmtdetails)")
+//            print("chatcmtdetails =>\(chatcmtdetails)")
             
             self.saveOneToOneChatCmtDetails(cmtdetails: chatcmtdetails as NSDictionary, msgId: msgid, sendertype: "left")
         }
@@ -1521,13 +1680,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
         
         self.saveChatDetails(chatdetails: chatdetails as NSDictionary)
         
-        if(!commonmethodClass.getGroupChatVisibleViewcontroller())
-        {
-            if appstate == .active
+        self.commonmethodClass.delayWithSeconds(0.0, completion: {
+            if(!self.commonmethodClass.getGroupChatVisibleViewcontroller())
             {
-                self.showbanner(title: username, subtitle: msg, chattype: "groupChat")
+                if appstate == .active
+                {
+                    self.showbanner(title: username, subtitle: msg, chattype: "groupChat")
+                }
             }
-        }
+        })
     }
     
     func groupfile(messageInfo : NSDictionary)
@@ -1575,19 +1736,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
                     let formatter = ByteCountFormatter()
                     formatter.allowedUnits = ByteCountFormatter.Units.useAll
                     let filesize = formatter.string(fromByteCount: Int64((data.length)))
-                    print("filesize =>\(filesize)")
+//                    print("filesize =>\(filesize)")
                     
                     let chatdetails = ["userid":userid, "username":username, "message":"", "date":date, "groupid":groupid, "teamid":teamid, "imagepath":imagepath, "msgid":String(format: "%@", messageInfo.value(forKey: "messageId") as! CVarArg), "imagetitle":title, "filesize":filesize, "filecaption":caption, "starmsg":"0", "flname" : flname] as [String : Any]
                     
                     DispatchQueue.main.async(execute: {() -> Void in
                         self.saveChatDetails(chatdetails: chatdetails as NSDictionary)
-                        if(!self.commonmethodClass.getGroupChatVisibleViewcontroller())
-                        {
-                            if appstate == .active
+                        self.commonmethodClass.delayWithSeconds(0.0, completion: {
+                            if(!self.commonmethodClass.getGroupChatVisibleViewcontroller())
                             {
-                                self.showbanner(title: username, subtitle: String(format: "%@ : %@", socketOnReponse.value(forKey: "fileReceive") as! CVarArg, title), chattype: "groupChat")
+                                if appstate == .active
+                                {
+                                    self.showbanner(title: username, subtitle: String(format: "%@ : %@", socketOnReponse.value(forKey: "fileReceive") as! CVarArg, title), chattype: "groupChat")
+                                }
                             }
-                        }
+                        })
                     })
                     
                 } catch {
@@ -1642,14 +1805,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
                     
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "GroupChat_Refresh"), object: nil)
                     
-                    if(!self.commonmethodClass.getGroupChatVisibleViewcontroller())
-                    {
-                        if appstate == .active
+                    self.commonmethodClass.delayWithSeconds(0.0, completion: {
+                        if(!self.commonmethodClass.getGroupChatVisibleViewcontroller())
                         {
-                            let username = getmanageObj.value(forKey: "username") as? String
-                            self.showbanner(title: username!, subtitle: String(format: "%@ : %@", "Edit a Message", message), chattype: "groupChat")
+                            if appstate == .active
+                            {
+                                let username = getmanageObj.value(forKey: "username") as? String
+                                self.showbanner(title: username!, subtitle: String(format: "%@ : %@", "Edit a Message", message), chattype: "groupChat")
+                            }
                         }
-                    }
+                    })
                     
                 } catch let error as NSError  {
                     print("Could not save \(error), \(error.userInfo)")
@@ -1689,13 +1854,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
                     
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "GroupChat_Update"), object: nil)
                     
-                    if(!self.commonmethodClass.getGroupChatVisibleViewcontroller())
-                    {
-                        if appstate == .active
+                    self.commonmethodClass.delayWithSeconds(0.0, completion: {
+                        if(!self.commonmethodClass.getGroupChatVisibleViewcontroller())
                         {
-                            self.showbanner(title: "", subtitle: String(format: "%@", "Delete a Message"), chattype: "groupChat")
+                            if appstate == .active
+                            {
+                                self.showbanner(title: "", subtitle: String(format: "%@", "Delete a Message"), chattype: "groupChat")
+                            }
                         }
-                    }
+                    })
                     
                 } catch let error as NSError  {
                     print("Could not save \(error), \(error.userInfo)")
@@ -1745,7 +1912,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
                 let formatter = ByteCountFormatter()
                 formatter.allowedUnits = ByteCountFormatter.Units.useAll
                 filesize = formatter.string(fromByteCount: Int64((data?.length)!))
-                print("filesize =>\(filesize)")
+//                print("filesize =>\(filesize)")
             }
             var cmtid = ""
             if infostring == "comment"
@@ -1779,26 +1946,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
                 self.saveChatDetails(chatdetails: chatdetails as NSDictionary)
             }
             
-            if(!self.commonmethodClass.getGroupChatVisibleViewcontroller())
-            {
-                if appstate == .active
+            self.commonmethodClass.delayWithSeconds(0.0, completion: {
+                if(!self.commonmethodClass.getGroupChatVisibleViewcontroller())
                 {
-                    if infostring == "message" || infostring == "share"
+                    if appstate == .active
                     {
-                        self.showbanner(title: username, subtitle: String(format: "%@ : %@", socketOnReponse.value(forKey: "shareMessageReceive") as! CVarArg, message), chattype: "groupChat")
-                    }
-                    if infostring == "file"
-                    {
-                        self.showbanner(title: username, subtitle: String(format: "%@ : %@", socketOnReponse.value(forKey: "shareFileReceive") as! CVarArg, imagetitle), chattype: "groupChat")
-                    }
-                    if infostring == "comment"
-                    {
-                        let cmtmsg = String(format: "%@", shareDetails.value(forKey: "comment") as! CVarArg)
-                        
-                        self.showbanner(title: username, subtitle: String(format: "%@ : %@", socketOnReponse.value(forKey: "shareCommentReceive") as! CVarArg, cmtmsg), chattype: "groupChat")
+                        if infostring == "message" || infostring == "share"
+                        {
+                            self.showbanner(title: username, subtitle: String(format: "%@ : %@", socketOnReponse.value(forKey: "shareMessageReceive") as! CVarArg, message), chattype: "groupChat")
+                        }
+                        if infostring == "file"
+                        {
+                            self.showbanner(title: username, subtitle: String(format: "%@ : %@", socketOnReponse.value(forKey: "shareFileReceive") as! CVarArg, imagetitle), chattype: "groupChat")
+                        }
+                        if infostring == "comment"
+                        {
+                            let cmtmsg = String(format: "%@", shareDetails.value(forKey: "comment") as! CVarArg)
+                            
+                            self.showbanner(title: username, subtitle: String(format: "%@ : %@", socketOnReponse.value(forKey: "shareCommentReceive") as! CVarArg, cmtmsg), chattype: "groupChat")
+                        }
                     }
                 }
-            }
+            })
         }
     }
     
@@ -1829,17 +1998,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             //                }
             
             let chatcmtdetails = ["username":username, "userid":userid, "cmtmsg":cmtmsg, "senderusername":username, "senderuserid":userid, "cmtid":cmtId, "starmsg":"0", "flname" : flname] as [String : Any]
-            print("chatcmtdetails =>\(chatcmtdetails)")
+//            print("chatcmtdetails =>\(chatcmtdetails)")
             
             self.saveChatCmtDetails(cmtdetails: chatcmtdetails as NSDictionary, msgId: msgid, date: date)
             
-            if(!self.commonmethodClass.getGroupChatVisibleViewcontroller())
-            {
-                if appstate == .active
+            self.commonmethodClass.delayWithSeconds(0.0, completion: {
+                if(!self.commonmethodClass.getGroupChatVisibleViewcontroller())
                 {
-                    self.showbanner(title: "", subtitle: String(format: "%@", "Add a Comment"), chattype: "groupChat")
+                    if appstate == .active
+                    {
+                        self.showbanner(title: "", subtitle: String(format: "%@", "Add a Comment"), chattype: "groupChat")
+                    }
                 }
-            }
+            })
         }
     }
     
@@ -1870,13 +2041,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
                     
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Details_Update"), object: nil)
                     
-                    if(!self.commonmethodClass.getGroupChatVisibleViewcontroller())
-                    {
-                        if appstate == .active
+                    self.commonmethodClass.delayWithSeconds(0.0, completion: {
+                        if(!self.commonmethodClass.getGroupChatVisibleViewcontroller())
                         {
-                            self.showbanner(title: "", subtitle: String(format: "%@", "Edit a Comment"), chattype: "groupChat")
+                            if appstate == .active
+                            {
+                                self.showbanner(title: "", subtitle: String(format: "%@", "Edit a Comment"), chattype: "groupChat")
+                            }
                         }
-                    }
+                    })
                     
                 } catch let error as NSError  {
                     print("Could not save \(error), \(error.userInfo)")
@@ -1916,13 +2089,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
                     
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Details_Update"), object: nil)
                     
-                    if(!self.commonmethodClass.getGroupChatVisibleViewcontroller())
-                    {
-                        if appstate == .active
+                    self.commonmethodClass.delayWithSeconds(0.0, completion: {
+                        if(!self.commonmethodClass.getGroupChatVisibleViewcontroller())
                         {
-                            self.showbanner(title: "", subtitle: String(format: "%@", "Delete a Comment"), chattype: "groupChat")
+                            if appstate == .active
+                            {
+                                self.showbanner(title: "", subtitle: String(format: "%@", "Delete a Comment"), chattype: "groupChat")
+                            }
                         }
-                    }
+                    })
                     
                 } catch let error as NSError  {
                     print("Could not save \(error), \(error.userInfo)")
@@ -2009,13 +2184,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
                     
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "GroupChat_Update"), object: nil)
                     
-                    if(!self.commonmethodClass.getGroupChatVisibleViewcontroller())
-                    {
-                        if appstate == .active
+                    self.commonmethodClass.delayWithSeconds(0.0, completion: {
+                        if(!self.commonmethodClass.getGroupChatVisibleViewcontroller())
                         {
-                            self.showbanner(title: "", subtitle: String(format: "%@", "Add a link preview"), chattype: "groupChat")
+                            if appstate == .active
+                            {
+                                self.showbanner(title: "", subtitle: String(format: "%@", "Add a link preview"), chattype: "groupChat")
+                            }
                         }
-                    }
+                    })
                     
                 } catch let error as NSError  {
                     print("Could not save \(error), \(error.userInfo)")
@@ -2290,7 +2467,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
     
     func saveCommentDetails(chatdetails : NSDictionary)
     {
-        print("COMMENT chatdetails=>\(chatdetails)")
+        //print("COMMENT chatdetails=>\(chatdetails)")
         
         let cmtid = String(format: "%@", chatdetails.value(forKey: "cmtid") as! CVarArg)
         if(commonmethodClass.groupChatCmtMsgExist(cmtId: cmtid))
@@ -2326,7 +2503,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
     
     func saveCafeCommentDetails(chatdetails : NSDictionary)
     {
-        print("COMMENT chatdetails=>\(chatdetails)")
+//        print("COMMENT chatdetails=>\(chatdetails)")
+        
+        let cmtid = String(format: "%@", chatdetails.value(forKey: "cmtid") as! CVarArg)
+        if(commonmethodClass.cafeChatCmtMsgExist(cmtId: cmtid))
+        {
+            return
+        }
         
         let entity =  NSEntityDescription.entity(forEntityName: "CafeComment",
                                                  in:managedContext)
@@ -2356,7 +2539,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
     
     func saveOneToOneCommentDetails(chatdetails : NSDictionary)
     {
-        print("COMMENT chatdetails=>\(chatdetails)")
+//        print("COMMENT chatdetails=>\(chatdetails)")
         
         let entity =  NSEntityDescription.entity(forEntityName: "OneToOneComment",
                                                  in:managedContext)
@@ -2385,9 +2568,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
     
     func saveChatCmtDetails(cmtdetails : NSDictionary, msgId : String, date : String)
     {
-        print("cmtdetails=>\(cmtdetails)")
-        
-        if(commonmethodClass.groupChatCmtDetailsExist(msgId: msgId))
+        let cmtid = String(format: "%@", cmtdetails.value(forKey: "cmtid") as! CVarArg)
+        if(commonmethodClass.groupChatCmtDetailsExist(msgId: msgId, cmtId: cmtid))
         {
             return
         }
@@ -2442,9 +2624,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
         }
     }
     
-    func saveCafeChatCmtDetails(cmtdetails : NSDictionary, msgId : String)
+    func saveCafeChatCmtDetails(cmtdetails : NSDictionary, msgId : String, date : String)
     {
-        print("cmtdetails=>\(cmtdetails)")
+//        print("cmtdetails=>\(cmtdetails)")
+        let cmtid = String(format: "%@", cmtdetails.value(forKey: "cmtid") as! CVarArg)
+        if(commonmethodClass.cafeChatCmtDetailsExist(msgId: msgId, cmtId: cmtid))
+        {
+            return
+        }
         
         do {
             
@@ -2469,7 +2656,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
                 chatdetail.setValue(currentChatMessage.value(forKey: "username"), forKey: "username")
                 chatdetail.setValue(currentChatMessage.value(forKey: "flname"), forKey: "flname")
                 chatdetail.setValue(currentChatMessage.value(forKey: "message"), forKey: "message")
-                chatdetail.setValue(currentChatMessage.value(forKey: "date"), forKey: "date")
+                chatdetail.setValue(date, forKey: "date")
                 chatdetail.setValue(currentChatMessage.value(forKey: "teamid"), forKey: "teamid")
                 chatdetail.setValue(currentChatMessage.value(forKey: "imagepath"), forKey: "imagepath")
                 chatdetail.setValue(currentChatMessage.value(forKey: "imagetitle"), forKey: "imagetitle")
@@ -2497,7 +2684,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
     
     func saveOneToOneChatCmtDetails(cmtdetails : NSDictionary, msgId : String, sendertype : String)
     {
-        print("cmtdetails=>\(cmtdetails)")
+//        print("cmtdetails=>\(cmtdetails)")
         
         do {
             
@@ -2619,7 +2806,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
     
     func saveCafeChatDetails(chatdetails : NSDictionary)
     {
-        print("chatdetails=>\(chatdetails)")
+//        print("chatdetails=>\(chatdetails)")
+        
+        let msgid = String(format: "%@", chatdetails.value(forKey: "msgid") as! CVarArg)
+        if(commonmethodClass.cafeChatMsgExist(msgId: msgid))
+        {
+            return
+        }
         
         let entity =  NSEntityDescription.entity(forEntityName: "CafeChat",
                                                  in:managedContext)
@@ -2669,7 +2862,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
     
     func saveOneToOneChatDetails(chatdetails : NSDictionary)
     {
-        print("chatdetails=>\(chatdetails)")
+//        print("chatdetails=>\(chatdetails)")
+        
+        let msgid = String(format: "%@", chatdetails.value(forKey: "msgid") as! CVarArg)
+        if(commonmethodClass.directChatMsgExist(msgId: msgid))
+        {
+            return
+        }
         
         let entity =  NSEntityDescription.entity(forEntityName: "OneToOne",
                                                  in:managedContext)
@@ -2721,7 +2920,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
     
     func createfilefolder(imageData : NSData, imagepath : String)
     {
-        print("imagepath => \(imagepath)")
+//        print("imagepath => \(imagepath)")
         
         do {
             try FileManager.default.createDirectory(at: self.getFolderPath(), withIntermediateDirectories: true, attributes: nil)
@@ -2750,7 +2949,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
     
     func application(_ application: UIApplication, handleOpen url: URL) -> Bool
     {
-        print("Open URL "+url.path)
+        print("Open URL =>\(url)")
         let data: NSData? = NSData(contentsOfFile: url.path)
         print("data*** =>\(String(describing: data?.length))")
         print("lastPathComponent "+url.lastPathComponent)

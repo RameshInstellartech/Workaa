@@ -115,6 +115,8 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
     {
         super.viewWillAppear(animated)
         
+        self.navigationController?.navigationBar.isHidden = false
+        
         self.title = String(format: "%@ %@", userdictionary.value(forKey: "firstName") as! CVarArg,userdictionary.value(forKey: "lastName") as! CVarArg)
         
         navigationController?.navigationBar.barTintColor = greenColor
@@ -126,7 +128,7 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
     {
         if laststring == "0"
         {
-            //self.connectionClass.getGroupMsg(groupId: self.groupdictionary.value(forKey: "id") as! String, count: String(format: "%d", pagecount))
+            self.connectionClass.getDirectMsg(uId: self.userdictionary.value(forKey: "id") as! String, count: String(format: "%d", pagecount))
         }
     }
     
@@ -212,6 +214,9 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
         let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [userid, loginuserid])
         fetchRequest.predicate = predicate
         
+        let sectionSortDescriptor = NSSortDescriptor(key: "date", ascending: true)
+        fetchRequest.sortDescriptors = [sectionSortDescriptor]
+        
         totalcount = try! managedContext.count(for: fetchRequest)
         print("count =>\(String(describing: totalcount))")
         if(totalcount>loadcount)
@@ -281,6 +286,14 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                     {
                         let unreadcount = self.userdictionary.value(forKey: "unread") as! NSInteger
                         directunreadcount = directunreadcount - unreadcount
+                        
+                        for aviewcontroller : UIViewController in navigation().viewControllers
+                        {
+                            if let msgView = aviewcontroller as? MessageViewController
+                            {
+                                msgView.getUserList()
+                            }
+                        }
                     }
                 }
             }
@@ -408,12 +421,12 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
     
     func configureTableView()
     {
-        tblChat.delegate = self
-        tblChat.dataSource = self
+//        tblChat.delegate = self
+//        tblChat.dataSource = self
         tblChat.register(UINib(nibName: "ChatCell", bundle: nil), forCellReuseIdentifier: "idCellChat")
-        tblChat.estimatedRowHeight = 90.0
-        tblChat.rowHeight = UITableViewAutomaticDimension
-        tblChat.tableFooterView = UIView(frame: .zero)
+//        tblChat.estimatedRowHeight = 90.0
+//        tblChat.rowHeight = UITableViewAutomaticDimension
+//        tblChat.tableFooterView = UIView(frame: .zero)
     }
     
     func configureNewsBannerLabel()
@@ -959,7 +972,7 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
     
     func FileSendToServer(userid:String, imageData:Data, imagesize:String, filename : String, caption:String)
     {
-        let urlpath = String(format: "%@%@", kChatBaseURL,konetoonesendFile)
+        let urlpath = String(format: "%@%@", kfileUploadPath,konetoonesendFile)
         print("urlpath =>\(urlpath)")
         
         imagerequest = ASIFormDataRequest(url: NSURL(string: urlpath)! as URL)
@@ -1004,9 +1017,10 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                             }
                             else
                             {
-                                if let errormsg = getreponse.value(forKey: "MSG") as? String
+                                if let errormsg = getreponse.value(forKey: "message") as? String
                                 {
                                     alertClass.showAlert(alerttitle: "Info", alertmsg: errormsg)
+                                    self.GetFailureReponseMethod(errorreponse: errormsg)
                                 }
                             }
                         }
@@ -1042,6 +1056,7 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
     
     func cancelrequest()
     {
+        print("cancelrequest")
         commonmethodClass.delayWithSeconds(0.1, completion: {
             if self.imageProgress.progressView.progress < 1.0
             {
@@ -1094,6 +1109,8 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                                     self.view.layoutIfNeeded()
         
                                 }, completion: nil)
+                                
+                                self.scrollToBottom(animated: true)
                             }
                         }
                         else
@@ -1159,6 +1176,7 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                 let chattype = currentChatMessage.value(forKey: "type") as! String
                 let sendertype = currentChatMessage.value(forKey: "sendertype") as! String
                 let favstring = String(format: "%@", currentChatMessage.value(forKey: "starmsg") as! CVarArg)
+                let caption = String(format: "%@", currentChatMessage.value(forKey: "filecaption") as! CVarArg)
 
                 if chattype == "share"
                 {
@@ -1169,7 +1187,19 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                     }
                     
                     let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-                    
+                    alert.addAction(UIAlertAction(title: "Copy Text", style: .default , handler:{ (UIAlertAction)in
+                        
+                        if let shareDetails = currentChatMessage.value(forKey: "sharedetails") as? NSDictionary
+                        {
+                            message = shareDetails.value(forKey: "sharemessage") as? String
+                            UIPasteboard.general.string = message
+                        }
+                        else
+                        {
+                            UIPasteboard.general.string = message
+                        }
+                        
+                    }))
                     alert.addAction(UIAlertAction(title: "Share Message", style: .default , handler:{ (UIAlertAction)in
                         self.ShareMessage(chatdetails: currentChatMessage)
                     }))
@@ -1223,7 +1253,8 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                     {
                         let cmtfavstring = String(format: "%@", cmtDetails.value(forKey: "starmsg") as! CVarArg)
                         let cmtidstring = String(format: "%@", cmtDetails.value(forKey: "cmtid") as! CVarArg)
-                        
+                        let cmtMsg = String(format: "%@", cmtDetails.value(forKey: "cmtmsg") as! CVarArg)
+
                         var starmsg = "Star Comment"
                         if cmtfavstring == "1"
                         {
@@ -1232,7 +1263,11 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                         
                         print("cmtDetails =>\(cmtDetails)")
                         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-
+                        alert.addAction(UIAlertAction(title: "Copy Text", style: .default , handler:{ (UIAlertAction)in
+                            
+                            UIPasteboard.general.string = cmtMsg
+                            
+                        }))
                         alert.addAction(UIAlertAction(title: "Share Message", style: .default , handler:{ (UIAlertAction)in
                             self.ShareMessage(chatdetails: currentChatMessage)
                         }))
@@ -1267,7 +1302,11 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                             }
                             
                             let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-                            
+                            alert.addAction(UIAlertAction(title: "Copy Text", style: .default , handler:{ (UIAlertAction)in
+                                
+                                UIPasteboard.general.string = message
+                                
+                            }))
                             alert.addAction(UIAlertAction(title: "Share Message", style: .default , handler:{ (UIAlertAction)in
                                 self.ShareMessage(chatdetails: currentChatMessage)
                             }))
@@ -1324,7 +1363,14 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                             }
                             
                             let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-                            
+                            if caption != ""
+                            {
+                                alert.addAction(UIAlertAction(title: "Copy Text", style: .default , handler:{ (UIAlertAction)in
+                                    
+                                    UIPasteboard.general.string = caption
+                                    
+                                }))
+                            }
                             alert.addAction(UIAlertAction(title: "Share File", style: .default , handler:{ (UIAlertAction)in
                                 self.ShareMessage(chatdetails: currentChatMessage)
                             }))
@@ -1381,6 +1427,14 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
     func GetFailureReponseMethod(errorreponse: String)
     {
         print("GetFailureReponseMethod")
+        
+        if imageProgress != nil
+        {
+            imageProgress.uploadCompleted()
+            commonmethodClass.delayWithSeconds(0.5, completion: {
+                self.imageProgress.animateView(self.imageProgress, withAnimationType: kCATransitionFromTop)
+            })
+        }
     }
     
     func GetReponseMethod(reponse : NSDictionary)
@@ -1449,6 +1503,36 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                     
                     self.scrollToBottom(animated: true)
                 }
+            }
+            if let directmsgarray = datareponse.value(forKey: "messageList") as? NSArray
+            {
+                print("directmsgarray =>\(directmsgarray.count)")
+                //                var reverseArray = NSArray()
+                //                reverseArray = directmsgarray.reverseObjectEnumerator().allObjects as NSArray
+                //                print("directmsgarray =>\(reverseArray)")
+                for item in directmsgarray
+                {
+                    let obj = item as! NSDictionary
+                    let chatInfo = String(format: "%@", obj.value(forKey: "info") as! CVarArg)
+                    if chatInfo == "message"
+                    {
+                        self.savemsg(messageInfo: obj)
+                    }
+                    if chatInfo == "file"
+                    {
+                        self.savefile(messageInfo: obj)
+                    }
+//                    if chatInfo == "comment"
+//                    {
+//                        self.savecomment(messageInfo: obj)
+//                    }
+                    if chatInfo == "share"
+                    {
+                        self.saveshare(messageInfo: obj)
+                    }
+                }
+                
+                laststring = String(format: "%@", datareponse.value(forKey: "last") as! CVarArg)
             }
         }
     }
@@ -1526,6 +1610,8 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
             {
                 conBottomEditor.constant = keyboardFrame.size.height
                 view.layoutIfNeeded()
+                
+                self.scrollToBottom(animated: true)
             }
         }
     }
@@ -1606,7 +1692,7 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
         let message = currentChatMessage.value(forKey: "message") as? NSString
         let messageDate = currentChatMessage.value(forKey: "date") as? String
         let filepath = currentChatMessage.value(forKey: "imagepath") as? NSString
-        _ = currentChatMessage.value(forKey: "userid") as? NSString
+        let userid = currentChatMessage.value(forKey: "userid") as? NSString
         let imagetitle = currentChatMessage.value(forKey: "imagetitle") as? NSString
         let filesize = currentChatMessage.value(forKey: "filesize") as? NSString
         let chattype = currentChatMessage.value(forKey: "type") as! String
@@ -1640,7 +1726,7 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
             _ = shareDetails?.value(forKey: "sharedate") as? NSString
             let sharename = shareDetails?.value(forKey: "sharename") as? NSString
             let sharemessage = shareDetails?.value(forKey: "sharemessage") as? NSString
-            _ = shareDetails?.value(forKey: "shareuserid") as? NSString
+            let shareuserid = shareDetails?.value(forKey: "shareuserid") as? NSString
             let userName = currentChatMessage.value(forKey: "username") as? String
             let message = currentChatMessage.value(forKey: "message") as? String
             
@@ -1667,7 +1753,7 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                 let senderName = cmtDetails.value(forKey: "senderusername") as? NSString
                 let cmtMsg = cmtDetails.value(forKey: "cmtmsg") as? NSString
                 _ = cmtDetails.value(forKey: "username") as? String
-                _ = cmtDetails.value(forKey: "senderuserid") as? NSString
+                let senderuserId = cmtDetails.value(forKey: "senderuserid") as? NSString
                 
                 if sendertype == "right"
                 {
@@ -1676,23 +1762,21 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                     
                     cell.rightsharecommentDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                     
-                    cell.rightsharecommenttextheight?.constant = sharetxtheight
-                    
                     cell.rightsharecommenttextlbl?.text = sharemessage! as String
                     
                     cell.rightsharecommentnamelbl?.text = senderName as String?
                     
-                    //                        let cmtdetails = String(format: "Commented on %@'s file %@ : %@", cmtuserName!, imagetitle!, cmtMsg!)
                     let cmtdetails = String(format: "Commented on file %@ : %@", imagetitle!, cmtMsg!)
-                    //                        let namerange = (cmtdetails as NSString).range(of: cmtuserName!)
                     let titlerange = (cmtdetails as NSString).range(of: imagetitle! as String)
                     let attributedString = NSMutableAttributedString(string:cmtdetails)
-                    //                        attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.yellow , range: namerange)
-                    //                        attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBlack, size: cell.rightsharecommentdetailslbl.font.pointSize)! , range: namerange)
                     attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.purple , range: titlerange)
-                    attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBlack, size: (cell.rightsharecommentdetailslbl?.font.pointSize)!)! , range: titlerange)
+                    attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBold, size: (cell.rightsharecommentdetailslbl?.font.pointSize)!)! , range: titlerange)
                     
                     cell.rightsharecommentdetailslbl?.attributedText = attributedString
+                    
+                    var cmttxtheight = commonmethodClass.dynamicHeight(width: screenWidth-100, font: UIFont (name: LatoRegular, size: 14)!, string: cmtdetails as String)
+                    cmttxtheight = ceil(cmttxtheight)
+                    cell.rightsharecommenttextheight?.constant = cmttxtheight+45
                     
                     if favstring == "0"
                     {
@@ -1710,21 +1794,15 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                     
                     cell.leftsharecommentDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                     
-                    cell.leftsharecommenttextheight?.constant = sharetxtheight
-                    
                     cell.leftsharecommenttextlbl?.text = sharemessage! as String
                     
                     cell.leftsharecommentnamelbl?.text = senderName as String?
                     
-                    //                        let cmtdetails = String(format: "Commented on %@'s file %@ : %@", cmtuserName!, imagetitle!, cmtMsg!)
                     let cmtdetails = String(format: "Commented on file %@ : %@", imagetitle!, cmtMsg!)
-                    //                        let namerange = (cmtdetails as NSString).range(of: cmtuserName!)
                     let titlerange = (cmtdetails as NSString).range(of: imagetitle! as String)
                     let attributedString = NSMutableAttributedString(string:cmtdetails)
-                    //                        attributedString.addAttribute(NSForegroundColorAttributeName, value: greenColor , range: namerange)
-                    //                        attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBlack, size: cell.leftsharecommentdetailslbl.font.pointSize)! , range: namerange)
                     attributedString.addAttribute(NSForegroundColorAttributeName, value: blueColor , range: titlerange)
-                    attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBlack, size: (cell.leftsharecommentdetailslbl?.font.pointSize)!)! , range: titlerange)
+                    attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBold, size: (cell.leftsharecommentdetailslbl?.font.pointSize)!)! , range: titlerange)
                     
                     cell.leftsharecommentdetailslbl?.attributedText = attributedString
                     
@@ -1748,6 +1826,10 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                     cell.leftsharecommentUserNamelbl?.text = flname as String
                     cell.leftsharecommentUserTagNamelbl?.text = String(format: "@%@", userName!)
                     
+                    var cmttxtheight = commonmethodClass.dynamicHeight(width: screenWidth-100, font: UIFont (name: LatoRegular, size: 14)!, string: cmtdetails as String)
+                    cmttxtheight = ceil(cmttxtheight)
+                    cell.leftsharecommenttextheight?.constant = cmttxtheight+45
+                    
                     if favstring == "0"
                     {
                         cell.leftsharecommentstarimage?.isHidden = true
@@ -1770,6 +1852,9 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                     cell.rightsharefileView?.isHidden = true
                     cell.leftsharefileView?.isHidden = true
                     
+                    var textheight = commonmethodClass.dynamicHeight(width: screenWidth-100, font: (cell.rightsharetextmessagelbl?.font!)!, string: message! as String)
+                    textheight = ceil(textheight)
+                    
                     if sendertype == "right"
                     {
                         cell.rightsharetextView?.isHidden = false
@@ -1777,7 +1862,7 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                         
                         cell.rightsharetextDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                         
-                        cell.rightsharetextheight?.constant = sharetxtheight
+                        cell.rightsharetextheight?.constant = textheight+40
                         
                         cell.rightsharetextlbl?.text = sharemessage! as String
                         
@@ -1801,7 +1886,7 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                         
                         cell.leftsharetextDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                         
-                        cell.leftsharetextheight?.constant = sharetxtheight
+                        cell.leftsharetextheight?.constant = textheight+40
                         
                         cell.leftsharetextlbl?.text = sharemessage! as String
                         
@@ -1862,26 +1947,26 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                             
                             cell.rightshareimageDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                             
-                            var sharedetails : String!
-                            sharedetails = String(format: "Shared an image : %@",(imagetitle?.deletingPathExtension)!)
-                            //                                if(userid?.isEqual(to: shareuserid as! String))!
-                            //                                {
-                            //                                    sharedetails = String(format: "Shared an image : %@",(imagetitle?.deletingPathExtension)!)
-                            //                                }
-                            //                                else
-                            //                                {
-                            //                                    sharedetails = String(format: "Shared %@'s image : %@", sharename!, (imagetitle?.deletingPathExtension)!)
-                            //                                }
+                            var sharedetails = String()
+                            var sharestring = String()
+                            //                                sharedetails = String(format: "Shared an image : %@",(imagetitle?.deletingPathExtension)!)
+                            if(userid?.isEqual(to: shareuserid! as String))!
+                            {
+                                sharestring = "Shared"
+                                sharedetails = String(format: "Shared an image")
+                            }
+                            else
+                            {
+                                sharestring = String(format: "%@", sharename!)
+                                sharedetails = String(format: "Shared %@'s image", sharename!)
+                            }
                             
-                            let titlerange = (sharedetails as NSString).range(of: (imagetitle?.deletingPathExtension)!)
+                            let titlerange = (sharedetails as NSString).range(of: sharestring)
                             let attributedString = NSMutableAttributedString(string:sharedetails)
                             attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.purple , range: titlerange)
-                            attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBlack, size: (cell.rightshareimagedetailslbl?.font.pointSize)!)! , range: titlerange)
+                            attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBold, size: (cell.rightshareimagedetailslbl?.font.pointSize)!)! , range: titlerange)
                             
                             cell.rightshareimagedetailslbl?.attributedText = attributedString
-                            cell.rightshareimagedetailslbl?.adjustsFontSizeToFitWidth = true
-                            
-                            cell.rightshareimagetextheight?.constant = sharetxtheight
                             
                             cell.rightshareimagetextlbl?.text = sharemessage! as String
                             
@@ -1905,19 +1990,14 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                             
                             cell.leftshareimageDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                             
-                            //                                let sharedetails = String(format: "Shared %@'s image : %@", sharename!, (imagetitle?.deletingPathExtension)!)
+                            let sharedetails = String(format: "Shared %@'s image", sharename!)
                             
-                            let sharedetails = String(format: "Shared an image : %@",(imagetitle?.deletingPathExtension)!)
-                            
-                            let titlerange = (sharedetails as NSString).range(of: (imagetitle?.deletingPathExtension)!)
+                            let titlerange = (sharedetails as NSString).range(of: sharename! as String)
                             let attributedString = NSMutableAttributedString(string:sharedetails)
                             attributedString.addAttribute(NSForegroundColorAttributeName, value: blueColor , range: titlerange)
-                            attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBlack, size: (cell.leftshareimagedetailslbl?.font.pointSize)!)! , range: titlerange)
+                            attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBold, size: (cell.leftshareimagedetailslbl?.font.pointSize)!)! , range: titlerange)
                             
                             cell.leftshareimagedetailslbl?.attributedText = attributedString
-                            cell.leftshareimagedetailslbl?.adjustsFontSizeToFitWidth = true
-                            
-                            cell.leftshareimagetextheight?.constant = sharetxtheight
                             
                             cell.leftshareimagetextlbl?.text = sharemessage! as String
                             
@@ -1967,24 +2047,26 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                             
                             cell.rightsharefileDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                             
-                            var sharedetails : String!
-                            sharedetails = String(format: "Shared a file : %@",(imagetitle?.deletingPathExtension)!)
-                            //                                if(userid?.isEqual(to: shareuserid as! String))!
-                            //                                {
-                            //                                    sharedetails = String(format: "Shared a file : %@",(imagetitle?.deletingPathExtension)!)
-                            //                                }
-                            //                                else
-                            //                                {
-                            //                                    sharedetails = String(format: "Shared %@'s file : %@", sharename!, (imagetitle?.deletingPathExtension)!)
-                            //                                }
+                            var sharedetails = String()
+                            var sharestring = String()
                             
-                            let titlerange = (sharedetails as NSString).range(of: (imagetitle?.deletingPathExtension)!)
+                            if(userid?.isEqual(to: shareuserid! as String))!
+                            {
+                                sharestring = "Shared"
+                                sharedetails = String(format: "Shared a file")
+                            }
+                            else
+                            {
+                                sharestring = String(format: "%@", sharename!)
+                                sharedetails = String(format: "Shared %@'s file", sharename!)
+                            }
+                            
+                            let titlerange = (sharedetails as NSString).range(of: sharestring)
                             let attributedString = NSMutableAttributedString(string:sharedetails)
                             attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.purple , range: titlerange)
-                            attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBlack, size: (cell.rightsharefiledetailslbl?.font.pointSize)!)! , range: titlerange)
+                            attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBold, size: (cell.rightsharefiledetailslbl?.font.pointSize)!)! , range: titlerange)
                             
                             cell.rightsharefiledetailslbl?.attributedText = attributedString
-                            cell.rightsharefiledetailslbl?.adjustsFontSizeToFitWidth = true
                             
                             cell.rightsharefiletypebtn?.layer.borderColor = redColor.cgColor
                             cell.rightsharefiletypebtn?.layer.borderWidth = 2.0
@@ -2015,17 +2097,14 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                             
                             cell.leftsharefileDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                             
-                            //                                let sharedetails = String(format: "Shared %@'s file : %@", sharename!, (imagetitle?.deletingPathExtension)!)
+                            let sharedetails = String(format: "Shared %@'s file", sharename!)
                             
-                            let sharedetails = String(format: "Shared a file : %@",(imagetitle?.deletingPathExtension)!)
-                            
-                            let titlerange = (sharedetails as NSString).range(of: (imagetitle?.deletingPathExtension)!)
+                            let titlerange = (sharedetails as NSString).range(of: sharename! as String)
                             let attributedString = NSMutableAttributedString(string:sharedetails)
                             attributedString.addAttribute(NSForegroundColorAttributeName, value: blueColor , range: titlerange)
-                            attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBlack, size: (cell.leftsharefiledetailslbl?.font.pointSize)!)! , range: titlerange)
+                            attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBold, size: (cell.leftsharefiledetailslbl?.font.pointSize)!)! , range: titlerange)
                             
                             cell.leftsharefiledetailslbl?.attributedText = attributedString
-                            cell.leftsharefiledetailslbl?.adjustsFontSizeToFitWidth = true
                             
                             cell.leftsharefiletypebtn?.layer.borderColor = blueColor.cgColor
                             cell.leftsharefiletypebtn?.layer.borderWidth = 2.0
@@ -2210,6 +2289,17 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                         }
                         
                         cell.righttextwidth?.constant = textwidth
+                        
+                        if cellheight>70
+                        {
+                            cell.righttextMessageView?.layer.cornerRadius = 20
+                        }
+                        else
+                        {
+                            cell.righttextMessageView?.layer.cornerRadius = (cellheight-20)/2
+                        }
+                        
+                        cell.righttextMessageView?.layer.masksToBounds = true
                         
                         cell.righttextMessagelbl?.text = message as String?
                         
@@ -2492,32 +2582,32 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                 
                 let cmtdetails = String(format: "Commented on %@'s file %@ : %@", cmtuserName!, imagetitle!, cmtMsg!)
                 
-                var height = commonmethodClass.dynamicHeight(width: screenWidth-120, font: UIFont (name: LatoRegular, size: 16)!, string: cmtdetails as String)
+                var height = commonmethodClass.dynamicHeight(width: screenWidth-100, font: UIFont (name: LatoRegular, size: 14)!, string: cmtdetails as String)
                 height = ceil(height)
                 
                 if sendertype == "right"
                 {
-                    return sharetxtheight+height+70.0
+                    return sharetxtheight+height+100.0
                 }
                 else
                 {
-                    return sharetxtheight+height+110.0
+                    return sharetxtheight+height+140.0
                 }
             }
             else
             {
                 if (filepath?.isEqual(to: ""))!
                 {
-                    var height = commonmethodClass.dynamicHeight(width: screenWidth-120, font: UIFont (name: LatoRegular, size: 16)!, string: message! as String)
+                    var height = commonmethodClass.dynamicHeight(width: screenWidth-100, font: UIFont (name: LatoRegular, size: 14)!, string: message! as String)
                     height = ceil(height)
                     
                     if sendertype == "right"
                     {
-                        return sharetxtheight+height+75.0
+                        return sharetxtheight+height+90.0
                     }
                     else
                     {
-                        return sharetxtheight+height+115.0
+                        return sharetxtheight+height+130.0
                     }
                 }
                 else
@@ -2532,22 +2622,22 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                     {
                         if sendertype == "right"
                         {
-                            return sharetxtheight+330.0
+                            return sharetxtheight+90.0
                         }
                         else
                         {
-                            return sharetxtheight+370.0
+                            return sharetxtheight+130.0
                         }
                     }
                     else
                     {
                         if sendertype == "right"
                         {
-                            return sharetxtheight+150.0
+                            return sharetxtheight+130.0
                         }
                         else
                         {
-                            return sharetxtheight+190.0
+                            return sharetxtheight+170.0
                         }
                     }
                 }
@@ -2603,11 +2693,11 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                     {
                         if sendertype == "right"
                         {
-                            return msgHeight+250.0
+                            return msgHeight+200.0
                         }
                         else
                         {
-                            return msgHeight+280.0
+                            return msgHeight+250.0
                         }
                     }
                     else
@@ -2634,12 +2724,12 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
         {
             let datestring = String(format: "%@", sectionArray.object(at: section) as! CVarArg)
             
-            var Txtwidth = commonmethodClass.widthOfString(usingFont: UIFont(name: LatoBold, size: CGFloat(13.0))!, text: datestring as NSString)
+            var Txtwidth = commonmethodClass.widthOfString(usingFont: UIFont(name: LatoBold, size: CGFloat(12.0))!, text: datestring as NSString)
             Txtwidth = ceil(Txtwidth)
             
             let view = UIView()
             view.frame = CGRect(x: CGFloat((screenWidth - (Txtwidth + 30.0)) / 2.0), y: CGFloat(10.0), width: CGFloat(Txtwidth + 30.0), height: CGFloat(30.0))
-            view.backgroundColor = UIColor.black
+            view.backgroundColor = UIColor(red: 252.0/255.0, green: 246.0/255.0, blue: 175.0/255.0, alpha: 1.0)
             view.layer.cornerRadius = view.frame.size.height / 2.0
             view.layer.masksToBounds = true
             headerView.addSubview(view)
@@ -2647,9 +2737,9 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
             let label = UILabel()
             label.frame = CGRect(x: CGFloat(0), y: CGFloat(0), width: CGFloat(view.frame.size.width), height: CGFloat(view.frame.size.height))
             label.text = datestring
-            label.font = UIFont(name: LatoBold, size: CGFloat(13.0))
+            label.font = UIFont(name: LatoBold, size: CGFloat(12.0))
             label.textAlignment = .center
-            label.textColor = UIColor.white
+            label.textColor = UIColor.darkGray
             label.backgroundColor = UIColor.clear
             view.addSubview(label)
         }
@@ -2693,6 +2783,273 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
         else if chattype == "file"
         {
             PhotoViewController.showFile(chatdetails: currentChatMessage, groupId: userId, msgId: msgId!, userName: userName!, filetype : "File", chttype : "OneToOneChat", grouplog: userlogo as String, groupdictionary: NSDictionary())
+        }
+    }
+    
+    // MARK: SaveDirectData Methods
+    
+    func savemsg(messageInfo : NSDictionary)
+    {
+        let edited = String(format: "%@", messageInfo.value(forKey: "edited") as! CVarArg)
+        var message = String()
+        if edited == "1"
+        {
+            message = String(format: "%@ (edited)", messageInfo.value(forKey: "message") as! CVarArg)
+        }
+        else
+        {
+            message = String(format: "%@", messageInfo.value(forKey: "message") as! CVarArg)
+        }
+        let date = String(format: "%@", messageInfo.value(forKey: "time") as! CVarArg)
+        let msgid = String(format: "%@", messageInfo.value(forKey: "id") as! CVarArg)
+        var starmsg = "0"
+        if let starmsgstring = messageInfo.value(forKey: "starred") as? String
+        {
+            starmsg = starmsgstring
+        }
+        let ownstring = String(format: "%@", messageInfo.value(forKey: "own") as! CVarArg)
+        var userid = String()
+        var username = String()
+        var flname = String()
+        var sendertype = String()
+        if ownstring == "1"
+        {
+            userid = String(format: "%@", self.commonmethodClass.retrieveuserid())
+            username = String(format: "%@", self.commonmethodClass.retrieveusername())
+            flname = String(format: "%@", self.commonmethodClass.retrievename())
+            sendertype = "right"
+        }
+        else
+        {
+            userid = String(format: "%@", messageInfo.value(forKey: "uid") as! CVarArg)
+            username = String(format: "%@", messageInfo.value(forKey: "username") as! CVarArg)
+            if (messageInfo.value(forKey: "first_name") as? String) != nil
+            {
+                flname = String(format: "%@ %@", messageInfo.value(forKey: "first_name") as! CVarArg, messageInfo.value(forKey: "last_name") as! CVarArg)
+            }
+            else
+            {
+                flname = String(format: "%@ %@", messageInfo.value(forKey: "rec_first_name") as! CVarArg, messageInfo.value(forKey: "rec_last_name") as! CVarArg)
+            }
+            sendertype = "left"
+        }
+        
+        let chatdetails = ["userid":userid, "username":username, "message":message, "date":date, "teamid":self.commonmethodClass.retrieveteamid(), "imagepath":"", "msgid": msgid, "imagetitle":"", "filesize":"", "filecaption":"", "type":"message", "sendertype":sendertype, "senderuserid":self.userdictionary.value(forKey: "id") as! String, "starmsg":starmsg, "flname" : flname] as [String : Any]
+        
+        appDelegate.saveOneToOneChatDetails(chatdetails: chatdetails as NSDictionary)
+    }
+    
+    func savefile(messageInfo : NSDictionary)
+    {
+        if let filedictionary = messageInfo.value(forKey: "file") as? NSDictionary
+        {
+            let ownstring = String(format: "%@", messageInfo.value(forKey: "own") as! CVarArg)
+            var userid = String()
+            var username = String()
+            var flname = String()
+            var sendertype = String()
+            if ownstring == "1"
+            {
+                userid = String(format: "%@", self.commonmethodClass.retrieveuserid())
+                username = String(format: "%@", self.commonmethodClass.retrieveusername())
+                flname = String(format: "%@", self.commonmethodClass.retrievename())
+                sendertype = "right"
+            }
+            else
+            {
+                userid = String(format: "%@", messageInfo.value(forKey: "uid") as! CVarArg)
+                username = String(format: "%@", messageInfo.value(forKey: "username") as! CVarArg)
+                if (messageInfo.value(forKey: "first_name") as? String) != nil
+                {
+                    flname = String(format: "%@ %@", messageInfo.value(forKey: "first_name") as! CVarArg, messageInfo.value(forKey: "last_name") as! CVarArg)
+                }
+                else
+                {
+                    flname = String(format: "%@ %@", messageInfo.value(forKey: "rec_first_name") as! CVarArg, messageInfo.value(forKey: "rec_last_name") as! CVarArg)
+                }
+                sendertype = "left"
+            }
+            let msgid = String(format: "%@", messageInfo.value(forKey: "id") as! CVarArg)
+            let imagepath = String(format: "%@", filedictionary.value(forKey: "path") as! CVarArg)
+            let date = String(format: "%@", messageInfo.value(forKey: "time") as! CVarArg)
+            let title = String(format: "%@", filedictionary.value(forKey: "title") as! CVarArg)
+            let caption = String(format: "%@", filedictionary.value(forKey: "caption") as! CVarArg)
+            var starmsg = "0"
+            if let starmsgstring = messageInfo.value(forKey: "starred") as? String
+            {
+                starmsg = starmsgstring
+            }
+            
+            var data : NSData!
+            var filetype : String!
+            
+            do {
+                
+                let imagestring = String(format: "%@%@", kfilePath,imagepath)
+                let fileUrl = NSURL(string: imagestring)
+                data = try NSData(contentsOf: fileUrl! as URL, options: NSData.ReadingOptions())
+                
+                if let image = UIImage(data: data as Data)
+                {
+                    filetype = "image"
+                    
+                    let resizeimage : UIImage
+                    
+                    if (image.size.width)>screenWidth
+                    {
+                        resizeimage = image.resizeWith(width: screenWidth)!
+                    }
+                    else
+                    {
+                        resizeimage = image
+                    }
+                    
+                    print("resizeimage => \(resizeimage)")
+                    
+                    appDelegate.createfilefolder(imageData: (resizeimage.lowestQualityJPEGNSData), imagepath: (fileUrl?.lastPathComponent)!)
+                }
+                else
+                {
+                    if data.length > 0
+                    {
+                        filetype = "file"
+                        
+                        appDelegate.createfilefolder(imageData: data, imagepath: (fileUrl?.lastPathComponent)!)
+                    }
+                }
+                
+            } catch {
+                print(error)
+            }
+            
+            let formatter = ByteCountFormatter()
+            formatter.allowedUnits = ByteCountFormatter.Units.useAll
+            let filesize = formatter.string(fromByteCount: Int64((data?.length)!))
+            //            print("filesize =>\(filesize)")
+            
+            let chatdetails = ["userid":userid, "username":username, "message":"", "date":date, "teamid":self.commonmethodClass.retrieveteamid(), "imagepath":imagepath, "msgid": msgid, "imagetitle":title, "filesize":filesize, "filecaption":caption, "type":filetype, "sendertype":sendertype, "senderuserid":self.userdictionary.value(forKey: "id") as! String, "starmsg":starmsg, "flname" : flname] as [String : Any]
+            
+            appDelegate.saveOneToOneChatDetails(chatdetails: chatdetails as NSDictionary)
+        }
+    }
+    
+    func saveshare(messageInfo : NSDictionary)
+    {
+        print("messageInfo =>\(messageInfo)")
+
+        if let shareDetails = messageInfo.value(forKey: "source_data") as? NSDictionary
+        {
+            let infostring = String(format: "%@", shareDetails.value(forKey: "info") as! CVarArg)
+            if infostring == "message" || infostring == "share"
+            {
+                self.savemsg(messageInfo: shareDetails)
+            }
+            if infostring == "file"
+            {
+                self.savefile(messageInfo: shareDetails)
+            }
+        }
+        
+        /*-----------------------------------------------------------------*/
+        
+        if let shareDetails = messageInfo.value(forKey: "source_data") as? NSDictionary
+        {
+            let ownstring = String(format: "%@", messageInfo.value(forKey: "own") as! CVarArg)
+            let sourceownstring = String(format: "%@", shareDetails.value(forKey: "own") as! CVarArg)
+            let msgId = messageInfo.value(forKey: "id") as? String
+            let sharemsg = messageInfo.value(forKey: "message") as? String
+            var sharename = String()
+            var shareuserid = String()
+            var userid = String()
+            var username = String()
+            var flname = String()
+            var sendertype = String()
+            if sourceownstring == "1"
+            {
+                sharename = String(format: "%@", self.commonmethodClass.retrievename())
+                shareuserid = String(format: "%@", self.commonmethodClass.retrieveuserid())
+            }
+            else
+            {
+                sharename = String(format: "%@ %@", shareDetails.value(forKey: "first_name") as! CVarArg,shareDetails.value(forKey: "last_name") as! CVarArg)
+                shareuserid = String(format: "%@", shareDetails.value(forKey: "uid")  as! CVarArg)
+            }
+            if ownstring == "1"
+            {
+                userid = String(format: "%@", self.commonmethodClass.retrieveuserid())
+                username = String(format: "%@", self.commonmethodClass.retrieveusername())
+                flname = String(format: "%@", self.commonmethodClass.retrievename())
+                sendertype = "right"
+            }
+            else
+            {
+                userid = String(format: "%@", messageInfo.value(forKey: "uid") as! CVarArg)
+                username = String(format: "%@", messageInfo.value(forKey: "username") as! CVarArg)
+                flname = String(format: "%@ %@", messageInfo.value(forKey: "rec_first_name") as! CVarArg, messageInfo.value(forKey: "rec_last_name") as! CVarArg)
+                sendertype = "left"
+            }
+            let sharedate = shareDetails.value(forKey: "time") as? String
+            
+            let infostring = shareDetails.value(forKey: "info") as? String
+            var message = ""
+            if infostring == "message" || infostring == "share"
+            {
+                message = String(format: "%@", shareDetails.value(forKey: "message") as! CVarArg)
+            }
+            var imagepath = ""
+            var imagetitle = ""
+            var filesize = ""
+            var filecaption = ""
+            if infostring == "file"
+            {
+                let filedict = shareDetails.value(forKey: "file") as! NSDictionary
+                imagepath = String(format: "%@", filedict.value(forKey: "path") as! CVarArg)
+                imagetitle = String(format: "%@", filedict.value(forKey: "title") as! CVarArg)
+                filecaption = String(format: "%@", filedict.value(forKey: "caption") as! CVarArg)
+                
+                let filestring = String(format: "%@%@", kfilePath,imagepath)
+                let fileUrl = NSURL(string: filestring)
+                let data = NSData(contentsOf: fileUrl! as URL)
+                
+                let formatter = ByteCountFormatter()
+                formatter.allowedUnits = ByteCountFormatter.Units.useAll
+                filesize = formatter.string(fromByteCount: Int64((data?.length)!))
+                //                print("filesize =>\(filesize)")
+            }
+            var cmtid = ""
+            if infostring == "comment"
+            {
+                cmtid = String(format: "%@", shareDetails.value(forKey: "messageId") as! CVarArg)
+                imagetitle = String(format: "%@", shareDetails.value(forKey: "title") as! CVarArg)
+            }
+            let date = messageInfo.value(forKey: "time") as? String
+            let shareid = shareDetails.value(forKey: "id") as? String
+            var starmsg = "0"
+            if let starmsgstring = messageInfo.value(forKey: "starred") as? String
+            {
+                starmsg = starmsgstring
+            }
+            
+            let sharedetails = ["shareid":shareid!, "sharemessage":sharemsg!, "sharename":sharename, "sharedate":sharedate!, "shareuserid":shareuserid, "shareteamid":self.commonmethodClass.retrieveteamid()] as [String : Any]
+            
+            if cmtid == ""
+            {
+                let chatdetails = ["userid":userid, "username":username, "message":message, "date":date!, "teamid":self.commonmethodClass.retrieveteamid(), "imagepath":imagepath, "msgid": msgId!, "type": "share", "commentdetails":"", "sharedetails":sharedetails, "imagetitle":imagetitle, "filesize":filesize, "filecaption":filecaption, "sendertype":sendertype, "senderuserid":self.userdictionary.value(forKey: "id") as! String, "starmsg":starmsg, "flname" : flname] as [String : Any]
+                
+                appDelegate.saveOneToOneChatDetails(chatdetails: chatdetails as NSDictionary)
+            }
+            else
+            {
+                let cmtusername = sharename
+                let cmtsenderusername = sharename
+                let cmtmsg = String(format: "%@", shareDetails.value(forKey: "comment") as! CVarArg)
+                
+                let cmtdetails = ["username":cmtusername, "userid":"", "cmtmsg":cmtmsg, "senderusername":cmtsenderusername, "senderuserid":userid, "cmtid":cmtid] as [String : Any]
+                
+                let chatdetails = ["userid":userid, "username":username, "message":message, "date":date!, "teamid":self.commonmethodClass.retrieveteamid(), "imagepath":imagepath, "msgid": msgId!, "type": "share", "commentdetails":cmtdetails, "sharedetails":sharedetails, "imagetitle":imagetitle, "filesize":filesize, "filecaption":filecaption, "sendertype":sendertype, "senderuserid":self.userdictionary.value(forKey: "id") as! String, "starmsg":starmsg, "flname" : flname] as [String : Any]
+                
+                appDelegate.saveOneToOneChatDetails(chatdetails: chatdetails as NSDictionary)
+            }
         }
     }
     

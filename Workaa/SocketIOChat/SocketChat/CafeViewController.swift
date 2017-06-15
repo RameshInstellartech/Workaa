@@ -28,6 +28,7 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
     var refreshControl = UIRefreshControl()
     var sectionArray = NSMutableArray()
     var msgdictionary = NSMutableDictionary()
+    var myActivityIndicator = UIActivityIndicatorView()
     
     @IBOutlet weak var tblChat: UITableView!
     @IBOutlet weak var tvMessageEditor: PlaceholderTextView!
@@ -50,7 +51,7 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
     {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
+                
         loadcount = 30
         laststring = "0"
         
@@ -67,10 +68,10 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
         filebutton.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
         let filebarButton = UIBarButtonItem(customView: filebutton)
         
-        self.navigationItem.rightBarButtonItems = [barButton, filebarButton]
+        self.navigationItem.rightBarButtonItems = [filebarButton]
         
-        NotificationCenter.default.addObserver(self, selector: #selector(GroupViewController.handleKeyboardWillShowNotification(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(GroupViewController.handleKeyboardWillHideNotification(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleKeyboardWillShowNotification(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleKeyboardWillHideNotification(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.getChatDetails), name: NSNotification.Name(rawValue: "CafeChat_Update"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.tablerefresh), name: NSNotification.Name(rawValue: "CafeChat_Refresh"), object: nil)
         
@@ -88,6 +89,8 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
 //        tvMessageEditor.layer.masksToBounds = true
 //        tvMessageEditor.layer.borderColor = UIColor(red: CGFloat(216.0/255.0), green: CGFloat(216.0/255.0), blue: CGFloat(216.0/255.0), alpha: CGFloat(1.0)).cgColor
 //        tvMessageEditor.layer.borderWidth = 1.0
+        
+        self.startanimating()
         
         commonmethodClass.delayWithSeconds(0.0, completion: {
             self.getcafemsg()
@@ -114,11 +117,25 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
     
     // MARK: - Viewcontroller Methods
     
+    func startanimating()
+    {
+        myActivityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+        myActivityIndicator.center = CGPoint(x:view.center.x, y:view.center.y-64.0)
+        myActivityIndicator.hidesWhenStopped = true
+        self.view.addSubview(myActivityIndicator)
+        myActivityIndicator.startAnimating()
+    }
+    
+    func stopanimating()
+    {
+        myActivityIndicator.stopAnimating()
+    }
+    
     func getcafemsg()
     {
         if laststring == "0"
         {
-            //self.connectionClass.getGroupMsg(groupId: self.groupdictionary.value(forKey: "id") as! String, count: String(format: "%d", pagecount))
+            self.connectionClass.getCafeMsg(count: String(format: "%d", pagecount))
         }
     }
     
@@ -146,7 +163,7 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
         
         refreshControl.tintColor = UIColor.darkGray
         refreshControl.attributedTitle = NSAttributedString(string: "Fetching Older Data ...", attributes: attributes)
-        refreshControl.addTarget(self, action: #selector(GroupViewController.loadMoreData(sender:)), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(self.loadMoreData(sender:)), for: .valueChanged)
         
         // Add to Table View
         if #available(iOS 10.0, *) {
@@ -158,34 +175,36 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
     
     func animateTable()
     {
-        tblChat.reloadData()
+//        tblChat.reloadData()
         
-        let cells = tblChat.visibleCells
-        let tableHeight: CGFloat = tblChat.bounds.size.height
+//        let cells = tblChat.visibleCells
+//        let tableHeight: CGFloat = tblChat.bounds.size.height
+//        
+//        for i in cells {
+//            let cell: UITableViewCell = i as UITableViewCell
+//            cell.transform = CGAffineTransform(translationX: 0, y: tableHeight)
+//        }
+//        
+//        var index = 0
+//        
+//        for a in cells {
+//            let cell: UITableViewCell = a as UITableViewCell
+//            UIView.animate(withDuration: 1.5, delay: 0.05 * Double(index), usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: [], animations: {
+//                cell.transform = CGAffineTransform(translationX: 0, y: 0);
+//            }, completion: nil)
+//            
+//            index += 1
+//        }
         
-        for i in cells {
-            let cell: UITableViewCell = i as UITableViewCell
-            cell.transform = CGAffineTransform(translationX: 0, y: tableHeight)
-        }
+//        commonmethodClass.delayWithSeconds(1.0, completion: {
+//            self.scrollToBottom(animated: true)
+//        })
         
-        var index = 0
-        
-        for a in cells {
-            let cell: UITableViewCell = a as UITableViewCell
-            UIView.animate(withDuration: 1.5, delay: 0.05 * Double(index), usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: [], animations: {
-                cell.transform = CGAffineTransform(translationX: 0, y: 0);
-            }, completion: nil)
-            
-            index += 1
-        }
-        
-        commonmethodClass.delayWithSeconds(1.0, completion: {
-            self.scrollToBottom(animated: true)
-        })
+        self.scrollToBottom(animated: false)
         
         if(commonmethodClass.getCafeChatVisibleViewcontroller())
         {
-            self.resetcount()
+            performSelector(inBackground: #selector(self.resetcount), with: nil)
         }
     }
     
@@ -198,6 +217,9 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
         let userid = NSPredicate(format: "loginuserid = %@", self.commonmethodClass.retrieveuserid())
         let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [teamid,userid])
         fetchRequest.predicate = predicate
+        
+        let sectionSortDescriptor = NSSortDescriptor(key: "date", ascending: true)
+        fetchRequest.sortDescriptors = [sectionSortDescriptor]
         
         totalcount = try! managedContext.count(for: fetchRequest)
         print("count =>\(String(describing: totalcount))")
@@ -384,12 +406,12 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
     
     func configureTableView()
     {
-        tblChat.delegate = self
-        tblChat.dataSource = self
+//        tblChat.delegate = self
+//        tblChat.dataSource = self
         tblChat.register(UINib(nibName: "ChatCell", bundle: nil), forCellReuseIdentifier: "idCellChat")
-        tblChat.estimatedRowHeight = 90.0
-        tblChat.rowHeight = UITableViewAutomaticDimension
-        tblChat.tableFooterView = UIView(frame: .zero)
+//        tblChat.estimatedRowHeight = 90.0
+//        tblChat.rowHeight = UITableViewAutomaticDimension
+//        tblChat.tableFooterView = UIView(frame: .zero)
     }
     
     func configureNewsBannerLabel()
@@ -430,7 +452,7 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
             self.lblNewsBanner.alpha = 1.0
             
         }) { (finished) -> Void in
-            self.bannerLabelTimer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(GroupViewController.hideBannerLabel), userInfo: nil, repeats: false)
+            self.bannerLabelTimer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(self.hideBannerLabel), userInfo: nil, repeats: false)
         }
     }
     
@@ -461,12 +483,12 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
 
     func ShareMessage(chatdetails : NSManagedObject)
     {
-        let sharegroup = UIAlertController(title: "Share Message", message: "", preferredStyle: UIAlertControllerStyle.alert)
+        let sharecafe = UIAlertController(title: "Share Message", message: "", preferredStyle: UIAlertControllerStyle.alert)
         
-        sharegroup.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
-        sharegroup.addAction(UIAlertAction(title: "Share", style: UIAlertActionStyle.default, handler: { (action) -> Void in
+        sharecafe.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
+        sharecafe.addAction(UIAlertAction(title: "Share", style: UIAlertActionStyle.default, handler: { (action) -> Void in
             
-            let shareTxtField = sharegroup.textFields![0] as UITextField
+            let shareTxtField = sharecafe.textFields![0] as UITextField
             print("shareTxtField =>\(String(describing: shareTxtField.text))")
             
             var msgId = chatdetails.value(forKey: "msgid") as? String
@@ -567,11 +589,11 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
             }
             
         }))
-        sharegroup.addTextField(configurationHandler: {(textField: UITextField!) in
+        sharecafe.addTextField(configurationHandler: {(textField: UITextField!) in
             textField.placeholder = "Add a message"
         })
         
-        rootViewController?.present(sharegroup, animated: true, completion: nil)
+        rootViewController?.present(sharecafe, animated: true, completion: nil)
     }
     
     func StarMessage(msgId : String, cmtId : String)
@@ -781,12 +803,12 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
     
     func EditMessage(message : String, msgId : String)
     {
-        let editgroup = UIAlertController(title: "Editing Message", message: "", preferredStyle: UIAlertControllerStyle.alert)
+        let editcafe = UIAlertController(title: "Editing Message", message: "", preferredStyle: UIAlertControllerStyle.alert)
         
-        editgroup.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
-        editgroup.addAction(UIAlertAction(title: "Save", style: UIAlertActionStyle.default, handler: { (action) -> Void in
+        editcafe.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil))
+        editcafe.addAction(UIAlertAction(title: "Save", style: UIAlertActionStyle.default, handler: { (action) -> Void in
             
-            let editTxtField = editgroup.textFields![0] as UITextField
+            let editTxtField = editcafe.textFields![0] as UITextField
             print("editTxtField =>\(String(describing: editTxtField.text))")
             
             if (editTxtField.text?.characters.count)! > 0
@@ -852,12 +874,12 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
             }
             
         }))
-        editgroup.addTextField(configurationHandler: {(textField: UITextField!) in
+        editcafe.addTextField(configurationHandler: {(textField: UITextField!) in
             textField.text = message
             textField.text = textField.text?.replacingOccurrences(of: "(edited)", with: "", options: NSString.CompareOptions.literal, range:nil)
         })
         
-        rootViewController?.present(editgroup, animated: true, completion: nil)
+        rootViewController?.present(editcafe, animated: true, completion: nil)
     }
     
     func DeleteMessage(msgId : NSString)
@@ -941,7 +963,7 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
     
     func FileSendToServer(imageData:Data, imagesize:String, filename : String, caption:String)
     {
-        let urlpath = String(format: "%@%@", kChatBaseURL,kcafesendFile)
+        let urlpath = String(format: "%@%@", kfileUploadPath,kcafesendFile)
         print("urlpath =>\(urlpath)")
         
         imagerequest = ASIFormDataRequest(url: NSURL(string: urlpath)! as URL)
@@ -985,9 +1007,10 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                             }
                             else
                             {
-                                if let errormsg = getreponse.value(forKey: "MSG") as? String
+                                if let errormsg = getreponse.value(forKey: "message") as? String
                                 {
                                     alertClass.showAlert(alerttitle: "Info", alertmsg: errormsg)
+                                    self.GetFailureReponseMethod(errorreponse: errormsg)
                                 }
                             }
                         }
@@ -1140,7 +1163,8 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                 let msgId = currentChatMessage.value(forKey: "msgid") as? NSString
                 var message = currentChatMessage.value(forKey: "message") as? String
                 let favstring = String(format: "%@", currentChatMessage.value(forKey: "starmsg") as! CVarArg)
-                
+                let caption = String(format: "%@", currentChatMessage.value(forKey: "filecaption") as! CVarArg)
+
                 if let chattype = currentChatMessage.value(forKey: "type") as? NSString
                 {
                     if(chattype.isEqual(to: "Share"))
@@ -1152,21 +1176,33 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                         }
                         
                         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-                        
+                        alert.addAction(UIAlertAction(title: "Copy Text", style: .default , handler:{ (UIAlertAction)in
+                            
+                            if let shareDetails = currentChatMessage.value(forKey: "sharedetails") as? NSDictionary
+                            {
+                                message = shareDetails.value(forKey: "sharemessage") as? String
+                                UIPasteboard.general.string = message
+                            }
+                            else
+                            {
+                                UIPasteboard.general.string = message
+                            }
+                            
+                        }))
                         alert.addAction(UIAlertAction(title: "Share Message", style: .default , handler:{ (UIAlertAction)in
                             self.ShareMessage(chatdetails: currentChatMessage)
                         }))
                         
-                        alert.addAction(UIAlertAction(title: starmsg, style: .default , handler:{ (UIAlertAction)in
-                            if favstring == "1"
-                            {
-                                self.RemoveStarMessage(msgId: msgId! as String, cmtId: "")
-                            }
-                            else
-                            {
-                                self.StarMessage(msgId: msgId! as String, cmtId: "")
-                            }
-                        }))
+//                        alert.addAction(UIAlertAction(title: starmsg, style: .default , handler:{ (UIAlertAction)in
+//                            if favstring == "1"
+//                            {
+//                                self.RemoveStarMessage(msgId: msgId! as String, cmtId: "")
+//                            }
+//                            else
+//                            {
+//                                self.StarMessage(msgId: msgId! as String, cmtId: "")
+//                            }
+//                        }))
                         
                         if(userid?.isEqual(to: self.commonmethodClass.retrieveuserid() as String))!
                         {
@@ -1214,7 +1250,8 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                     {
                         let cmtfavstring = String(format: "%@", cmtDetails.value(forKey: "starmsg") as! CVarArg)
                         let cmtidstring = String(format: "%@", cmtDetails.value(forKey: "cmtid") as! CVarArg)
-                        
+                        let cmtMsg = String(format: "%@", cmtDetails.value(forKey: "cmtmsg") as! CVarArg)
+
                         var starmsg = "Star Comment"
                         if cmtfavstring == "1"
                         {
@@ -1223,19 +1260,24 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                         
                         print("cmtDetails =>\(cmtDetails)")
                         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                        alert.addAction(UIAlertAction(title: "Copy Text", style: .default , handler:{ (UIAlertAction)in
+                            
+                            UIPasteboard.general.string = cmtMsg
+                            
+                        }))
                         alert.addAction(UIAlertAction(title: "Share Message", style: .default , handler:{ (UIAlertAction)in
                             self.ShareMessage(chatdetails: currentChatMessage)
                         }))
-                        alert.addAction(UIAlertAction(title: starmsg, style: .default , handler:{ (UIAlertAction)in
-                            if cmtfavstring == "1"
-                            {
-                                self.RemoveStarMessage(msgId: msgId! as String, cmtId: cmtidstring)
-                            }
-                            else
-                            {
-                                self.StarMessage(msgId: msgId! as String, cmtId: cmtidstring)
-                            }
-                        }))
+//                        alert.addAction(UIAlertAction(title: starmsg, style: .default , handler:{ (UIAlertAction)in
+//                            if cmtfavstring == "1"
+//                            {
+//                                self.RemoveStarMessage(msgId: msgId! as String, cmtId: cmtidstring)
+//                            }
+//                            else
+//                            {
+//                                self.StarMessage(msgId: msgId! as String, cmtId: cmtidstring)
+//                            }
+//                        }))
                         alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler:{ (UIAlertAction)in
                             print("User click Dismiss button")
                         }))
@@ -1255,6 +1297,11 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                             }
                             
                             let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                            alert.addAction(UIAlertAction(title: "Copy Text", style: .default , handler:{ (UIAlertAction)in
+                                
+                                UIPasteboard.general.string = message
+                                
+                            }))
                             
                             alert.addAction(UIAlertAction(title: "Share Message", style: .default , handler:{ (UIAlertAction)in
                                 
@@ -1262,18 +1309,18 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                                 
                             }))
                             
-                            alert.addAction(UIAlertAction(title: starmsg, style: .default , handler:{ (UIAlertAction)in
-                                
-                                if favstring == "1"
-                                {
-                                    self.RemoveStarMessage(msgId: msgId! as String, cmtId: "")
-                                }
-                                else
-                                {
-                                    self.StarMessage(msgId: msgId! as String, cmtId: "")
-                                }
-                                
-                            }))
+//                            alert.addAction(UIAlertAction(title: starmsg, style: .default , handler:{ (UIAlertAction)in
+//                                
+//                                if favstring == "1"
+//                                {
+//                                    self.RemoveStarMessage(msgId: msgId! as String, cmtId: "")
+//                                }
+//                                else
+//                                {
+//                                    self.StarMessage(msgId: msgId! as String, cmtId: "")
+//                                }
+//                                
+//                            }))
                             
                             if(userid?.isEqual(to: self.commonmethodClass.retrieveuserid() as String))!
                             {
@@ -1325,20 +1372,28 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                             }
                             
                             let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                            if caption != ""
+                            {
+                                alert.addAction(UIAlertAction(title: "Copy Text", style: .default , handler:{ (UIAlertAction)in
+                                    
+                                    UIPasteboard.general.string = caption
+                                    
+                                }))
+                            }
                             
                             alert.addAction(UIAlertAction(title: "Share File", style: .default , handler:{ (UIAlertAction)in
                                 self.ShareMessage(chatdetails: currentChatMessage)
                             }))
-                            alert.addAction(UIAlertAction(title: starmsg, style: .default , handler:{ (UIAlertAction)in
-                                if favstring == "1"
-                                {
-                                    self.RemoveStarMessage(msgId: msgId! as String, cmtId: "")
-                                }
-                                else
-                                {
-                                    self.StarMessage(msgId: msgId! as String, cmtId: "")
-                                }
-                            }))
+//                            alert.addAction(UIAlertAction(title: starmsg, style: .default , handler:{ (UIAlertAction)in
+//                                if favstring == "1"
+//                                {
+//                                    self.RemoveStarMessage(msgId: msgId! as String, cmtId: "")
+//                                }
+//                                else
+//                                {
+//                                    self.StarMessage(msgId: msgId! as String, cmtId: "")
+//                                }
+//                            }))
                             
                             if(userid?.isEqual(to: self.commonmethodClass.retrieveuserid() as String))!
                             {
@@ -1389,6 +1444,16 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
     func GetFailureReponseMethod(errorreponse: String)
     {
         print("GetFailureReponseMethod")
+        
+        if imageProgress != nil
+        {
+            imageProgress.uploadCompleted()
+            commonmethodClass.delayWithSeconds(0.5, completion: {
+                self.imageProgress.animateView(self.imageProgress, withAnimationType: kCATransitionFromTop)
+            })
+        }
+        
+        self.stopanimating()
     }
     
     func GetReponseMethod(reponse : NSDictionary)
@@ -1401,61 +1466,49 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
             {
                 if let imagepath = filedictionary.value(forKey: "path") as? String
                 {
-                    var filesize : String!
-                    filesize = ""
+                    var filesize = String(format: "%@", filedictionary.value(forKey: "size") as! CVarArg)
                     
-                    if appDelegate.mediadata != nil
-                    {
-                        if appDelegate.mediadata.length > 0
-                        {
-                            let formatter = ByteCountFormatter()
-                            formatter.allowedUnits = ByteCountFormatter.Units.useAll
-                            filesize = formatter.string(fromByteCount: Int64((appDelegate.mediadata.length)))
-                            print("filesize =>\(filesize)")
-                        }
-                    }
+                    let formatter = ByteCountFormatter()
+                    formatter.allowedUnits = ByteCountFormatter.Units.useAll
+                    filesize = formatter.string(fromByteCount: Int64(filesize)!)
                     
                     let chatdetails = ["userid":self.commonmethodClass.retrieveuserid(), "username":self.commonmethodClass.retrieveusername(), "message":"", "date":String(format: "%@", datareponse.value(forKey: "time") as! CVarArg), "teamid":self.commonmethodClass.retrieveteamid(), "imagepath":imagepath, "msgid":String(format: "%@", datareponse.value(forKey: "messageId") as! CVarArg), "imagetitle":String(format: "%@", filedictionary.value(forKey: "title") as! CVarArg), "filesize":filesize, "filecaption":String(format: "%@", filedictionary.value(forKey: "caption") as! CVarArg), "starmsg":"0", "flname" : self.commonmethodClass.retrievename()] as [String : Any]
-                    
-                    let fileUrl = NSURL(string: imagepath)
-                    
-                    if pickedImage != nil
-                    {
-                        let resizeimage : UIImage
-                        
-                        if (pickedImage.size.width)>screenWidth
-                        {
-                            resizeimage = pickedImage.resizeWith(width: screenWidth)!
-                        }
-                        else
-                        {
-                            resizeimage = pickedImage
-                        }
-                        
-                        print("resizeimage => \(resizeimage)")
-                        
-                        appDelegate.createfilefolder(imageData: (resizeimage.lowestQualityJPEGNSData), imagepath: (fileUrl?.lastPathComponent)!)
-                        pickedImage = nil
-                        imageProgress.imageView.image = nil
-                    }
-                    else
-                    {
-                        if appDelegate.mediadata != nil
-                        {
-                            if appDelegate.mediadata.length > 0
-                            {
-                                appDelegate.createfilefolder(imageData: appDelegate.mediadata, imagepath: (fileUrl?.lastPathComponent)!)
-                                appDelegate.mediadata = nil
-                            }
-                        }
-                    }
                     
                     appDelegate.saveCafeChatDetails(chatdetails: chatdetails as NSDictionary)
                     
                     self.scrollToBottom(animated: true)
                 }
             }
+            if let cafemsgarray = datareponse.value(forKey: "messageList") as? NSArray
+            {
+                print("cafemsgarray =>\(cafemsgarray.count)")
+                for item in cafemsgarray
+                {
+                    let obj = item as! NSDictionary
+                    let chatInfo = String(format: "%@", obj.value(forKey: "info") as! CVarArg)
+                    if chatInfo == "message"
+                    {
+                        self.savemsg(messageInfo: obj)
+                    }
+                    if chatInfo == "file"
+                    {
+                        self.savefile(messageInfo: obj)
+                    }
+                    if chatInfo == "comment"
+                    {
+                        self.savecomment(messageInfo: obj)
+                    }
+                    if chatInfo == "share"
+                    {
+                        self.saveshare(messageInfo: obj)
+                    }
+                }
+                
+                laststring = String(format: "%@", datareponse.value(forKey: "last") as! CVarArg)
+            }
         }
+        
+        self.stopanimating()
     }
     
     // MARK: - UIImagePickerControllerDelegate Methods
@@ -1531,6 +1584,8 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
             {
                 conBottomEditor.constant = keyboardFrame.size.height
                 view.layoutIfNeeded()
+                
+                self.scrollToBottom(animated: true)
             }
         }
     }
@@ -1617,12 +1672,12 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
         let caption = String(format: "%@", currentChatMessage.value(forKey: "filecaption") as! CVarArg)
         let flname = String(format: "%@", currentChatMessage.value(forKey: "flname") as! CVarArg)
 
-//        let cellheight = self.tableView(tableView, heightForRowAt: indexPath)
+        let cellheight = self.tableView(tableView, heightForRowAt: indexPath)
         
         cell.rightlinkView?.isHidden = true
         cell.leftlinkView?.isHidden = true
 
-        let longPressGesture:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(GroupViewController.longPress(_:)))
+        let longPressGesture:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.longPress(_:)))
         longPressGesture.minimumPressDuration = 0.5
         cell.addGestureRecognizer(longPressGesture)
         
@@ -1644,7 +1699,7 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                 _ = shareDetails?.value(forKey: "sharedate") as? NSString
                 let sharename = shareDetails?.value(forKey: "sharename") as? NSString
                 let sharemessage = shareDetails?.value(forKey: "sharemessage") as? NSString
-                _ = shareDetails?.value(forKey: "shareuserid") as? NSString
+                let shareuserid = shareDetails?.value(forKey: "shareuserid") as? NSString
                 let userName = currentChatMessage.value(forKey: "username") as? String
                 let message = currentChatMessage.value(forKey: "message") as? String
                 
@@ -1680,23 +1735,21 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                         
                         cell.rightsharecommentDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                         
-                        cell.rightsharecommenttextheight?.constant = sharetxtheight
-                        
                         cell.rightsharecommenttextlbl?.text = sharemessage! as String
                         
                         cell.rightsharecommentnamelbl?.text = senderName as String?
                         
-                        //                        let cmtdetails = String(format: "Commented on %@'s file %@ : %@", cmtuserName!, imagetitle!, cmtMsg!)
                         let cmtdetails = String(format: "Commented on file %@ : %@", imagetitle!, cmtMsg!)
-                        //                        let namerange = (cmtdetails as NSString).range(of: cmtuserName!)
                         let titlerange = (cmtdetails as NSString).range(of: imagetitle! as String)
                         let attributedString = NSMutableAttributedString(string:cmtdetails)
-                        //                        attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.yellow , range: namerange)
-                        //                        attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBlack, size: cell.rightsharecommentdetailslbl.font.pointSize)! , range: namerange)
                         attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.purple , range: titlerange)
-                        attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBlack, size: (cell.rightsharecommentdetailslbl?.font.pointSize)!)! , range: titlerange)
+                        attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBold, size: (cell.rightsharecommentdetailslbl?.font.pointSize)!)! , range: titlerange)
                         
                         cell.rightsharecommentdetailslbl?.attributedText = attributedString
+                        
+                        var cmttxtheight = commonmethodClass.dynamicHeight(width: screenWidth-100, font: UIFont (name: LatoRegular, size: 14)!, string: cmtdetails as String)
+                        cmttxtheight = ceil(cmttxtheight)
+                        cell.rightsharecommenttextheight?.constant = cmttxtheight+45
                         
                         if favstring == "0"
                         {
@@ -1714,21 +1767,15 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                         
                         cell.leftsharecommentDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                         
-                        cell.leftsharecommenttextheight?.constant = sharetxtheight
-                        
                         cell.leftsharecommenttextlbl?.text = sharemessage! as String
                         
                         cell.leftsharecommentnamelbl?.text = senderName as String?
                         
-                        //                        let cmtdetails = String(format: "Commented on %@'s file %@ : %@", cmtuserName!, imagetitle!, cmtMsg!)
                         let cmtdetails = String(format: "Commented on file %@ : %@", imagetitle!, cmtMsg!)
-                        //                        let namerange = (cmtdetails as NSString).range(of: cmtuserName!)
                         let titlerange = (cmtdetails as NSString).range(of: imagetitle! as String)
                         let attributedString = NSMutableAttributedString(string:cmtdetails)
-                        //                        attributedString.addAttribute(NSForegroundColorAttributeName, value: greenColor , range: namerange)
-                        //                        attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBlack, size: cell.leftsharecommentdetailslbl.font.pointSize)! , range: namerange)
                         attributedString.addAttribute(NSForegroundColorAttributeName, value: blueColor , range: titlerange)
-                        attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBlack, size: (cell.leftsharecommentdetailslbl?.font.pointSize)!)! , range: titlerange)
+                        attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBold, size: (cell.leftsharecommentdetailslbl?.font.pointSize)!)! , range: titlerange)
                         
                         cell.leftsharecommentdetailslbl?.attributedText = attributedString
                         
@@ -1752,6 +1799,10 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                         cell.leftsharecommentUserNamelbl?.text = flname as String
                         cell.leftsharecommentUserTagNamelbl?.text = String(format: "@%@", userName!)
                         
+                        var cmttxtheight = commonmethodClass.dynamicHeight(width: screenWidth-100, font: UIFont (name: LatoRegular, size: 14)!, string: cmtdetails as String)
+                        cmttxtheight = ceil(cmttxtheight)
+                        cell.leftsharecommenttextheight?.constant = cmttxtheight+45
+                        
                         if favstring == "0"
                         {
                             cell.leftsharecommentstarimage?.isHidden = true
@@ -1774,6 +1825,9 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                         cell.rightsharefileView?.isHidden = true
                         cell.leftsharefileView?.isHidden = true
                         
+                        var textheight = commonmethodClass.dynamicHeight(width: screenWidth-100, font: (cell.rightsharetextmessagelbl?.font!)!, string: message! as String)
+                        textheight = ceil(textheight)
+                        
                         if(userid?.isEqual(to: self.commonmethodClass.retrieveuserid() as String))!
                         {
                             cell.rightsharetextView?.isHidden = false
@@ -1781,7 +1835,7 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                             
                             cell.rightsharetextDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                             
-                            cell.rightsharetextheight?.constant = sharetxtheight
+                            cell.rightsharetextheight?.constant = textheight+40
                             
                             cell.rightsharetextlbl?.text = sharemessage! as String
                             
@@ -1805,7 +1859,7 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                             
                             cell.leftsharetextDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                             
-                            cell.leftsharetextheight?.constant = sharetxtheight
+                            cell.leftsharetextheight?.constant = textheight+40
                             
                             cell.leftsharetextlbl?.text = sharemessage! as String
                             
@@ -1850,7 +1904,7 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                         
                         let filestring = String(format: "%@%@", kfilePath,filepath!)
                         let fileUrl = NSURL(string: filestring)
-                        let path = appDelegate.getFolderPath().appendingPathComponent((fileUrl?.lastPathComponent)!)
+//                        let path = appDelegate.getFolderPath().appendingPathComponent((fileUrl?.lastPathComponent)!)
                         var fileextension = String(format: "%@", (fileUrl?.pathExtension)!) as NSString
                         fileextension = fileextension.lowercased as NSString
                         
@@ -1866,31 +1920,31 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                                 
                                 cell.rightshareimageDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                                 
-                                var sharedetails : String!
-                                sharedetails = String(format: "Shared an image : %@",(imagetitle?.deletingPathExtension)!)
-                                //                                if(userid?.isEqual(to: shareuserid as! String))!
-                                //                                {
-                                //                                    sharedetails = String(format: "Shared an image : %@",(imagetitle?.deletingPathExtension)!)
-                                //                                }
-                                //                                else
-                                //                                {
-                                //                                    sharedetails = String(format: "Shared %@'s image : %@", sharename!, (imagetitle?.deletingPathExtension)!)
-                                //                                }
+                                var sharedetails = String()
+                                var sharestring = String()
+                                //                                sharedetails = String(format: "Shared an image : %@",(imagetitle?.deletingPathExtension)!)
+                                if(userid?.isEqual(to: shareuserid! as String))!
+                                {
+                                    sharestring = "Shared"
+                                    sharedetails = String(format: "Shared an image")
+                                }
+                                else
+                                {
+                                    sharestring = String(format: "%@", sharename!)
+                                    sharedetails = String(format: "Shared %@'s image", sharename!)
+                                }
                                 
-                                let titlerange = (sharedetails as NSString).range(of: (imagetitle?.deletingPathExtension)!)
+                                let titlerange = (sharedetails as NSString).range(of: sharestring)
                                 let attributedString = NSMutableAttributedString(string:sharedetails)
                                 attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.purple , range: titlerange)
-                                attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBlack, size: (cell.rightshareimagedetailslbl?.font.pointSize)!)! , range: titlerange)
+                                attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBold, size: (cell.rightshareimagedetailslbl?.font.pointSize)!)! , range: titlerange)
                                 
                                 cell.rightshareimagedetailslbl?.attributedText = attributedString
-                                cell.rightshareimagedetailslbl?.adjustsFontSizeToFitWidth = true
-                                
-                                cell.rightshareimagetextheight?.constant = sharetxtheight
                                 
                                 cell.rightshareimagetextlbl?.text = sharemessage! as String
                                 
-                                cell.rightshareimage?.showActivityIndicator = false
-                                cell.rightshareimage?.image = UIImage(contentsOfFile: path.path)
+//                                cell.rightshareimage?.showActivityIndicator = false
+//                                cell.rightshareimage?.image = UIImage(contentsOfFile: path.path)
                                 cell.rightshareimage?.imageURL = fileUrl as URL?
                                 
                                 if favstring == "0"
@@ -1909,24 +1963,21 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                                 
                                 cell.leftshareimageDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                                 
-                                //                                let sharedetails = String(format: "Shared %@'s image : %@", sharename!, (imagetitle?.deletingPathExtension)!)
+                                let sharedetails = String(format: "Shared %@'s image", sharename!)
                                 
-                                let sharedetails = String(format: "Shared an image : %@",(imagetitle?.deletingPathExtension)!)
+                                //                                let sharedetails = String(format: "Shared an image : %@",(imagetitle?.deletingPathExtension)!)
                                 
-                                let titlerange = (sharedetails as NSString).range(of: (imagetitle?.deletingPathExtension)!)
+                                let titlerange = (sharedetails as NSString).range(of: sharename! as String)
                                 let attributedString = NSMutableAttributedString(string:sharedetails)
                                 attributedString.addAttribute(NSForegroundColorAttributeName, value: blueColor , range: titlerange)
-                                attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBlack, size: (cell.leftshareimagedetailslbl?.font.pointSize)!)! , range: titlerange)
+                                attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBold, size: (cell.leftshareimagedetailslbl?.font.pointSize)!)! , range: titlerange)
                                 
                                 cell.leftshareimagedetailslbl?.attributedText = attributedString
-                                cell.leftshareimagedetailslbl?.adjustsFontSizeToFitWidth = true
-                                
-                                cell.leftshareimagetextheight?.constant = sharetxtheight
                                 
                                 cell.leftshareimagetextlbl?.text = sharemessage! as String
                                 
-                                cell.leftshareimage?.showActivityIndicator = false
-                                cell.leftshareimage?.image = UIImage(contentsOfFile: path.path)
+//                                cell.leftshareimage?.showActivityIndicator = false
+//                                cell.leftshareimage?.image = UIImage(contentsOfFile: path.path)
                                 cell.leftshareimage?.imageURL = fileUrl as URL?
                                 
                                 var UserNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftshareimageUserNamelbl?.font!)!, text: flname as NSString)
@@ -1971,24 +2022,27 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                                 
                                 cell.rightsharefileDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                                 
-                                var sharedetails : String!
-                                sharedetails = String(format: "Shared a file : %@",(imagetitle?.deletingPathExtension)!)
-                                //                                if(userid?.isEqual(to: shareuserid as! String))!
-                                //                                {
-                                //                                    sharedetails = String(format: "Shared a file : %@",(imagetitle?.deletingPathExtension)!)
-                                //                                }
-                                //                                else
-                                //                                {
-                                //                                    sharedetails = String(format: "Shared %@'s file : %@", sharename!, (imagetitle?.deletingPathExtension)!)
-                                //                                }
+                                var sharedetails = String()
+                                var sharestring = String()
                                 
-                                let titlerange = (sharedetails as NSString).range(of: (imagetitle?.deletingPathExtension)!)
+                                //                                sharedetails = String(format: "Shared a file : %@",(imagetitle?.deletingPathExtension)!)
+                                if(userid?.isEqual(to: shareuserid! as String))!
+                                {
+                                    sharestring = "Shared"
+                                    sharedetails = String(format: "Shared a file")
+                                }
+                                else
+                                {
+                                    sharestring = String(format: "%@", sharename!)
+                                    sharedetails = String(format: "Shared %@'s file", sharename!)
+                                }
+                                
+                                let titlerange = (sharedetails as NSString).range(of: sharestring)
                                 let attributedString = NSMutableAttributedString(string:sharedetails)
                                 attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.purple , range: titlerange)
-                                attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBlack, size: (cell.rightsharefiledetailslbl?.font.pointSize)!)! , range: titlerange)
+                                attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBold, size: (cell.rightsharefiledetailslbl?.font.pointSize)!)! , range: titlerange)
                                 
                                 cell.rightsharefiledetailslbl?.attributedText = attributedString
-                                cell.rightsharefiledetailslbl?.adjustsFontSizeToFitWidth = true
                                 
                                 cell.rightsharefiletypebtn?.layer.borderColor = redColor.cgColor
                                 cell.rightsharefiletypebtn?.layer.borderWidth = 2.0
@@ -2019,17 +2073,16 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                                 
                                 cell.leftsharefileDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                                 
-                                //                                let sharedetails = String(format: "Shared %@'s file : %@", sharename!, (imagetitle?.deletingPathExtension)!)
+                                let sharedetails = String(format: "Shared %@'s file", sharename!)
                                 
-                                let sharedetails = String(format: "Shared a file : %@",(imagetitle?.deletingPathExtension)!)
+                                //let sharedetails = String(format: "Shared a file : %@",(imagetitle?.deletingPathExtension)!)
                                 
-                                let titlerange = (sharedetails as NSString).range(of: (imagetitle?.deletingPathExtension)!)
+                                let titlerange = (sharedetails as NSString).range(of: sharename! as String)
                                 let attributedString = NSMutableAttributedString(string:sharedetails)
                                 attributedString.addAttribute(NSForegroundColorAttributeName, value: blueColor , range: titlerange)
-                                attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBlack, size: (cell.leftsharefiledetailslbl?.font.pointSize)!)! , range: titlerange)
+                                attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBold, size: (cell.leftsharefiledetailslbl?.font.pointSize)!)! , range: titlerange)
                                 
                                 cell.leftsharefiledetailslbl?.attributedText = attributedString
-                                cell.leftsharefiledetailslbl?.adjustsFontSizeToFitWidth = true
                                 
                                 cell.leftsharefiletypebtn?.layer.borderColor = blueColor.cgColor
                                 cell.leftsharefiletypebtn?.layer.borderWidth = 2.0
@@ -2112,20 +2165,39 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                     
                     cell.rightcommentDatelbl?.text = commonmethodClass.convertDateFormatter(date: messageDate!)
                     
-                    //                    let cmtdetails = String(format: "Commented on %@'s file %@", userName!, imagetitle!)
-                    let cmtdetails = String(format: "Commented on file %@", imagetitle!)
-                    //                    let namerange = (cmtdetails as NSString).range(of: userName as! String)
-                    let titlerange = (cmtdetails as NSString).range(of: imagetitle! as String)
+                    var cmtusername = String()
+                    var cmtdetails = String()
+                    
+                    if(senderuserId?.isEqual(to: userid! as String))!
+                    {
+                        cmtusername = ""
+                        cmtdetails = String(format: "You Commented on file")
+                    }
+                    else
+                    {
+                        cmtusername = String(format: "%@", senderNickname!)
+                        cmtdetails = String(format: "You Commented on %@'s file",cmtusername)
+                    }
+                    
+                    //let cmtdetails = String(format: "Commented on %@'s file %@", userName!, imagetitle!)
+                    let namerange = (cmtdetails as NSString).range(of: cmtusername)
+                    let yourange = (cmtdetails as NSString).range(of: "You")
                     let attributedString = NSMutableAttributedString(string:cmtdetails)
-                    //                    attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.yellow , range: namerange)
-                    //                    attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBlack, size: cell.rightcommentDetailslbl.font.pointSize)! , range: namerange)
-                    attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.purple , range: titlerange)
-                    attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBlack, size: (cell.rightcommentDetailslbl?.font.pointSize)!)! , range: titlerange)
+                    attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.purple , range: namerange)
+                    attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBold, size: (cell.rightcommentDetailslbl?.font.pointSize)!)! , range: namerange)
+                    attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.purple , range: yourange)
+                    attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBold, size: (cell.rightcommentDetailslbl?.font.pointSize)!)! , range: yourange)
                     
                     cell.rightcommentDetailslbl?.attributedText = attributedString
-                    cell.rightcommentDetailslbl?.adjustsFontSizeToFitWidth = true
                     
-                    cell.rightcommentMsglbl?.text = cmtMsg as String!
+                    cell.rightcommentMsglbl?.attributedText = commonmethodClass.createAttributedString(fullString: cmtMsg! as String, fullStringColor: UIColor.darkGray, subString: "(edited)", subStringColor: UIColor.lightGray, fullfont: UIFont (name: LatoRegular, size: 16)!, subfont: UIFont (name: LatoRegular, size: 12)!)
+                    
+                    let filestring = String(format: "%@%@", kfilePath,filepath!)
+                    let fileUrl = NSURL(string: filestring)
+//                    let path = appDelegate.getFolderPath().appendingPathComponent((fileUrl?.lastPathComponent)!)
+//                    cell.rightcommentimage?.showActivityIndicator = false
+//                    cell.rightcommentimage?.image = UIImage(contentsOfFile: path.path)
+                    cell.rightcommentimage?.imageURL = fileUrl as URL?
                     
                     if cmtfavstring == "0"
                     {
@@ -2163,20 +2235,27 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                     cell.leftcommentUserNamelbl?.text = cmtflname as String
                     cell.leftcommentUserTagNamelbl?.text = String(format: "@%@", senderName!)
                     
-                    //                    let cmtdetails = String(format: "Commented on %@'s file %@", userName!, imagetitle!)
-                    let cmtdetails = String(format: "Commented on file %@", imagetitle!)
-                    //                    let namerange = (cmtdetails as NSString).range(of: userName as! String)
-                    let titlerange = (cmtdetails as NSString).range(of: imagetitle! as String)
+                    let cmtusername = String(format: "%@", senderNickname!)
+                    let cmtdetails = String(format: "Commented on %@'s file",cmtusername)
+                    
+                    let namerange = (cmtdetails as NSString).range(of: cmtusername)
+                    let cmtrange = (cmtdetails as NSString).range(of: "Commented")
                     let attributedString = NSMutableAttributedString(string:cmtdetails)
-                    //                    attributedString.addAttribute(NSForegroundColorAttributeName, value: greenColor , range: namerange)
-                    //                    attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBlack, size: cell.rightcommentDetailslbl.font.pointSize)! , range: namerange)
-                    attributedString.addAttribute(NSForegroundColorAttributeName, value: blueColor , range: titlerange)
-                    attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBlack, size: (cell.rightcommentDetailslbl?.font.pointSize)!)! , range: titlerange)
+                    attributedString.addAttribute(NSForegroundColorAttributeName, value: blueColor , range: namerange)
+                    attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBold, size: (cell.leftcommentDetailslbl?.font.pointSize)!)! , range: namerange)
+                    attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 133.0/255.0, green: 133.0/255.0, blue: 133.0/255.0, alpha: 1.0) , range: cmtrange)
+                    attributedString.addAttribute(NSFontAttributeName, value: UIFont (name: LatoBold, size: (cell.leftcommentDetailslbl?.font.pointSize)!)! , range: cmtrange)
                     
                     cell.leftcommentDetailslbl?.attributedText = attributedString
-                    cell.leftcommentDetailslbl?.adjustsFontSizeToFitWidth = true
                     
-                    cell.leftcommentMsglbl?.text = cmtMsg as String!
+                    cell.leftcommentMsglbl?.attributedText = commonmethodClass.createAttributedString(fullString: cmtMsg! as String, fullStringColor: darkgrayColor, subString: "(edited)", subStringColor: textlightgrayColor, fullfont: UIFont (name: LatoRegular, size: 16)!, subfont: UIFont (name: LatoRegular, size: 12)!)
+                    
+                    let filestring = String(format: "%@%@", kfilePath,filepath!)
+                    let fileUrl = NSURL(string: filestring)
+//                    let path = appDelegate.getFolderPath().appendingPathComponent((fileUrl?.lastPathComponent)!)
+//                    cell.leftcommentimage?.showActivityIndicator = false
+//                    cell.leftcommentimage?.image = UIImage(contentsOfFile: path.path)
+                    cell.leftcommentimage?.imageURL = fileUrl as URL?
                     
                     if cmtfavstring == "0"
                     {
@@ -2215,6 +2294,17 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                         }
                         
                         cell.righttextwidth?.constant = textwidth
+                        
+                        if cellheight>70
+                        {
+                            cell.righttextMessageView?.layer.cornerRadius = 20
+                        }
+                        else
+                        {
+                            cell.righttextMessageView?.layer.cornerRadius = (cellheight-20)/2
+                        }
+                        
+                        cell.righttextMessageView?.layer.masksToBounds = true
                         
                         cell.righttextMessagelbl?.text = message as String?
                         
@@ -2290,9 +2380,8 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                     cell.righttextView?.isHidden = true
                     
                     let filestring = String(format: "%@%@", kfilePath,filepath!)
-                    
                     let fileUrl = NSURL(string: filestring)
-                    let path = appDelegate.getFolderPath().appendingPathComponent((fileUrl?.lastPathComponent)!)
+//                    let path = appDelegate.getFolderPath().appendingPathComponent((fileUrl?.lastPathComponent)!)
                     
                     var fileextension = String(format: "%@", (fileUrl?.pathExtension)!) as NSString
                     fileextension = fileextension.lowercased as NSString
@@ -2307,8 +2396,8 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                             cell.rightimageView?.isHidden = false
                             cell.leftimageView?.isHidden = true
                             
-                            cell.rightchatimage?.showActivityIndicator = false
-                            cell.rightchatimage?.image = UIImage(contentsOfFile: path.path)
+//                            cell.rightchatimage?.showActivityIndicator = false
+//                            cell.rightchatimage?.image = UIImage(contentsOfFile: path.path)
                             cell.rightchatimage?.imageURL = fileUrl as URL?
                             
                             cell.rightimageMessagelbl?.text = caption
@@ -2350,8 +2439,8 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                             
                             cell.leftimageUserTagNamelbl?.text = String(format: "@%@", senderNickname!)
                             
-                            cell.leftchatimage?.showActivityIndicator = false
-                            cell.leftchatimage?.image = UIImage(contentsOfFile: path.path)
+//                            cell.leftchatimage?.showActivityIndicator = false
+//                            cell.leftchatimage?.image = UIImage(contentsOfFile: path.path)
                             cell.leftchatimage?.imageURL = fileUrl as URL?
                             
                             cell.leftimageMessagelbl?.text = caption
@@ -2497,32 +2586,32 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                     
                     let cmtdetails = String(format: "Commented on %@'s file %@ : %@", cmtuserName!, imagetitle!, cmtMsg!)
                     
-                    var height = commonmethodClass.dynamicHeight(width: screenWidth-120, font: UIFont (name: LatoRegular, size: 16)!, string: cmtdetails as String)
+                    var height = commonmethodClass.dynamicHeight(width: screenWidth-100, font: UIFont (name: LatoRegular, size: 14)!, string: cmtdetails as String)
                     height = ceil(height)
                     
                     if(senderuserId?.isEqual(to: self.commonmethodClass.retrieveuserid() as String))!
                     {
-                        return sharetxtheight+height+70.0
+                        return sharetxtheight+height+100.0
                     }
                     else
                     {
-                        return sharetxtheight+height+110.0
+                        return sharetxtheight+height+140.0
                     }
                 }
                 else
                 {
                     if (filepath?.isEqual(to: ""))!
                     {
-                        var height = commonmethodClass.dynamicHeight(width: screenWidth-120, font: UIFont (name: LatoRegular, size: 16)!, string: message! as String)
+                        var height = commonmethodClass.dynamicHeight(width: screenWidth-100, font: UIFont (name: LatoRegular, size: 14)!, string: message! as String)
                         height = ceil(height)
                         
                         if(userid?.isEqual(to: self.commonmethodClass.retrieveuserid() as String))!
                         {
-                            return sharetxtheight+height+75.0
+                            return sharetxtheight+height+90.0
                         }
                         else
                         {
-                            return sharetxtheight+height+115.0
+                            return sharetxtheight+height+130.0
                         }
                     }
                     else
@@ -2537,22 +2626,22 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                         {
                             if(userid?.isEqual(to: self.commonmethodClass.retrieveuserid() as String))!
                             {
-                                return sharetxtheight+330.0
+                                return sharetxtheight+90.0
                             }
                             else
                             {
-                                return sharetxtheight+370.0
+                                return sharetxtheight+130.0
                             }
                         }
                         else
                         {
                             if(userid?.isEqual(to: self.commonmethodClass.retrieveuserid() as String))!
                             {
-                                return sharetxtheight+150.0
+                                return sharetxtheight+130.0
                             }
                             else
                             {
-                                return sharetxtheight+190.0
+                                return sharetxtheight+170.0
                             }
                         }
                     }
@@ -2575,11 +2664,11 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                 
                 if(senderuserId?.isEqual(to: self.commonmethodClass.retrieveuserid() as String))!
                 {
-                    return height+110.0
+                    return height+100.0
                 }
                 else
                 {
-                    return height+150.0
+                    return height+130.0
                 }
             }
             else
@@ -2613,11 +2702,11 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                     {
                         if(userid?.isEqual(to: self.commonmethodClass.retrieveuserid() as String))!
                         {
-                            return msgHeight+250.0
+                            return msgHeight+200.0
                         }
                         else
                         {
-                            return msgHeight+280.0
+                            return msgHeight+250.0
                         }
                     }
                     else
@@ -2644,12 +2733,12 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
         {
             let datestring = String(format: "%@", sectionArray.object(at: section) as! CVarArg)
             
-            var Txtwidth = commonmethodClass.widthOfString(usingFont: UIFont(name: LatoBold, size: CGFloat(13.0))!, text: datestring as NSString)
+            var Txtwidth = commonmethodClass.widthOfString(usingFont: UIFont(name: LatoBold, size: CGFloat(12.0))!, text: datestring as NSString)
             Txtwidth = ceil(Txtwidth)
             
             let view = UIView()
             view.frame = CGRect(x: CGFloat((screenWidth - (Txtwidth + 30.0)) / 2.0), y: CGFloat(10.0), width: CGFloat(Txtwidth + 30.0), height: CGFloat(30.0))
-            view.backgroundColor = UIColor.black
+            view.backgroundColor = UIColor(red: 252.0/255.0, green: 246.0/255.0, blue: 175.0/255.0, alpha: 1.0)
             view.layer.cornerRadius = view.frame.size.height / 2.0
             view.layer.masksToBounds = true
             headerView.addSubview(view)
@@ -2657,9 +2746,9 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
             let label = UILabel()
             label.frame = CGRect(x: CGFloat(0), y: CGFloat(0), width: CGFloat(view.frame.size.width), height: CGFloat(view.frame.size.height))
             label.text = datestring
-            label.font = UIFont(name: LatoBold, size: CGFloat(13.0))
+            label.font = UIFont(name: LatoBold, size: CGFloat(12.0))
             label.textAlignment = .center
-            label.textColor = UIColor.white
+            label.textColor = UIColor.darkGray
             label.backgroundColor = UIColor.clear
             view.addSubview(label)
         }
@@ -2731,6 +2820,324 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                     }
                 }
             }
+        }
+    }
+    
+    // MARK: SaveCafeData Methods
+    
+    func savemsg(messageInfo : NSDictionary)
+    {
+        let edited = String(format: "%@", messageInfo.value(forKey: "edited") as! CVarArg)
+        var message = String()
+        if edited == "1"
+        {
+            message = String(format: "%@ (edited)", messageInfo.value(forKey: "message") as! CVarArg)
+        }
+        else
+        {
+            message = String(format: "%@", messageInfo.value(forKey: "message") as! CVarArg)
+        }
+        
+        let userid = String(format: "%@", messageInfo.value(forKey: "uid") as! CVarArg)
+        let flname = String(format: "%@ %@", messageInfo.value(forKey: "first_name") as! CVarArg, messageInfo.value(forKey: "last_name") as! CVarArg)
+        let username = String(format: "%@", messageInfo.value(forKey: "username") as! CVarArg)
+        let date = String(format: "%@", messageInfo.value(forKey: "time") as! CVarArg)
+        let msgid = String(format: "%@", messageInfo.value(forKey: "id") as! CVarArg)
+        var starmsg = "0"
+        if let starmsgstring = messageInfo.value(forKey: "starred") as? String
+        {
+            starmsg = starmsgstring
+        }
+        
+        let chatdetails = ["userid":userid, "username":username, "message":message, "date":date, "teamid":self.commonmethodClass.retrieveteamid(), "imagepath":"", "msgid": msgid, "imagetitle":"", "filesize":"",  "filecaption":"",  "starmsg":starmsg, "flname" : flname] as [String : Any]
+        
+        appDelegate.saveCafeChatDetails(chatdetails: chatdetails as NSDictionary)
+    }
+    
+    func savefile(messageInfo : NSDictionary)
+    {
+        if let filedictionary = messageInfo.value(forKey: "file") as? NSDictionary
+        {
+            let userid = String(format: "%@", messageInfo.value(forKey: "uid") as! CVarArg)
+            let teamid = String(format: "%@", self.commonmethodClass.retrieveteamid())
+            let imagepath = String(format: "%@", filedictionary.value(forKey: "path") as! CVarArg)
+            let date = String(format: "%@", messageInfo.value(forKey: "time") as! CVarArg)
+            let title = String(format: "%@", filedictionary.value(forKey: "title") as! CVarArg)
+            let caption = String(format: "%@", filedictionary.value(forKey: "caption") as! CVarArg)
+            let flname = String(format: "%@ %@", messageInfo.value(forKey: "first_name") as! CVarArg, messageInfo.value(forKey: "last_name") as! CVarArg)
+            let username = String(format: "%@", messageInfo.value(forKey: "username") as! CVarArg)
+            let msgId = String(format: "%@", messageInfo.value(forKey: "id") as! CVarArg)
+            var filesize = String(format: "%@", filedictionary.value(forKey: "size") as! CVarArg)
+            var starred = "0"
+            if let starmsgstring = messageInfo.value(forKey: "starred") as? String
+            {
+                starred = starmsgstring
+            }
+            
+            let formatter = ByteCountFormatter()
+            formatter.allowedUnits = ByteCountFormatter.Units.useAll
+            filesize = formatter.string(fromByteCount: Int64(filesize)!)
+            
+            let chatdetails = ["userid":userid, "username":username, "message":"", "date":date, "teamid":teamid, "imagepath":imagepath, "msgid":msgId, "imagetitle":title, "filesize":filesize, "filecaption":caption, "starmsg":starred, "flname" : flname] as [String : Any]
+            appDelegate.saveCafeChatDetails(chatdetails: chatdetails as NSDictionary)
+        }
+    }
+    
+    func savecomment(messageInfo : NSDictionary)
+    {
+        let msgid = String(format: "%@", messageInfo.value(forKey: "source_id") as! CVarArg)
+        if(commonmethodClass.cafeChatMsgExist(msgId: msgid))
+        {
+            self.commentsave(messageInfo: messageInfo)
+        }
+        else
+        {
+            if let filedictionary = messageInfo.value(forKey: "source") as? NSDictionary
+            {
+                if let filesource = filedictionary.value(forKey: "file_source") as? NSDictionary
+                {
+                    let userid = String(format: "%@", filesource.value(forKey: "uid") as! CVarArg)
+                    let teamid = String(format: "%@", self.commonmethodClass.retrieveteamid())
+                    let imagepath = String(format: "%@", filedictionary.value(forKey: "file_path") as! CVarArg)
+                    let date = String(format: "%@", filesource.value(forKey: "time") as! CVarArg)
+                    let title = String(format: "%@", filedictionary.value(forKey: "file_title") as! CVarArg)
+                    let caption = String(format: "%@", filedictionary.value(forKey: "file_caption") as! CVarArg)
+                    let flname = String(format: "%@ %@", filesource.value(forKey: "first_name") as! CVarArg, filesource.value(forKey: "last_name") as! CVarArg)
+                    let username = String(format: "%@", filesource.value(forKey: "username") as! CVarArg)
+                    let msgId = String(format: "%@", filesource.value(forKey: "id") as! CVarArg)
+                    var starred = "0"
+                    if let starmsgstring = messageInfo.value(forKey: "starred") as? String
+                    {
+                        starred = starmsgstring
+                    }
+                    var filesize = String(format: "%@", filedictionary.value(forKey: "file_size") as! CVarArg)
+                    
+                    let formatter = ByteCountFormatter()
+                    formatter.allowedUnits = ByteCountFormatter.Units.useAll
+                    filesize = formatter.string(fromByteCount: Int64(filesize)!)
+                    
+                    let chatdetails = ["userid":userid, "username":username, "message":"", "date":date, "teamid":teamid, "imagepath":imagepath, "msgid":msgId, "imagetitle":title, "filesize":filesize, "filecaption":caption, "starmsg":starred, "flname" : flname] as [String : Any]
+                    appDelegate.saveCafeChatDetails(chatdetails: chatdetails as NSDictionary)
+                    
+                    self.commentsave(messageInfo: messageInfo)
+                }
+            }
+        }
+    }
+    
+    func commentsave(messageInfo : NSDictionary)
+    {
+        let edited = String(format: "%@", messageInfo.value(forKey: "edited") as! CVarArg)
+        var cmtmsg = String()
+        if edited == "1"
+        {
+            cmtmsg = String(format: "%@ (edited)", messageInfo.value(forKey: "comment") as! CVarArg)
+        }
+        else
+        {
+            cmtmsg = String(format: "%@", messageInfo.value(forKey: "comment") as! CVarArg)
+        }
+        
+        let userid = String(format: "%@", messageInfo.value(forKey: "uid") as! CVarArg)
+        let teamid = String(format: "%@", self.commonmethodClass.retrieveteamid())
+        let msgid = String(format: "%@", messageInfo.value(forKey: "source_id") as! CVarArg)
+        let cmtId = String(format: "%@", messageInfo.value(forKey: "id") as! CVarArg)
+        let flname = String(format: "%@ %@", messageInfo.value(forKey: "first_name") as! CVarArg, messageInfo.value(forKey: "last_name") as! CVarArg)
+        let username = String(format: "%@", messageInfo.value(forKey: "username") as! CVarArg)
+        let date = String(format: "%@", messageInfo.value(forKey: "time") as! CVarArg)
+        var starred = "0"
+        if let starmsgstring = messageInfo.value(forKey: "starred") as? String
+        {
+            starred = starmsgstring
+        }
+        
+        let cmtdetails = ["userid":userid, "username":username, "cmtmsg":cmtmsg, "date":date, "teamid":teamid, "msgid": msgid, "cmtid": cmtId, "starmsg":starred, "flname" : flname] as [String : Any]
+        
+        appDelegate.saveCafeCommentDetails(chatdetails: cmtdetails as NSDictionary)
+        
+        let chatcmtdetails = ["username":username, "userid":userid, "cmtmsg":cmtmsg, "senderusername":username, "senderuserid":userid, "cmtid":cmtId, "starmsg":starred, "flname" : flname] as [String : Any]
+        //                print("chatcmtdetails =>\(chatcmtdetails)")
+        
+        appDelegate.saveCafeChatCmtDetails(cmtdetails: chatcmtdetails as NSDictionary, msgId: msgid, date: date)
+    }
+    
+    func saveshare(messageInfo : NSDictionary)
+    {
+        if let shareDetails = messageInfo.value(forKey: "source_data") as? NSDictionary
+        {
+            let infostring = String(format: "%@", shareDetails.value(forKey: "info") as! CVarArg)
+            if infostring == "message" || infostring == "share"
+            {
+                self.savemsg(messageInfo: shareDetails)
+            }
+            if infostring == "file"
+            {
+                self.savefile(messageInfo: shareDetails)
+            }
+            if infostring == "comment"
+            {
+                let sourcedata = messageInfo.value(forKey: "source_data") as? NSDictionary
+                let source = sourcedata?.value(forKey: "source") as? NSDictionary
+                let file_source = source?.value(forKey: "file_source") as? NSDictionary
+                let msgid = String(format: "%@", file_source?.value(forKey: "id") as! CVarArg)
+                if(commonmethodClass.cafeChatMsgExist(msgId: msgid))
+                {
+                    self.sharecommentsave(messageInfo: messageInfo)
+                }
+                else
+                {
+                    let sourcedatadict = messageInfo.value(forKey: "source_data") as? NSDictionary
+                    if let filedictionary = sourcedatadict?.value(forKey: "source") as? NSDictionary
+                    {
+                        if let filesource = filedictionary.value(forKey: "file_source") as? NSDictionary
+                        {
+                            let filedict = filedictionary.value(forKey: "file") as? NSDictionary
+                            let userid = String(format: "%@", filesource.value(forKey: "uid") as! CVarArg)
+                            let teamid = String(format: "%@", self.commonmethodClass.retrieveteamid())
+                            let imagepath = String(format: "%@", filedict?.value(forKey: "path") as! CVarArg)
+                            let date = String(format: "%@", filesource.value(forKey: "time") as! CVarArg)
+                            let title = String(format: "%@", filedict?.value(forKey: "title") as! CVarArg)
+                            let caption = String(format: "%@", filedict?.value(forKey: "caption") as! CVarArg)
+                            let flname = String(format: "%@ %@", filesource.value(forKey: "first_name") as! CVarArg, filesource.value(forKey: "last_name") as! CVarArg)
+                            let username = String(format: "%@", filesource.value(forKey: "username") as! CVarArg)
+                            let msgId = String(format: "%@", filesource.value(forKey: "id") as! CVarArg)
+                            var starred = "0"
+                            if let starmsgstring = messageInfo.value(forKey: "starred") as? String
+                            {
+                                starred = starmsgstring
+                            }
+                            var filesize = String(format: "%@", filedict?.value(forKey: "size") as! CVarArg)
+                            
+                            let formatter = ByteCountFormatter()
+                            formatter.allowedUnits = ByteCountFormatter.Units.useAll
+                            filesize = formatter.string(fromByteCount: Int64(filesize)!)
+                            
+                            let chatdetails = ["userid":userid, "username":username, "message":"", "date":date, "teamid":teamid, "imagepath":imagepath, "msgid":msgId, "imagetitle":title, "filesize":filesize, "filecaption":caption, "starmsg":starred, "flname" : flname] as [String : Any]
+                            appDelegate.saveCafeChatDetails(chatdetails: chatdetails as NSDictionary)
+                            self.sharecommentsave(messageInfo: messageInfo)
+                        }
+                    }
+                }
+            }
+        }
+        
+        /*-----------------------------------------------------------------*/
+        
+        if let shareDetails = messageInfo.value(forKey: "source_data") as? NSDictionary
+        {
+            let msgId = messageInfo.value(forKey: "id") as? String
+            let sharemsg = messageInfo.value(forKey: "message") as? String
+            let sharename = String(format: "%@ %@", shareDetails.value(forKey: "first_name") as! CVarArg,shareDetails.value(forKey: "last_name") as! CVarArg)
+            let sharedate = shareDetails.value(forKey: "time") as? String
+            let shareuserid = shareDetails.value(forKey: "uid") as? String
+            let teamid = String(format: "%@", self.commonmethodClass.retrieveteamid())
+            let userid = messageInfo.value(forKey: "uid") as? String
+            let flname = String(format: "%@ %@", messageInfo.value(forKey: "first_name") as! CVarArg, messageInfo.value(forKey: "last_name") as! CVarArg)
+            let username = String(format: "%@", messageInfo.value(forKey: "username") as! CVarArg)
+            var starmsg = "0"
+            if let starmsgstring = messageInfo.value(forKey: "starred") as? String
+            {
+                starmsg = starmsgstring
+            }
+            
+            let infostring = shareDetails.value(forKey: "info") as? String
+            var message = ""
+            if infostring == "message" || infostring == "share"
+            {
+                message = String(format: "%@", shareDetails.value(forKey: "message") as! CVarArg)
+            }
+            var imagepath = ""
+            var imagetitle = ""
+            var filesize = ""
+            var filecaption = ""
+            if infostring == "file"
+            {
+                let filedict = shareDetails.value(forKey: "file") as? NSDictionary
+                
+                imagepath = String(format: "%@", filedict?.value(forKey: "path") as! CVarArg)
+                imagetitle = String(format: "%@", filedict?.value(forKey: "title") as! CVarArg)
+                filecaption = String(format: "%@", filedict?.value(forKey: "caption") as! CVarArg)
+                
+                let filestring = String(format: "%@%@", kfilePath,imagepath)
+                let fileUrl = NSURL(string: filestring)
+                let data = NSData(contentsOf: fileUrl! as URL)
+                
+                let formatter = ByteCountFormatter()
+                formatter.allowedUnits = ByteCountFormatter.Units.useAll
+                filesize = formatter.string(fromByteCount: Int64((data?.length)!))
+                //                print("filesize =>\(filesize)")
+            }
+            var cmtid = ""
+            if infostring == "comment"
+            {
+                cmtid = String(format: "%@", shareDetails.value(forKey: "id") as! CVarArg)
+                let source = shareDetails.value(forKey: "source") as? NSDictionary
+                let file = source?.value(forKey: "file") as? NSDictionary
+                
+                imagetitle = String(format: "%@", file?.value(forKey: "title") as! CVarArg)
+            }
+            let date = messageInfo.value(forKey: "time") as? String
+            let shareid = shareDetails.value(forKey: "id") as? String
+            
+            let sharedetails = ["shareid":shareid!, "sharemessage":sharemsg!, "sharename":sharename, "sharedate":sharedate!, "shareuserid":shareuserid!, "shareteamid":teamid] as [String : Any]
+            
+            if cmtid == ""
+            {
+                let chatdetails = ["userid":userid!, "username":username, "message":message, "date":date!, "teamid":teamid, "imagepath":imagepath, "msgid": msgId!, "type": "Share", "commentdetails":"", "sharedetails":sharedetails, "imagetitle":imagetitle, "filesize":filesize, "filecaption":filecaption, "starmsg":starmsg, "flname" : flname] as [String : Any]
+                
+                appDelegate.saveCafeChatDetails(chatdetails: chatdetails as NSDictionary)
+            }
+            else
+            {
+                let cmtusername = sharename
+                let cmtsenderusername = sharename
+                let source = shareDetails.value(forKey: "source") as? NSDictionary
+                let cmtmsg = String(format: "%@", source?.value(forKey: "comment") as! CVarArg)
+                
+                let cmtdetails = ["username":cmtusername, "userid":"", "cmtmsg":cmtmsg, "senderusername":cmtsenderusername, "senderuserid":userid!, "cmtid":cmtid] as [String : Any]
+                
+                let chatdetails = ["userid":userid!, "username":username, "message":message, "date":date!, "teamid":teamid, "imagepath":imagepath, "msgid": msgId!, "type": "Share", "commentdetails":cmtdetails, "sharedetails":sharedetails, "imagetitle":imagetitle, "filesize":filesize, "filecaption":filecaption, "starmsg":starmsg, "flname" : flname] as [String : Any]
+                
+                appDelegate.saveCafeChatDetails(chatdetails: chatdetails as NSDictionary)
+            }
+        }
+    }
+    
+    func sharecommentsave(messageInfo : NSDictionary)
+    {
+        if let cmtdictionary = messageInfo.value(forKey: "source_data") as? NSDictionary
+        {
+            let sourcedictionary = cmtdictionary.value(forKey: "source") as? NSDictionary
+            let file_source = sourcedictionary?.value(forKey: "file_source") as? NSDictionary
+            
+            let edited = String(format: "%@", cmtdictionary.value(forKey: "edited") as! CVarArg)
+            var cmtmsg = String()
+            if edited == "1"
+            {
+                cmtmsg = String(format: "%@ (edited)", sourcedictionary?.value(forKey: "comment") as! CVarArg)
+            }
+            else
+            {
+                cmtmsg = String(format: "%@", sourcedictionary?.value(forKey: "comment") as! CVarArg)
+            }
+            
+            let userid = String(format: "%@", cmtdictionary.value(forKey: "uid") as! CVarArg)
+            let teamid = String(format: "%@", self.commonmethodClass.retrieveteamid())
+            let msgid = String(format: "%@", file_source?.value(forKey: "id") as! CVarArg)
+            let cmtId = String(format: "%@", cmtdictionary.value(forKey: "id") as! CVarArg)
+            let flname = String(format: "%@ %@", cmtdictionary.value(forKey: "first_name") as! CVarArg, cmtdictionary.value(forKey: "last_name") as! CVarArg)
+            let username = String(format: "%@", cmtdictionary.value(forKey: "username") as! CVarArg)
+            let date = String(format: "%@", cmtdictionary.value(forKey: "time") as! CVarArg)
+            let starred = String(format: "%@", cmtdictionary.value(forKey: "starred") as! CVarArg)
+            
+            let cmtdetails = ["userid":userid, "username":username, "cmtmsg":cmtmsg, "date":date, "teamid":teamid, "msgid": msgid, "cmtid": cmtId, "starmsg":starred, "flname" : flname] as [String : Any]
+            
+            appDelegate.saveCafeCommentDetails(chatdetails: cmtdetails as NSDictionary)
+            
+            let chatcmtdetails = ["username":username, "userid":userid, "cmtmsg":cmtmsg, "senderusername":username, "senderuserid":userid, "cmtid":cmtId, "starmsg":starred, "flname" : flname] as [String : Any]
+            //                print("chatcmtdetails =>\(chatcmtdetails)")
+            
+            appDelegate.saveCafeChatCmtDetails(cmtdetails: chatcmtdetails as NSDictionary, msgId: msgid, date: date)
         }
     }
     

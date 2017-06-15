@@ -11,6 +11,7 @@ import Photos
 
 class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, ConnectionProtocol, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate, ICTokenFieldDelegate
 {
+    @IBOutlet weak var scrollView : UIScrollView!
     @IBOutlet weak var tblprofile: UITableView!
     @IBOutlet weak var pickerView : UIPickerView!
     @IBOutlet weak var pickView : UIView!
@@ -18,6 +19,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var datepickView : UIView!
     
     private let skillsfield = CustomizedTokenField()
+    var addresstxtView = PlaceholderTextView()
 
     var generalInfoArray = NSArray()
     var workInfoArray = NSArray()
@@ -41,15 +43,17 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     var contactInfoDictionary = NSDictionary()
     var workInfoDictionary = NSDictionary()
     var generaleditBool : Bool!
+    var workinfoeditBool : Bool!
+    var contactInfoeditBool : Bool!
     var genderArray = NSArray()
-    var gendertxtfield : UITextField!
-    var brithdaytxtfield : UITextField!
-    var firstnametxtfield : UITextField!
-    var lastnametxtfield : UITextField!
-    var locationtxtfield : UITextField!
-    var addresstxtfield : PlaceholderTextView!
-    var phonetxtfield : UITextField!
-    var designationtxtfield : UITextField!
+    var gendertxtfield = UITextField()
+    var brithdaytxtfield = UITextField()
+    var firstnametxtfield = UITextField()
+    var lastnametxtfield = UITextField()
+    var locationtxtfield = UITextField()
+    var phonetxtfield = UITextField()
+    var designationtxtfield = UITextField()
+    var scrollheight = CGFloat()
 
     override func viewDidLoad()
     {
@@ -68,6 +72,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         contactInfoBool = false
         profileString = ""
         generaleditBool = false
+        workinfoeditBool = false
+        contactInfoeditBool = false
         
         generalInfoArray = ["First name", "Last name", "Gender", "Birthday", "Location"] as NSArray
         workInfoArray = ["Designation", "Skills"] as NSArray
@@ -101,6 +107,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         NotificationCenter.default.addObserver(self, selector: #selector(ProfileViewController.handleKeyboardWillHideNotification(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
         tblprofile.register(UINib(nibName: "ProfileInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "ProfileInfoCell")
+        
+        tblprofile.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -124,7 +132,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         {
             if let keyboardFrame = (userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue
             {
-                tblprofile.contentSize = CGSize(width: screenWidth, height: tblprofile.contentSize.height+keyboardFrame.size.height)
+                scrollView.contentSize = CGSize(width: screenWidth, height: scrollheight+keyboardFrame.size.height)
             }
         }
     }
@@ -133,11 +141,434 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     {
         if let userInfo = notification.userInfo
         {
-            if let keyboardFrame = (userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue
+            if ((userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue) != nil
             {
-                tblprofile.contentSize = CGSize(width: screenWidth, height: tblprofile.contentSize.height-keyboardFrame.size.height)
+                scrollView.contentSize = CGSize(width: screenWidth, height: scrollheight)
             }
         }
+    }
+    
+    func loadProfile()
+    {
+        scrollView.subviews.forEach { $0.removeFromSuperview() }
+
+        var yPos = CGFloat()
+        yPos = 0.0
+        for i in 0 ..< 4
+        {
+            let view = UIView()
+            view.backgroundColor = UIColor.white
+            view.tag = i
+            scrollView.addSubview(view)
+            
+            if i == 0
+            {
+                let profileImage = AsyncImageView()
+                profileImage.frame = CGRect(x: CGFloat((screenWidth-120.0)/2.0), y: CGFloat(20.0), width: CGFloat(120.0), height: CGFloat(120.0))
+                profileImage.layer.cornerRadius = profileImage.frame.size.height / 2.0
+                profileImage.layer.masksToBounds = true
+                profileImage.backgroundColor = UIColor.clear
+                profileImage.layer.borderWidth = 1.0
+                profileImage.layer.borderColor = lightgrayColor.cgColor
+                profileImage.contentMode = .scaleAspectFill
+                profileImage.clipsToBounds = true
+                profileImage.isUserInteractionEnabled = true
+                view.addSubview(profileImage)
+                
+                if(pickimage != nil)
+                {
+                    profileImage.image = pickimage
+                }
+                else
+                {
+                    if profileString != ""
+                    {
+                        let imagestring = String(format: "%@%@", kfilePath,profileString)
+                        let fileUrl = NSURL(string: imagestring)
+                        profileImage.imageURL = fileUrl as URL?
+                    }
+                }
+                
+                let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.profileaction))
+                tapGesture.numberOfTapsRequired = 1
+                profileImage.addGestureRecognizer(tapGesture)
+                
+                let uploadlbl = UILabel()
+                uploadlbl.frame = CGRect(x: CGFloat(0.0), y: CGFloat(150.0), width: CGFloat(screenWidth), height: CGFloat(25.0))
+                uploadlbl.font = UIFont(name: LatoRegular, size: CGFloat(15.0))
+                uploadlbl.backgroundColor = UIColor.clear
+                uploadlbl.textColor = blueColor
+                uploadlbl.text = "Upload Photo"
+                uploadlbl.textAlignment = .center
+                view.addSubview(uploadlbl)
+                
+                view.frame = CGRect(x: CGFloat(0.0), y: CGFloat(0.0), width: CGFloat(screenWidth), height: CGFloat(190.0))
+            }
+            else if i == 1
+            {
+                var generalyPos = CGFloat()
+                generalyPos = 0.0
+                for j in 0 ..< 6
+                {
+                    let generalview = UIView()
+                    generalview.frame = CGRect(x: CGFloat(0.0), y: CGFloat(generalyPos), width: CGFloat(screenWidth), height: CGFloat(50.0))
+                    generalview.tag = j
+                    view.addSubview(generalview)
+                    
+                    if j == 0
+                    {
+                        generalview.backgroundColor = UIColor(red: 245.0/255.0, green: 245.0/255.0, blue: 245.0/255.0, alpha: 1.0)
+                        
+                        let infolbl = UILabel()
+                        infolbl.frame = CGRect(x: CGFloat(15.0), y: CGFloat(0.0), width: CGFloat(screenWidth-95.0), height: CGFloat(50.0))
+                        infolbl.font = UIFont(name: LatoBold, size: CGFloat(15.0))
+                        infolbl.backgroundColor = UIColor.clear
+                        infolbl.textColor = UIColor(red: 47.0/255.0, green: 47.0/255.0, blue: 47.0/255.0, alpha: 1.0)
+                        infolbl.text = "GENERAL INFO"
+                        generalview.addSubview(infolbl)
+                        
+                        let savebtn = UIButton()
+                        savebtn.frame = CGRect(x: CGFloat(screenWidth-75.0), y: CGFloat(0.0), width: CGFloat(60.0), height: CGFloat(50.0))
+                        savebtn.backgroundColor = UIColor.clear
+                        savebtn.addTarget(self, action: #selector(self.saveaction(sender:)), for: .touchUpInside)
+                        savebtn.tag = i
+                        savebtn.setTitle("SAVE", for: .normal)
+                        savebtn.setTitleColor(UIColor.lightGray, for: .normal)
+                        savebtn.titleLabel?.font = UIFont(name: LatoBold, size: CGFloat(15.0))
+                        savebtn.contentHorizontalAlignment = .right
+                        generalview.addSubview(savebtn)
+                        
+                        let lineview = UIView()
+                        lineview.backgroundColor = lightgrayColor
+                        lineview.frame = CGRect(x: CGFloat(0.0), y: CGFloat(49.0), width: CGFloat(screenWidth), height: CGFloat(1.0))
+                        generalview.addSubview(lineview)
+                    }
+                    else
+                    {
+                        generalview.backgroundColor = UIColor.white
+                        
+                        let generallbl = UILabel()
+                        generallbl.frame = CGRect(x: CGFloat(15.0), y: CGFloat(0.0), width: CGFloat(screenWidth-190), height: CGFloat(49.0))
+                        generallbl.font = UIFont(name: LatoRegular, size: CGFloat(15.0))
+                        generallbl.backgroundColor = UIColor.clear
+                        generallbl.textColor = UIColor(red: 23.0/255.0, green: 22.0/255.0, blue: 22.0/255.0, alpha: 1.0)
+                        generallbl.text = String(format: "%@", generalInfoArray[j-1] as! CVarArg)
+                        generalview.addSubview(generallbl)
+                        
+                        if j == 3 || j == 4
+                        {
+                            let lbl = UILabel()
+                            lbl.frame = CGRect(x: CGFloat(generallbl.frame.maxX+5.0), y: CGFloat(0.0), width: CGFloat(screenWidth-generallbl.frame.maxX-20.0), height: CGFloat(50.0))
+                            lbl.font = UIFont(name: LatoRegular, size: CGFloat(15.0))
+                            lbl.backgroundColor = UIColor.clear
+                            lbl.textColor = UIColor(red: 0.78, green: 0.78, blue: 0.80, alpha: 0.9)
+                            lbl.text = String(format: "%@", generalInfoArray[j-1] as! CVarArg)
+                            lbl.tag = j
+                            lbl.isUserInteractionEnabled = true
+                            generalview.addSubview(lbl)
+                            
+                            let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.pickerAction))
+                            tapGesture.numberOfTapsRequired = 1
+                            lbl.addGestureRecognizer(tapGesture)
+                            
+                            if j == 3
+                            {
+                                let gender = String(format: "%@", generalInfoDictionary.value(forKey: "gender") as! CVarArg)
+                                if gender == ""
+                                {
+                                    lbl.text = gender
+                                }
+                                else
+                                {
+                                    for item in genderArray
+                                    {
+                                        let obj = item as! NSDictionary
+                                        let idstring = String(format: "%@", obj.value(forKey: "id") as! CVarArg)
+                                        if idstring==gender
+                                        {
+                                            let name = String(format: "%@", obj.value(forKey: "name") as! CVarArg)
+                                            lbl.text = name
+                                        }
+                                    }
+                                }
+                            }
+                            else if j == 4
+                            {
+                                let brithday = String(format: "%@", generalInfoDictionary.value(forKey: "dob") as! CVarArg)
+                                lbl.text = String(format: "%@", commonmethodClass.convertDate(date: brithday))
+                            }
+                            
+                            if (lbl.text?.characters.count)! > 0
+                            {
+                                lbl.textColor = UIColor(red: 123.0/255.0, green: 123.0/255.0, blue: 123.0/255.0, alpha: 1.0)
+                            }
+                        }
+                        else
+                        {
+                            let generaltxtfield = UITextField()
+                            generaltxtfield.frame = CGRect(x: CGFloat(generallbl.frame.maxX+5.0), y: CGFloat(0.0), width: CGFloat(screenWidth-generallbl.frame.maxX-20.0), height: CGFloat(50.0))
+                            generaltxtfield.font = UIFont(name: LatoRegular, size: CGFloat(15.0))
+                            generaltxtfield.delegate = self
+                            generaltxtfield.backgroundColor = UIColor.clear
+                            generaltxtfield.textColor = UIColor(red: 123.0/255.0, green: 123.0/255.0, blue: 123.0/255.0, alpha: 1.0)
+                            generaltxtfield.placeholder = String(format: "%@", generalInfoArray[j-1] as! CVarArg)
+                            generaltxtfield.tag = j
+                            generalview.addSubview(generaltxtfield)
+                            
+                            if j == 1
+                            {
+                                generaltxtfield.text = String(format: "%@", generalInfoDictionary.value(forKey: "firstName") as! CVarArg)
+                            }
+                            else if j == 2
+                            {
+                                generaltxtfield.text = String(format: "%@", generalInfoDictionary.value(forKey: "lastName") as! CVarArg)
+                            }
+                            else if j == 5
+                            {
+                                generaltxtfield.text = String(format: "%@", generalInfoDictionary.value(forKey: "location") as! CVarArg)
+                            }
+                        }
+                        
+                        if j != 5
+                        {
+                            let lineview = UIView()
+                            lineview.backgroundColor = lightgrayColor
+                            lineview.frame = CGRect(x: CGFloat(15.0), y: CGFloat(49.0), width: CGFloat(screenWidth-30.0), height: CGFloat(1.0))
+                            generalview.addSubview(lineview)
+                        }
+                    }
+                    
+                    generalyPos = generalyPos + 50.0
+                }
+                
+                view.frame = CGRect(x: CGFloat(0.0), y: CGFloat(190.0), width: CGFloat(screenWidth), height: CGFloat(300.0))
+            }
+            else if i == 2
+            {
+                var workyPos = CGFloat()
+                workyPos = 0.0
+                for j in 0 ..< 3
+                {
+                    let workview = UIView()
+                    workview.frame = CGRect(x: CGFloat(0.0), y: CGFloat(workyPos), width: CGFloat(screenWidth), height: CGFloat(50.0))
+                    workview.tag = j
+                    view.addSubview(workview)
+                    
+                    if j == 0
+                    {
+                        workview.backgroundColor = UIColor(red: 245.0/255.0, green: 245.0/255.0, blue: 245.0/255.0, alpha: 1.0)
+                        
+                        let infolbl = UILabel()
+                        infolbl.frame = CGRect(x: CGFloat(15.0), y: CGFloat(0.0), width: CGFloat(screenWidth-95.0), height: CGFloat(50.0))
+                        infolbl.font = UIFont(name: LatoBold, size: CGFloat(15.0))
+                        infolbl.backgroundColor = UIColor.clear
+                        infolbl.textColor = UIColor(red: 47.0/255.0, green: 47.0/255.0, blue: 47.0/255.0, alpha: 1.0)
+                        infolbl.text = "WORK INFO"
+                        workview.addSubview(infolbl)
+                        
+                        let savebtn = UIButton()
+                        savebtn.frame = CGRect(x: CGFloat(screenWidth-75.0), y: CGFloat(0.0), width: CGFloat(60.0), height: CGFloat(50.0))
+                        savebtn.backgroundColor = UIColor.clear
+                        savebtn.addTarget(self, action: #selector(self.saveaction(sender:)), for: .touchUpInside)
+                        savebtn.tag = i
+                        savebtn.setTitle("SAVE", for: .normal)
+                        savebtn.setTitleColor(UIColor.lightGray, for: .normal)
+                        savebtn.titleLabel?.font = UIFont(name: LatoBold, size: CGFloat(15.0))
+                        savebtn.contentHorizontalAlignment = .right
+                        workview.addSubview(savebtn)
+                        
+                        let lineview = UIView()
+                        lineview.backgroundColor = lightgrayColor
+                        lineview.frame = CGRect(x: CGFloat(0.0), y: CGFloat(49.0), width: CGFloat(screenWidth), height: CGFloat(1.0))
+                        workview.addSubview(lineview)
+                    }
+                    else
+                    {
+                        workview.backgroundColor = UIColor.white
+                        
+                        let worklbl = UILabel()
+                        worklbl.frame = CGRect(x: CGFloat(15.0), y: CGFloat(0.0), width: CGFloat(screenWidth-190), height: CGFloat(49.0))
+                        worklbl.font = UIFont(name: LatoRegular, size: CGFloat(15.0))
+                        worklbl.backgroundColor = UIColor.clear
+                        worklbl.textColor = UIColor(red: 23.0/255.0, green: 22.0/255.0, blue: 22.0/255.0, alpha: 1.0)
+                        worklbl.text = String(format: "%@", workInfoArray[j-1] as! CVarArg)
+                        workview.addSubview(worklbl)
+                        
+                        if j == 1
+                        {
+                            let worktxtfield = UITextField()
+                            worktxtfield.frame = CGRect(x: CGFloat(worklbl.frame.maxX+5.0), y: CGFloat(0.0), width: CGFloat(screenWidth-worklbl.frame.maxX-20.0), height: CGFloat(50.0))
+                            worktxtfield.font = UIFont(name: LatoRegular, size: CGFloat(15.0))
+                            worktxtfield.delegate = self
+                            worktxtfield.backgroundColor = UIColor.clear
+                            worktxtfield.textColor = UIColor(red: 123.0/255.0, green: 123.0/255.0, blue: 123.0/255.0, alpha: 1.0)
+                            worktxtfield.placeholder = String(format: "%@", workInfoArray[j-1] as! CVarArg)
+                            worktxtfield.tag = j
+                            worktxtfield.text = String(format: "%@", workInfoDictionary.value(forKey: "occupation") as! CVarArg)
+                            workview.addSubview(worktxtfield)
+                        }
+                        else
+                        {
+                            var text = String(format: "%@", workInfoDictionary.value(forKey: "skills") as! CVarArg)
+                            text = String(text.characters.filter { !" \n\t\r()".characters.contains($0) })
+                            let array = (text.components(separatedBy: ",")) as NSArray
+                            //                        print("array =>\(array)")
+                            
+                            skillsfield.frame = CGRect(x: CGFloat(worklbl.frame.maxX-5.0), y: CGFloat(0.0), width: CGFloat(screenWidth-worklbl.frame.maxX-10.0), height: CGFloat(50.0))
+                            skillsfield.delegate = self
+                            if text == ""
+                            {
+                                skillsfield.placeholder = String(format: "%@", workInfoArray[j-1] as! CVarArg)
+                            }
+                            else
+                            {
+                                skillsfield.placeholder = ""
+                            }
+                            skillsfield.backgroundColor = UIColor.clear
+                            workview.addSubview(skillsfield)
+                            
+                            for item in array
+                            {
+                                let obj = item as! String
+                                skillsfield.textField.text = obj
+                                skillsfield.completeCurrentInputText()
+                            }
+                        }
+                        
+                        if j != 2
+                        {
+                            let lineview = UIView()
+                            lineview.backgroundColor = lightgrayColor
+                            lineview.frame = CGRect(x: CGFloat(15.0), y: CGFloat(49.0), width: CGFloat(screenWidth-30.0), height: CGFloat(1.0))
+                            workview.addSubview(lineview)
+                        }
+                    }
+                    
+                    workyPos = workyPos + 50.0
+                }
+                
+                view.frame = CGRect(x: CGFloat(0.0), y: CGFloat(490.0), width: CGFloat(screenWidth), height: CGFloat(150.0))
+            }
+            else if i == 3
+            {
+                var contactyPos = CGFloat()
+                var addressheight = CGFloat()
+                contactyPos = 0.0
+                addressheight = 0.0
+                for j in 0 ..< 4
+                {
+                    let contactview = UIView()
+                    contactview.tag = j
+                    view.addSubview(contactview)
+                    
+                    if j == 0
+                    {
+                        contactview.backgroundColor = UIColor(red: 245.0/255.0, green: 245.0/255.0, blue: 245.0/255.0, alpha: 1.0)
+                        
+                        let infolbl = UILabel()
+                        infolbl.frame = CGRect(x: CGFloat(15.0), y: CGFloat(0.0), width: CGFloat(screenWidth-95.0), height: CGFloat(50.0))
+                        infolbl.font = UIFont(name: LatoBold, size: CGFloat(15.0))
+                        infolbl.backgroundColor = UIColor.clear
+                        infolbl.textColor = UIColor(red: 47.0/255.0, green: 47.0/255.0, blue: 47.0/255.0, alpha: 1.0)
+                        infolbl.text = "CONTACT INFO"
+                        contactview.addSubview(infolbl)
+                        
+                        let savebtn = UIButton()
+                        savebtn.frame = CGRect(x: CGFloat(screenWidth-75.0), y: CGFloat(0.0), width: CGFloat(60.0), height: CGFloat(50.0))
+                        savebtn.backgroundColor = UIColor.clear
+                        savebtn.addTarget(self, action: #selector(self.saveaction(sender:)), for: .touchUpInside)
+                        savebtn.tag = i
+                        savebtn.setTitle("SAVE", for: .normal)
+                        savebtn.setTitleColor(UIColor.lightGray, for: .normal)
+                        savebtn.titleLabel?.font = UIFont(name: LatoBold, size: CGFloat(15.0))
+                        savebtn.contentHorizontalAlignment = .right
+                        contactview.addSubview(savebtn)
+                        
+                        let lineview = UIView()
+                        lineview.backgroundColor = lightgrayColor
+                        lineview.frame = CGRect(x: CGFloat(0.0), y: CGFloat(49.0), width: CGFloat(screenWidth), height: CGFloat(1.0))
+                        contactview.addSubview(lineview)
+                    }
+                    else
+                    {
+                        contactview.backgroundColor = UIColor.white
+                        
+                        let contactlbl = UILabel()
+                        contactlbl.frame = CGRect(x: CGFloat(15.0), y: CGFloat(0.0), width: CGFloat(screenWidth-190), height: CGFloat(49.0))
+                        contactlbl.font = UIFont(name: LatoRegular, size: CGFloat(15.0))
+                        contactlbl.backgroundColor = UIColor.clear
+                        contactlbl.textColor = UIColor(red: 23.0/255.0, green: 22.0/255.0, blue: 22.0/255.0, alpha: 1.0)
+                        contactlbl.text = String(format: "%@", contactInfoArray[j-1] as! CVarArg)
+                        contactview.addSubview(contactlbl)
+                        
+                        if j == 1
+                        {
+                            let contactfield = UITextField()
+                            contactfield.frame = CGRect(x: CGFloat(contactlbl.frame.maxX+5.0), y: CGFloat(0.0), width: CGFloat(screenWidth-contactlbl.frame.maxX-20.0), height: CGFloat(50.0))
+                            contactfield.font = UIFont(name: LatoRegular, size: CGFloat(15.0))
+                            contactfield.delegate = self
+                            contactfield.backgroundColor = UIColor.clear
+                            contactfield.textColor = UIColor(red: 123.0/255.0, green: 123.0/255.0, blue: 123.0/255.0, alpha: 1.0)
+                            contactfield.placeholder = String(format: "%@", contactInfoArray[j-1] as! CVarArg)
+                            contactfield.tag = j
+                            contactfield.text = String(format: "%@", contactInfoDictionary.value(forKey: "phone") as! CVarArg)
+                            contactview.addSubview(contactfield)
+                        }
+                        else if j == 2
+                        {
+                            let emaillbl = UILabel()
+                            emaillbl.frame = CGRect(x: CGFloat(contactlbl.frame.maxX+5.0), y: CGFloat(0.0), width: CGFloat(screenWidth-contactlbl.frame.maxX-20.0), height: CGFloat(50.0))
+                            emaillbl.font = UIFont(name: LatoRegular, size: CGFloat(15.0))
+                            emaillbl.backgroundColor = UIColor.clear
+                            emaillbl.textColor = UIColor(red: 123.0/255.0, green: 123.0/255.0, blue: 123.0/255.0, alpha: 1.0)
+                            emaillbl.text = String(format: "%@", commonmethodClass.retrieveemail())
+                            contactview.addSubview(emaillbl)
+                        }
+                        else if j == 3
+                        {
+                            addresstxtView = PlaceholderTextView()
+                            addresstxtView.text = String(format: "%@", contactInfoDictionary.value(forKey: "address") as! CVarArg)
+                            addresstxtView.font = UIFont(name: LatoRegular, size: CGFloat(15.0))
+                            var txtheight = commonmethodClass.dynamicHeight(width: screenWidth-160, font: addresstxtView.font!, string: addresstxtView.text)
+                            txtheight = txtheight + 10.0
+                            txtheight = ceil(txtheight)
+                            if(txtheight<42.0)
+                            {
+                                txtheight = 42.0
+                            }
+                            addressheight = txtheight - 42.0
+                            
+                            addresstxtView.frame = CGRect(x: CGFloat(contactlbl.frame.maxX-2.0), y: CGFloat(8.0), width: CGFloat(screenWidth-contactlbl.frame.maxX-20.0), height: CGFloat(txtheight))
+                            addresstxtView.backgroundColor = UIColor.clear
+                            addresstxtView.textColor = UIColor(red: 123.0/255.0, green: 123.0/255.0, blue: 123.0/255.0, alpha: 1.0)
+                            addresstxtView.delegate = self
+                            addresstxtView.placeholder = String(format: "%@", contactInfoArray[j-1] as! CVarArg)
+                            addresstxtView.placeholderColor = UIColor(red: 0.78, green: 0.78, blue: 0.80, alpha: 0.9)
+                            contactview.addSubview(addresstxtView)
+                        }
+                        
+                        if j != 3
+                        {
+                            let lineview = UIView()
+                            lineview.backgroundColor = lightgrayColor
+                            lineview.frame = CGRect(x: CGFloat(15.0), y: CGFloat(49.0), width: CGFloat(screenWidth-30.0), height: CGFloat(1.0))
+                            contactview.addSubview(lineview)
+                        }
+                    }
+                    
+                    contactview.frame = CGRect(x: CGFloat(0.0), y: CGFloat(contactyPos), width: CGFloat(screenWidth), height: CGFloat(50.0+addressheight))
+                    
+                    contactyPos = contactyPos + 50.0
+                }
+                
+                view.frame = CGRect(x: CGFloat(0.0), y: CGFloat(640.0), width: CGFloat(screenWidth), height: CGFloat(200.0+addressheight))
+            }
+            
+            yPos = view.frame.maxY
+        }
+        scrollView.contentSize = CGSize(width: CGFloat(screenWidth), height: yPos+20.0)
+        
+        scrollheight = scrollView.contentSize.height
     }
 
     func getProfileInfo()
@@ -148,37 +579,131 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     func saveaction(sender: UIButton!)
     {
         print("sender =>\(sender.tag)")
-        if(sender.tag==0)
+        if sender.currentTitleColor == greenColor
         {
-            self.connectionClass.getUploadProfilePic(imageData: self.imgData as Data)
-        }
-        else if(sender.tag==1)
-        {
-            print("date =>\(datePicker.date)")
-            
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            let dateString = dateFormatter.string(from: datePicker.date)
-            
-            let predicate = NSPredicate(format: "name like %@",gendertxtfield.text!);
-            let filteredArray = genderArray.filter { predicate.evaluate(with: $0) };
-            if filteredArray.count > 0
+            if(sender.tag==0)
             {
-                let genderdictionary = filteredArray[0] as! NSDictionary
-                let idstring = String(format: "%@", genderdictionary.value(forKey: "id") as! CVarArg)
-
-                self.connectionClass.UpdateGeneralInfo(firstname: firstnametxtfield.text!, lastname: lastnametxtfield.text!, gender: idstring, dob: dateString, location: locationtxtfield.text!, myself: "test")
+                self.connectionClass.getUploadProfilePic(imageData: self.imgData as Data)
             }
-        }
-        else if(sender.tag==2)
-        {
-            print("skillsfield =>\(skillsfield.texts)")
-            let skillsstring = String(format: "%@", skillsfield.texts as CVarArg)
-            self.connectionClass.UpdateWorkInfo(occupation: designationtxtfield.text!, skills: skillsstring)
-        }
-        else if(sender.tag==3)
-        {
-            self.connectionClass.UpdateContactInfo(phone: phonetxtfield.text!, address: addresstxtfield.text!)
+            else if(sender.tag==1)
+            {
+                print("date =>\(datePicker.date)")
+                
+                var firstname = String()
+                var lastname = String()
+                var gender = String()
+                var location = String()
+
+                for view : UIView in scrollView.subviews
+                {
+                    if view.tag == 1
+                    {
+                        for view1 : UIView in view.subviews
+                        {
+                            if view1.tag > 0
+                            {
+                                for view2 : UIView in view1.subviews
+                                {
+                                    if let lbl = view2 as? UILabel
+                                    {
+                                        if lbl.tag == 3
+                                        {
+                                            gender = String(format: "%@", lbl.text!)
+                                        }
+                                    }
+                                    if let txtfield = view2 as? UITextField
+                                    {
+                                        if txtfield.tag == 1
+                                        {
+                                            firstname = String(format: "%@", txtfield.text!)
+                                        }
+                                        if txtfield.tag == 2
+                                        {
+                                            lastname = String(format: "%@", txtfield.text!)
+                                        }
+                                        if txtfield.tag == 5
+                                        {
+                                            location = String(format: "%@", txtfield.text!)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd"
+                let dateString = dateFormatter.string(from: datePicker.date)
+                
+                let predicate = NSPredicate(format: "name like %@",gender);
+                let filteredArray = genderArray.filter { predicate.evaluate(with: $0) };
+                if filteredArray.count > 0
+                {
+                    let genderdictionary = filteredArray[0] as! NSDictionary
+                    let idstring = String(format: "%@", genderdictionary.value(forKey: "id") as! CVarArg)
+                    
+                    self.connectionClass.UpdateGeneralInfo(firstname: firstname, lastname: lastname, gender: idstring, dob: dateString, location: location, myself: "test")
+                }
+            }
+            else if(sender.tag==2)
+            {
+                var occupation = String()
+                
+                for view : UIView in scrollView.subviews
+                {
+                    if view.tag == 2
+                    {
+                        for view1 : UIView in view.subviews
+                        {
+                            if view1.tag > 0
+                            {
+                                for view2 : UIView in view1.subviews
+                                {
+                                    if let txtfield = view2 as? UITextField
+                                    {
+                                        if txtfield.tag == 1
+                                        {
+                                            occupation = String(format: "%@", txtfield.text!)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                let skillsstring = String(format: "%@", skillsfield.texts as CVarArg)
+                self.connectionClass.UpdateWorkInfo(occupation: occupation, skills: skillsstring)
+            }
+            else if(sender.tag==3)
+            {
+                var phone = String()
+                
+                for view : UIView in scrollView.subviews
+                {
+                    if view.tag == 3
+                    {
+                        for view1 : UIView in view.subviews
+                        {
+                            if view1.tag > 0
+                            {
+                                for view2 : UIView in view1.subviews
+                                {
+                                    if let txtfield = view2 as? UITextField
+                                    {
+                                        if txtfield.tag == 1
+                                        {
+                                            phone = String(format: "%@", txtfield.text!)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                self.connectionClass.UpdateContactInfo(phone: phone, address: addresstxtView.text!)
+            }
         }
     }
     
@@ -272,6 +797,28 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         UIView.transition(with: tblprofile, duration: 0.3, options: .transitionCrossDissolve, animations: {self.tblprofile.reloadData()}, completion: nil)
     }
     
+    func pickerAction(_ sender: UITapGestureRecognizer)
+    {
+        self.view.endEditing(true)
+        
+        let tappedView = sender.view as! UILabel
+        print("tappedView =>\(tappedView.tag)")
+        if tappedView.tag == 3
+        {
+            if genderArray.count>0
+            {
+                pickView.isHidden = false
+                datepickView.isHidden = true
+                pickerView.reloadAllComponents()
+            }
+        }
+        if tappedView.tag == 4
+        {
+            pickView.isHidden = true
+            datepickView.isHidden = false
+        }
+    }
+    
     func profileaction()
     {
         alertClass.profileAttachment()
@@ -308,8 +855,30 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let dateString = dateFormatter.string(from: sender.date)
-        
-        brithdaytxtfield.text = String(format: "%@", commonmethodClass.convertDateFormatterOnly(date: dateString))
+        generaleditBool = true
+        for view : UIView in scrollView.subviews
+        {
+            if view.tag == 1
+            {
+                for view1 : UIView in view.subviews
+                {
+                    if view1.tag == 4
+                    {
+                        for view2 : UIView in view1.subviews
+                        {
+                            if let lbl = view2 as? UILabel
+                            {
+                                if lbl.tag == 4
+                                {
+                                    lbl.text = String(format: "%@", commonmethodClass.convertDateFormatterOnly(date: dateString))
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        self.updatebtncolor(index: 1)
     }
     
     @IBAction func doneAction(sender : AnyObject)
@@ -320,6 +889,52 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBAction func datepickerdoneAction(sender : AnyObject)
     {
         datepickView.isHidden = true
+    }
+    
+    func updatebtncolor(index : NSInteger)
+    {
+        for view : UIView in scrollView.subviews
+        {
+            if view.tag == index
+            {
+                for view1 : UIView in view.subviews
+                {
+                    if view1.tag == 0
+                    {
+                        for view2 : UIView in view1.subviews
+                        {
+                            if let btn = view2 as? UIButton
+                            {
+                                btn.setTitleColor(greenColor, for: .normal)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func resetbtncolor(index : NSInteger)
+    {
+        for view : UIView in scrollView.subviews
+        {
+            if view.tag == index
+            {
+                for view1 : UIView in view.subviews
+                {
+                    if view1.tag == 0
+                    {
+                        for view2 : UIView in view1.subviews
+                        {
+                            if let btn = view2 as? UIButton
+                            {
+                                btn.setTitleColor(UIColor.lightGray, for: .normal)
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     
     // MARK: - Connection Delegate
@@ -344,22 +959,51 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     profileString = profilestring
                     commonmethodClass.saveprofileimg(profileImg: profilestring as NSString)
                     
-                    imageBool = true
-                    imagecount = 1
+                    for view : UIView in scrollView.subviews
+                    {
+                        if view.tag == 0
+                        {
+                            for view1 : UIView in view.subviews
+                            {
+                                if let imageView = view1 as? AsyncImageView
+                                {
+                                    if(pickimage != nil)
+                                    {
+                                        imageView.image = pickimage
+                                    }
+                                    else
+                                    {
+                                        if profileString != ""
+                                        {
+                                            let imagestring = String(format: "%@%@", kfilePath,profileString)
+                                            let fileUrl = NSURL(string: imagestring)
+                                            imageView.imageURL = fileUrl as URL?
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
                 else
                 {
                     if((InfoDict.value(forKey: "address")) != nil)
                     {
                         contactInfoDictionary = InfoDict
+                        contactInfoeditBool = false
+                        self.resetbtncolor(index: 3)
                     }
                     else if((InfoDict.value(forKey: "occupation")) != nil)
                     {
                         workInfoDictionary = InfoDict
+                        workinfoeditBool = false
+                        self.resetbtncolor(index: 2)
                     }
                     else
                     {
                         generalInfoDictionary = InfoDict
+                        generaleditBool = false
+                        self.resetbtncolor(index: 1)
                     }
                 }
             }
@@ -391,9 +1035,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 {
                     genderArray = genderreponse
                 }
+                
+                self.loadProfile()
             }
-            
-            tblprofile.reloadData()
         }
     }
     
@@ -401,17 +1045,19 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     func textViewDidBeginEditing(_ textView: UITextView)
     {
-        
+        pickView.isHidden = true
+        datepickView.isHidden = true
     }
     
     func textViewDidChange(_ textView: UITextView)
     {
-        
+        self.updatebtncolor(index: 3)
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool
     {
-        if (text == "\n") {
+        if (text == "\n")
+        {
             textView.resignFirstResponder()
             return false
         }
@@ -422,39 +1068,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func textFieldDidBeginEditing(_ textField: UITextField)
     {
-        print("textField =>\(textField.tag)")
-        
-        if textField.placeholder == "Gender"
-        {
-            if genderArray.count>0
-            {
-                pickView.isHidden = false
-                datepickView.isHidden = true
-                pickerView.reloadAllComponents()
-            }
-            
-            commonmethodClass.delayWithSeconds(0.0, completion: {
-                textField.resignFirstResponder()
-            })
-        }
-        else if textField.placeholder == "Birthday"
-        {
-            pickView.isHidden = true
-            datepickView.isHidden = false
-            
-            commonmethodClass.delayWithSeconds(0.0, completion: {
-                textField.resignFirstResponder()
-            })
-        }
-        else
-        {
-            pickView.isHidden = true
-            datepickView.isHidden = true
-        }
-        
-//        commonmethodClass.delayWithSeconds(0.5, completion: {
-//            self.tblprofile.scrollToRow(at: IndexPath(row: 0, section: textField.tag), at: .top, animated: true)
-//        })
+        pickView.isHidden = true
+        datepickView.isHidden = true
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool
@@ -465,33 +1080,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
     {
-        if(textField.tag==1)
-        {
-            generaleditBool = true
-            
-//            commonmethodClass.delayWithSeconds(0.0, completion: {
-//                textField.resignFirstResponder()
-//            })
-            
-//            var headerIndexPath = IndexPath(for: 0, section: textField.tag)
-//            tblprofile.reloadRows(at: [headerIndexPath], with: .automatic)
-
-//            let sectionHeader = tableView(tblprofile, viewForHeaderInSection: textField.tag) as! UITableViewCell
-//            for view : UIView in sectionHeader.contentView.subviews
-//            {
-//                if let savebtn = view as? UIButton
-//                {
-//                    print("view =>\(savebtn.currentTitle)")
-//                    if savebtn.currentTitle == "SAVE"
-//                    {
-//                        savebtn.setTitleColor(greenColor, for: .normal)
-//                        savebtn.setTitle("asdgasdg", for: .normal)
-//                        break
-//                    }
-//                }
-//            }
-        }
-        
+        self.updatebtncolor(index: (textField.superview?.superview?.tag)!)
         return true
     }
     
@@ -520,6 +1109,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                         print("imageData => \(String(describing: imageData?.count))")
                         
                         self.imgData = imageData as NSData!
+                        
+                        self.connectionClass.getUploadProfilePic(imageData: self.imgData as Data)
                     }
                 }
             }
@@ -529,9 +1120,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 print("imageData => \(String(describing: imageData?.count))")
                 
                 self.imgData = imageData as NSData!
+                
+                self.connectionClass.getUploadProfilePic(imageData: self.imgData as Data)
             }
-            
-            tblprofile.reloadData()
         }
     }
     
@@ -621,48 +1212,86 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 
                 if(indexPath.row==0)
                 {
-                    txtfield?.text = String(format: "%@", generalInfoDictionary.value(forKey: "firstName") as! CVarArg)
-                    firstnametxtfield = txtfield
-                }
-                else if(indexPath.row==1)
-                {
-                    txtfield?.text = String(format: "%@", generalInfoDictionary.value(forKey: "lastName") as! CVarArg)
-                    lastnametxtfield = txtfield
-                }
-                else if(indexPath.row==2)
-                {
-                    let gender = String(format: "%@", generalInfoDictionary.value(forKey: "gender") as! CVarArg)
-                    
-                    if gender == ""
+                    if firstnametxtfield.text?.characters.count == 0
                     {
-                        txtfield?.text = gender
+                        txtfield?.text = String(format: "%@", generalInfoDictionary.value(forKey: "firstName") as! CVarArg)
                     }
                     else
                     {
-                        for item in genderArray
+                        txtfield?.text = String(format: "%@", firstnametxtfield.text!)
+                    }
+                    
+                    firstnametxtfield = txtfield!
+                }
+                else if(indexPath.row==1)
+                {
+                    if lastnametxtfield.text?.characters.count == 0
+                    {
+                        txtfield?.text = String(format: "%@", generalInfoDictionary.value(forKey: "lastName") as! CVarArg)
+                    }
+                    else
+                    {
+                        txtfield?.text = String(format: "%@", lastnametxtfield.text!)
+                    }
+                    
+                    lastnametxtfield = txtfield!
+                }
+                else if(indexPath.row==2)
+                {
+                    if gendertxtfield.text?.characters.count == 0
+                    {
+                        let gender = String(format: "%@", generalInfoDictionary.value(forKey: "gender") as! CVarArg)
+                        if gender == ""
                         {
-                            let obj = item as! NSDictionary
-                            let idstring = String(format: "%@", obj.value(forKey: "id") as! CVarArg)
-                            if idstring==gender
+                            txtfield?.text = gender
+                        }
+                        else
+                        {
+                            for item in genderArray
                             {
-                                let name = String(format: "%@", obj.value(forKey: "name") as! CVarArg)
-                                txtfield?.text = name
+                                let obj = item as! NSDictionary
+                                let idstring = String(format: "%@", obj.value(forKey: "id") as! CVarArg)
+                                if idstring==gender
+                                {
+                                    let name = String(format: "%@", obj.value(forKey: "name") as! CVarArg)
+                                    txtfield?.text = name
+                                }
                             }
                         }
                     }
-                    gendertxtfield = txtfield
+                    else
+                    {
+                        txtfield?.text = String(format: "%@", gendertxtfield.text!)
+                    }
+                    
+                    gendertxtfield = txtfield!
                 }
                 else if(indexPath.row==3)
                 {
-                    let brithday = String(format: "%@", generalInfoDictionary.value(forKey: "dob") as! CVarArg)
+                    if brithdaytxtfield.text?.characters.count == 0
+                    {
+                        let brithday = String(format: "%@", generalInfoDictionary.value(forKey: "dob") as! CVarArg)
+                        txtfield?.text = String(format: "%@", commonmethodClass.convertDate(date: brithday))
+                    }
+                    else
+                    {
+                        txtfield?.text = String(format: "%@", brithdaytxtfield.text!)
+                    }
                     
-                    txtfield?.text = String(format: "%@", commonmethodClass.convertDate(date: brithday))
-                    brithdaytxtfield = txtfield
+                    brithdaytxtfield = txtfield!
                 }
                 else if(indexPath.row==4)
                 {
-                    txtfield?.text = String(format: "%@", generalInfoDictionary.value(forKey: "location") as! CVarArg)
-                    locationtxtfield = txtfield
+                    if locationtxtfield.text?.characters.count == 0
+                    {
+                        txtfield?.text = String(format: "%@", generalInfoDictionary.value(forKey: "location") as! CVarArg)
+                    }
+                    else
+                    {
+                        txtfield?.text = String(format: "%@", locationtxtfield.text!)
+                    }
+                    
+                    locationtxtfield = txtfield!
                 }
             }
             else if(indexPath.section==2)
@@ -675,36 +1304,49 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 
                 if(indexPath.row==0)
                 {
-                    txtfield?.text = String(format: "%@", workInfoDictionary.value(forKey: "occupation") as! CVarArg)
-                    designationtxtfield = txtfield
+                    if designationtxtfield.text?.characters.count == 0
+                    {
+                        txtfield?.text = String(format: "%@", workInfoDictionary.value(forKey: "occupation") as! CVarArg)
+                    }
+                    else
+                    {
+                        txtfield?.text = String(format: "%@", designationtxtfield.text!)
+                    }
+                    
+                    designationtxtfield = txtfield!
                 }
                 else if(indexPath.row==1)
                 {
                     txtfield?.isHidden = true
                     
-                    var text = String(format: "%@", workInfoDictionary.value(forKey: "skills") as! CVarArg)
-                    text = String(text.characters.filter { !" \n\t\r()".characters.contains($0) })
-                    let array = (text.components(separatedBy: ",")) as NSArray
-                    print("array =>\(array)")
+//                    print("TEXT*** =>\(skillsfield.texts)")
                     
-                    skillsfield.frame = CGRect(x: (txtfield?.frame.origin.x)!-10.0, y: (txtfield?.frame.origin.y)!, width: (txtfield?.frame.size.width)!+10.0, height: (txtfield?.frame.size.height)!)
-                    skillsfield.delegate = self
-                    if text == ""
+                    if skillsfield.texts.count == 0
                     {
-                        skillsfield.placeholder = txtfield?.placeholder
-                    }
-                    else
-                    {
-                        skillsfield.placeholder = ""
-                    }
-                    skillsfield.backgroundColor = UIColor.clear
-                    cell.contentView.addSubview(skillsfield)
-                    
-                    for item in array
-                    {
-                        let obj = item as! String
-                        skillsfield.textField.text = obj
-                        skillsfield.completeCurrentInputText()
+                        var text = String(format: "%@", workInfoDictionary.value(forKey: "skills") as! CVarArg)
+                        text = String(text.characters.filter { !" \n\t\r()".characters.contains($0) })
+                        let array = (text.components(separatedBy: ",")) as NSArray
+//                        print("array =>\(array)")
+                        
+                        skillsfield.frame = CGRect(x: (txtfield?.frame.origin.x)!-10.0, y: (txtfield?.frame.origin.y)!, width: (txtfield?.frame.size.width)!+10.0, height: (txtfield?.frame.size.height)!)
+                        skillsfield.delegate = self
+                        if text == ""
+                        {
+                            skillsfield.placeholder = txtfield?.placeholder
+                        }
+                        else
+                        {
+                            skillsfield.placeholder = ""
+                        }
+                        skillsfield.backgroundColor = UIColor.clear
+                        cell.contentView.addSubview(skillsfield)
+                        
+                        for item in array
+                        {
+                            let obj = item as! String
+                            skillsfield.textField.text = obj
+                            skillsfield.completeCurrentInputText()
+                        }
                     }
                 }
             }
@@ -716,9 +1358,17 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 
                 if(indexPath.row==0)
                 {
-                    txtfield?.text = String(format: "%@", contactInfoDictionary.value(forKey: "phone") as! CVarArg)
+                    if phonetxtfield.text?.characters.count == 0
+                    {
+                        txtfield?.text = String(format: "%@", contactInfoDictionary.value(forKey: "phone") as! CVarArg)
+                    }
+                    else
+                    {
+                        txtfield?.text = String(format: "%@", phonetxtfield.text!)
+                    }
+                    
                     txtfield?.isUserInteractionEnabled = true
-                    phonetxtfield = txtfield
+                    phonetxtfield = txtfield!
                 }
                 else if(indexPath.row==1)
                 {
@@ -727,11 +1377,18 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 }
                 else if(indexPath.row==2)
                 {
-                    addtxtfield?.placeholder = (contactInfoArray[indexPath.row] as? String)!
-                    addtxtfield?.text = String(format: "%@", contactInfoDictionary.value(forKey: "address") as! CVarArg)
-                    addresstxtfield = addtxtfield
-                    txtfield?.isHidden = true
-                    addtxtfield?.isHidden = false
+//                    addtxtfield?.placeholder = (contactInfoArray[indexPath.row] as? String)!
+//                    if addresstxtfield.text?.characters.count == 0
+//                    {
+//                        addtxtfield?.text = String(format: "%@", contactInfoDictionary.value(forKey: "address") as! CVarArg)
+//                    }
+//                    else
+//                    {
+//                        addtxtfield?.text = String(format: "%@", addresstxtfield.text!)
+//                    }
+//                    addresstxtfield = addtxtfield!
+//                    txtfield?.isHidden = true
+//                    addtxtfield?.isHidden = false
                 }
             }
             
@@ -751,7 +1408,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             {
                 if(indexPath.row==2)
                 {
-                    var txtheight = commonmethodClass.dynamicHeight(width: screenWidth-160, font: UIFont (name: LatoRegular, size: 17)!, string: String(format: "%@", contactInfoDictionary.value(forKey: "address") as! CVarArg))
+                    var txtheight = commonmethodClass.dynamicHeight(width: screenWidth-160, font: UIFont (name: LatoRegular, size: 15)!, string: String(format: "%@", contactInfoDictionary.value(forKey: "address") as! CVarArg))
                     txtheight = txtheight + 10.0
                     txtheight = ceil(txtheight)
                     if(txtheight<50.0)
@@ -777,7 +1434,14 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
     {
-        return 50.0
+        if(section==0)
+        {
+            return 0.0
+        }
+        else
+        {
+            return 50.0
+        }
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
@@ -794,18 +1458,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         {
             case 0:
                 titlelbl?.text = "IMAGE INFO";
-                if(pickimage != nil)
-                {
-                    savebtn?.setTitleColor(greenColor, for: .normal)
-                }
-                else
-                {
-                    savebtn?.setTitleColor(UIColor.lightGray, for: .normal)
-                }
-                break
-            case 1:
-                titlelbl?.text = "GENERAL INFO";
-//                if(generaleditBool==true)
+//                if(pickimage != nil)
 //                {
 //                    savebtn?.setTitleColor(greenColor, for: .normal)
 //                }
@@ -814,11 +1467,38 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
 //                    savebtn?.setTitleColor(UIColor.lightGray, for: .normal)
 //                }
                 break
+            case 1:
+                titlelbl?.text = "GENERAL INFO";
+                if(generaleditBool==true)
+                {
+                    savebtn?.setTitleColor(greenColor, for: .normal)
+                }
+                else
+                {
+                    savebtn?.setTitleColor(UIColor.lightGray, for: .normal)
+                }
+                break
             case 2:
                 titlelbl?.text = "WORK INFO";
+                if(workinfoeditBool==true)
+                {
+                    savebtn?.setTitleColor(greenColor, for: .normal)
+                }
+                else
+                {
+                    savebtn?.setTitleColor(UIColor.lightGray, for: .normal)
+                }
                 break
             case 3:
                 titlelbl?.text = "CONTACT INFO";
+                if(contactInfoeditBool==true)
+                {
+                    savebtn?.setTitleColor(greenColor, for: .normal)
+                }
+                else
+                {
+                    savebtn?.setTitleColor(UIColor.lightGray, for: .normal)
+                }
                 break
             default:
             break
@@ -851,7 +1531,30 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     {
         let genderdictionary = genderArray[row] as! NSDictionary
         print("genderdictionary =>\(genderdictionary)")
-        gendertxtfield.text = genderdictionary["name"] as? String
+        generaleditBool = true
+        for view : UIView in scrollView.subviews
+        {
+            if view.tag == 1
+            {
+                for view1 : UIView in view.subviews
+                {
+                    if view1.tag == 3
+                    {
+                        for view2 : UIView in view1.subviews
+                        {
+                            if let lbl = view2 as? UILabel
+                            {
+                                if lbl.tag == 3
+                                {
+                                    lbl.text = String(format: "%@", genderdictionary.value(forKey: "name") as! CVarArg)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        self.updatebtncolor(index: 1)
     }
     
     // MARK: - ICTokenFieldDelegate
@@ -866,6 +1569,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func tokenFieldWillReturn(_ tokenField: ICTokenField) {
         print(#function)
+        self.updatebtncolor(index: 2)
     }
     
     func tokenField(_ tokenField: ICTokenField, didChangeInputText text: String) {

@@ -11,6 +11,7 @@ import UIKit
 @objc protocol QueueUpdate:class
 {
     func refreshTaskDetails()
+    func dismissView()
 }
 
 class QueueEditViewController: UIViewController, UITextViewDelegate, ConnectionProtocol
@@ -21,10 +22,17 @@ class QueueEditViewController: UIViewController, UITextViewDelegate, ConnectionP
     @IBOutlet weak var scrollview : UIScrollView!
     @IBOutlet weak var switchtype : TTFadeSwitch!
     @IBOutlet weak var grouplogo : AsyncImageView!
+    @IBOutlet weak var submitbtn = UIButton()
+    @IBOutlet weak var memberscrollView = UIScrollView()
+    @IBOutlet weak var memberscrollheight = NSLayoutConstraint()
 
     var taskDictionary = NSMutableDictionary()
     var connectionClass = ConnectionClass()
     weak var delegate:QueueUpdate?
+    var taskstring = String()
+    var commonmethodClass = CommonMethodClass()
+    var userArray = NSArray()
+    var emailArray = NSMutableArray()
 
     override func viewDidLoad()
     {
@@ -33,7 +41,7 @@ class QueueEditViewController: UIViewController, UITextViewDelegate, ConnectionP
         
         connectionClass.delegate = self
 
-        self.title = "Queue Edit"
+        self.title = taskstring
         
         let rightcontainView = UIView()
         rightcontainView.frame = CGRect(x: 0.0, y: 0.0, width: 44.0, height: 44.0)
@@ -84,6 +92,21 @@ class QueueEditViewController: UIViewController, UITextViewDelegate, ConnectionP
         descriptionView.text = String(format: "%@", taskDictionary.value(forKey: "info") as! CVarArg)
 
         print("taskDictionary =>\(taskDictionary)")
+        
+        if taskstring == "Assign Task"
+        {
+            if(userArray.count>0)
+            {
+                self.loadMemberView()
+            }
+            memberscrollheight?.constant = 120.0
+            submitbtn?.setTitle("Assign Task", for: .normal)
+        }
+        else
+        {
+            memberscrollheight?.constant = 0.0
+            submitbtn?.setTitle("Update", for: .normal)
+        }
     }
     
     func closeaction()
@@ -109,7 +132,21 @@ class QueueEditViewController: UIViewController, UITextViewDelegate, ConnectionP
                 priority = "1"
             }
             
-            connectionClass.queueEdit(groupId: taskDictionary.value(forKey: "groupId") as! String, taskid: taskDictionary.value(forKey: "id") as! String, taskname: taskField.text!, taskdescription: descriptionView.text, priority: priority)
+            if taskstring == "Assign Task"
+            {
+                if(emailArray.count==0)
+                {
+                    self.showAlert(alerttitle: "Info", alertmsg: queueToTaskReponse.value(forKey: "usersRequired") as! String)
+                }
+                else
+                {
+                    connectionClass.queueToTask(taskid: taskDictionary.value(forKey: "id") as! String, taskname: taskField.text!, taskdescription: descriptionView.text, users: emailArray.componentsJoined(by: ","), priority: priority)
+                }
+            }
+            else
+            {
+                connectionClass.queueEdit(groupId: taskDictionary.value(forKey: "groupId") as! String, taskid: taskDictionary.value(forKey: "id") as! String, taskname: taskField.text!, taskdescription: descriptionView.text, priority: priority)
+            }
         }
     }
     
@@ -122,30 +159,135 @@ class QueueEditViewController: UIViewController, UITextViewDelegate, ConnectionP
         self.present(alertController, animated: true, completion: nil)
     }
     
+    func loadMemberView()
+    {
+        emailArray.removeAllObjects()
+        
+        memberscrollView?.subviews.forEach { $0.removeFromSuperview() }
+        
+        var Xpos : CGFloat!
+        Xpos = 0.0
+        for i in 0 ..< userArray.count
+        {
+            let userdictionary = userArray[i] as! NSDictionary
+            
+            let filestring = String(format: "%@%@", kfilePath,userdictionary.value(forKey: "pic") as! CVarArg)
+            let fileUrl = NSURL(string: filestring)
+            
+            let firstnamestring = String(format: "%@",userdictionary.value(forKey: "firstName") as! CVarArg)
+            
+            let userImage = AsyncImageView()
+            userImage.frame = CGRect(x: CGFloat(Xpos), y: CGFloat(0.0), width: CGFloat(40.0), height: CGFloat(40.0))
+            userImage.layer.cornerRadius = userImage.frame.size.height / 2.0
+            userImage.layer.masksToBounds = true
+            userImage.backgroundColor = UIColor.clear
+            userImage.imageURL = fileUrl as URL?
+            userImage.tag = i
+            userImage.isUserInteractionEnabled = true
+            userImage.contentMode = .scaleAspectFill
+            userImage.clipsToBounds = true
+            memberscrollView?.addSubview(userImage)
+            
+            let titlelbl = UILabel()
+            titlelbl.frame = CGRect(x: CGFloat(Xpos-2.5), y: CGFloat(userImage.frame.maxY + 5.0), width: CGFloat(45.0), height: CGFloat(20.0))
+            titlelbl.font = UIFont(name: LatoRegular, size: CGFloat(12.0))
+            titlelbl.backgroundColor = UIColor.clear
+            titlelbl.textColor = UIColor.darkGray
+            titlelbl.text = firstnamestring
+            titlelbl.textAlignment = .center
+            //            titlelbl.adjustsFontSizeToFitWidth = true
+            memberscrollView?.addSubview(titlelbl)
+            
+            let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.userSelectAction))
+            tapGesture.numberOfTapsRequired = 1
+            userImage.addGestureRecognizer(tapGesture)
+            
+            Xpos = Xpos + 62.0
+            
+            //            if(IS_IPHONE_6)
+            //            {
+            //                Xpos = Xpos + 50.0
+            //            }
+            //            else if(IS_IPHONE_6P)
+            //            {
+            //                Xpos = Xpos + 48.4
+            //            }
+            //            else
+            //            {
+            //                Xpos = Xpos + 49.0
+            //            }
+        }
+        
+        commonmethodClass.delayWithSeconds(0.5, completion: {
+            self.memberscrollView?.contentSize = CGSize(width: Xpos, height: (self.memberscrollView?.frame.size.height)!)
+        })
+    }
+    
+    func userSelectAction(_ sender: UITapGestureRecognizer)
+    {
+        let tappedView = sender.view as! AsyncImageView
+        let userdictionary = userArray[tappedView.tag] as! NSDictionary
+        let emailstring = String(format: "%@", userdictionary.value(forKey: "email") as! CVarArg)
+        
+        if tappedView.subviews.count==0
+        {
+            let titlelbl = UILabel()
+            titlelbl.frame = CGRect(x: CGFloat(0.0), y: CGFloat(0.0), width: CGFloat(tappedView.frame.size.width), height: CGFloat(tappedView.frame.size.height))
+            titlelbl.font = UIFont(name: Workaa_Font, size: CGFloat(30.0))
+            titlelbl.backgroundColor = UIColor.clear
+            titlelbl.textColor = UIColor.white
+            titlelbl.text = tickIcon
+            titlelbl.textAlignment = .center
+            titlelbl.backgroundColor = UIColor(white: 0.0, alpha: 0.5)
+            tappedView.addSubview(titlelbl)
+            
+            emailArray.add(emailstring)
+        }
+        else
+        {
+            for v: UIView in tappedView.subviews {
+                v.removeFromSuperview()
+            }
+            
+            emailArray.remove(emailstring)
+        }
+        
+        print("emailArray =>\(emailArray)")
+    }
+    
     // MARK: - Connection Delegate
     
     func GetFailureReponseMethod(errorreponse: String)
     {
-        print("GetFailureReponseMethod")
+        print("GetFailureReponseMethod =>\(errorreponse)")
+        self.showAlert(alerttitle: "Info", alertmsg: errorreponse)
     }
     
     func GetReponseMethod(reponse : NSDictionary)
     {
         print("reponse => \(reponse)")
         
-        var priority = "0"
-        if(!switchtype.isOn)
+        if taskstring == "Assign Task"
         {
-            priority = "1"
+            self.closeaction()
+            self.delegate?.dismissView()
         }
-        
-        taskDictionary.setValue(taskField.text!, forKey: "task")
-        taskDictionary.setValue(descriptionView.text, forKey: "info")
-        taskDictionary.setValue(priority, forKey: "priority")
-
-        self.delegate?.refreshTaskDetails()
-        
-        self.closeaction()
+        else
+        {
+            var priority = "0"
+            if(!switchtype.isOn)
+            {
+                priority = "1"
+            }
+            
+            taskDictionary.setValue(taskField.text!, forKey: "task")
+            taskDictionary.setValue(descriptionView.text, forKey: "info")
+            taskDictionary.setValue(priority, forKey: "priority")
+            
+            self.delegate?.refreshTaskDetails()
+            
+            self.closeaction()
+        }
     }
     
     // MARK: - UITextView Delegate

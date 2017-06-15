@@ -78,6 +78,37 @@ class ConnectionClass: NSObject
         self.getRequest(request: request)
     }
     
+    func getCafeMsg(count:String)
+    {
+        let urlpath = String(format: "%@%@", kBaseURL,kgetcafemsg)
+        print("urlpath =>\(urlpath)")
+        
+        let request : ASIFormDataRequest = ASIFormDataRequest(url: NSURL(string: urlpath)! as URL)
+        request.requestMethod = "POST"
+        request.addPostValue(commonmethodClass.retrieveUsernameToken(), forKey: "token")
+        request.addPostValue(count as NSObjectProtocol!, forKey: "count")
+        request.addHeader("Accept", value: "application/json")
+        request.startSynchronous()
+        
+        self.getRequest(request: request)
+    }
+    
+    func getDirectMsg(uId:String, count:String)
+    {
+        let urlpath = String(format: "%@%@", kBaseURL,kgetdirectmsg)
+        print("urlpath =>\(urlpath)")
+        
+        let request : ASIFormDataRequest = ASIFormDataRequest(url: NSURL(string: urlpath)! as URL)
+        request.requestMethod = "POST"
+        request.addPostValue(commonmethodClass.retrieveUsernameToken(), forKey: "token")
+        request.addPostValue(uId as NSObjectProtocol!, forKey: "uid")
+        request.addPostValue(count as NSObjectProtocol!, forKey: "count")
+        request.addHeader("Accept", value: "application/json")
+        request.startSynchronous()
+        
+        self.getRequest(request: request)
+    }
+    
     func teamVerify(domain:String)
     {
         let urlpath = String(format: "%@%@", kUrlPath,kteamverify)
@@ -169,6 +200,20 @@ class ConnectionClass: NSObject
         request.addPostValue(password as NSObjectProtocol!, forKey: "password")
         request.addPostValue(kDeviceToken as NSObjectProtocol!, forKey: "devicetoken")
         request.addPostValue(uniqueId as NSObjectProtocol!, forKey: "deviceid")
+        request.addHeader("Accept", value: "application/json")
+        request.startSynchronous()
+        
+        self.getRequest(request: request)
+    }
+    
+    func ForgotEmail(email:String)
+    {
+        let urlpath = String(format: "%@%@", kBaseURL,kforgotPasswordRequest)
+        print("urlpath =>\(urlpath)")
+        
+        let request : ASIFormDataRequest = ASIFormDataRequest(url: NSURL(string: urlpath)! as URL)
+        request.requestMethod = "POST"
+        request.addPostValue(email as NSObjectProtocol!, forKey: "email")
         request.addHeader("Accept", value: "application/json")
         request.startSynchronous()
         
@@ -395,6 +440,36 @@ class ConnectionClass: NSObject
         self.getRequest(request: request)
     }
     
+    func queueDelete(groupId:String, taskid:String)
+    {
+        let urlpath = String(format: "%@%@", kBaseURL,kqueueDelete)
+        
+        let request : ASIFormDataRequest = ASIFormDataRequest(url: NSURL(string: urlpath)! as URL)
+        request.requestMethod = "POST"
+        request.addPostValue(commonmethodClass.retrieveUsernameToken(), forKey: "token")
+        request.addPostValue(groupId as NSObjectProtocol!, forKey: "groupid")
+        request.addPostValue(taskid as NSObjectProtocol!, forKey: "id")
+        request.addHeader("Accept", value: "application/json")
+        request.startSynchronous()
+        
+        self.getRequest(request: request)
+    }
+    
+    func queueReject(groupId:String, taskid:String)
+    {
+        let urlpath = String(format: "%@%@", kBaseURL,kqueueReject)
+        
+        let request : ASIFormDataRequest = ASIFormDataRequest(url: NSURL(string: urlpath)! as URL)
+        request.requestMethod = "POST"
+        request.addPostValue(commonmethodClass.retrieveUsernameToken(), forKey: "token")
+        request.addPostValue(groupId as NSObjectProtocol!, forKey: "groupid")
+        request.addPostValue(taskid as NSObjectProtocol!, forKey: "id")
+        request.addHeader("Accept", value: "application/json")
+        request.startSynchronous()
+        
+        self.getRequest(request: request)
+    }
+    
     func getNonGroupUserList(groupId:String)
     {
         let urlpath = String(format: "%@%@", kBaseURL,knongroupuserlist)
@@ -517,6 +592,21 @@ class ConnectionClass: NSObject
         request.requestMethod = "POST"
         request.addPostValue(groupid as NSObjectProtocol!, forKey: "groupid")
         request.addPostValue(hours as NSObjectProtocol!, forKey: "hours")
+        request.addPostValue(commonmethodClass.retrieveUsernameToken(), forKey: "token")
+        request.addHeader("Accept", value: "application/json")
+        request.startSynchronous()
+        
+        self.getRequest(request: request)
+    }
+    
+    func getGroupInfo(groupid:String)
+    {
+        let urlpath = String(format: "%@%@", kBaseURL,kgetgroupInfo)
+        print("urlpath =>\(urlpath)")
+        
+        let request : ASIFormDataRequest = ASIFormDataRequest(url: NSURL(string: urlpath)! as URL)
+        request.requestMethod = "POST"
+        request.addPostValue(groupid as NSObjectProtocol!, forKey: "groupid")
         request.addPostValue(commonmethodClass.retrieveUsernameToken(), forKey: "token")
         request.addHeader("Accept", value: "application/json")
         request.startSynchronous()
@@ -1012,7 +1102,7 @@ class ConnectionClass: NSObject
         let request : ASIFormDataRequest = ASIFormDataRequest(url: NSURL(string: urlpath)! as URL)
         request.requestMethod = "POST"
         request.addPostValue(commonmethodClass.retrieveUsernameToken(), forKey: "token")
-        request.addPostValue(process as NSObjectProtocol!, forKey: "process")
+        request.addPostValue(process as NSObjectProtocol!, forKey: "process_type")
         request.addPostValue(appDelegate.latitudeString as NSObjectProtocol!, forKey: "lat")
         request.addPostValue(appDelegate.longitudeString as NSObjectProtocol!, forKey: "lon")
         request.addHeader("Accept", value: "application/json")

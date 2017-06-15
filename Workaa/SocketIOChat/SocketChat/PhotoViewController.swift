@@ -44,6 +44,9 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate, UITextViewDel
     var usernamelbl : UILabel!
     var filetitlelbl : UILabel!
     var dictionary = NSDictionary()
+    let commentbutton = UIButton()
+    var topgradient = AlphaGradientView()
+    var bottomgradient = AlphaGradientView()
 
     override func viewDidLoad()
     {
@@ -67,11 +70,21 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate, UITextViewDel
         self.zoomeableScrollView.addSubview(imageView)
         self.theImageView = imageView
         
+//        topgradient = AlphaGradientView(frame: CGRect(x: CGFloat(0.0), y: CGFloat(0.0), width: CGFloat(screenWidth), height: CGFloat(70.0)))
+//        topgradient.direction = GRADIENT_UP
+//        topgradient.color = UIColor(white: 0.0, alpha: 0.3)
+//        self.view.addSubview(topgradient)
+        
         topView = UIView()
-        topView.frame = CGRect(x: CGFloat(0.0), y: CGFloat(20.0), width: CGFloat(UIScreen.main.bounds.size.width), height: CGFloat(44.0))
+        topView.frame = CGRect(x: CGFloat(0.0), y: CGFloat(20.0), width: CGFloat(screenWidth), height: CGFloat(44.0))
         topView.backgroundColor = UIColor.clear
         topView.isHidden = true
         self.view.addSubview(topView)
+        
+//        let gradient:CAGradientLayer = CAGradientLayer()
+//        gradient.frame.size = topView.frame.size
+//        gradient.colors = [UIColor.white.cgColor,UIColor.white.withAlphaComponent(0).cgColor]
+//        topView.layer.addSublayer(gradient)
         
         let closebutton = UIButton()
         closebutton.addTarget(self, action: #selector(self.onBackgroundTap), for: .touchUpInside)
@@ -115,7 +128,7 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate, UITextViewDel
         bottomView.isHidden = true
         self.view.addSubview(bottomView)
         
-        let commentbutton = UIButton()
+//        let commentbutton = UIButton()
         commentbutton.addTarget(self, action: #selector(self.commentAction), for: .touchUpInside)
         commentbutton.backgroundColor = UIColor.clear
         commentbutton.setTitle(cmtIcon, for: .normal)
@@ -405,7 +418,7 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate, UITextViewDel
                                         let chatcmtdetails = ["username":username, "userid":userid, "cmtmsg":self.cmtMsgEditor.text!, "senderusername":self.commonmethodClass.retrieveusername(), "senderuserid":self.commonmethodClass.retrieveuserid(), "cmtid":cmtId, "starmsg":"0", "flname" : self.commonmethodClass.retrievename()] as [String : Any]
                                         print("chatcmtdetails =>\(chatcmtdetails)")
                                         
-                                        appDelegate.saveCafeChatCmtDetails(cmtdetails: chatcmtdetails as NSDictionary, msgId: self.msgId as String)
+                                        appDelegate.saveCafeChatCmtDetails(cmtdetails: chatcmtdetails as NSDictionary, msgId: self.msgId as String, date: date)
                                         
                                         self.cmtMsgEditor.text = ""
                                         self.cmtMsgEditor.resignFirstResponder()
@@ -541,6 +554,15 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate, UITextViewDel
         }
         usernamelbl.text = String(format: "%@",getmanageObj.value(forKey: "username") as! CVarArg)
         filetitlelbl.text = String(format: "%@",getmanageObj.value(forKey: "imagetitle") as! CVarArg)
+        
+        if chattype == "OneToOneChat"
+        {
+            commentbutton.isHidden = true
+        }
+        else
+        {
+            commentbutton.isHidden = false
+        }
 
         self.getcommentDetails()
     }
@@ -650,6 +672,15 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate, UITextViewDel
             }, completion: {(_ finished: Bool) -> Void in
             })
         })
+        
+        if chattype == "OneToOneChat"
+        {
+            commentbutton.isHidden = true
+        }
+        else
+        {
+            commentbutton.isHidden = false
+        }
     }
     
     func viewFileAction()
@@ -1032,16 +1063,19 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate, UITextViewDel
             starmsg = "Remove Star"
         }
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: starmsg, style: .default , handler:{ (UIAlertAction)in
-            if favstring == "1"
-            {
-                self.RemoveStarMessage(cmtId: cmtId! as String)
-            }
-            else
-            {
-                self.StarMessage(cmtId: cmtId! as String)
-            }
-        }))
+        if chattype == "GroupChat" || chattype == "OneToOneChat"
+        {
+            alert.addAction(UIAlertAction(title: starmsg, style: .default , handler:{ (UIAlertAction)in
+                if favstring == "1"
+                {
+                    self.RemoveStarMessage(cmtId: cmtId! as String)
+                }
+                else
+                {
+                    self.StarMessage(cmtId: cmtId! as String)
+                }
+            }))
+        }
         
         if (userId?.isEqual(to: commonmethodClass.retrieveuserid() as String))!
         {

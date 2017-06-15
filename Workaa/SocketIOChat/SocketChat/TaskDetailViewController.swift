@@ -92,18 +92,19 @@ class TaskDetailViewController: UIViewController, ConnectionProtocol, UITextView
         let namelbl = UILabel()
         namelbl.text = namestring
 //        namelbl.frame = CGRect(x: CGFloat(profileImage.frame.maxX + 8.0), y: CGFloat(0.0), width: CGFloat((nameView.frame.size.width - (profileImage.frame.maxX + 5.0)) - 5), height: CGFloat(nameView.frame.size.height))
-        namelbl.frame = CGRect(x: CGFloat(profileImage.frame.maxX + 8.0), y: CGFloat(0.0), width: CGFloat(namelbl.intrinsicContentSize.width), height: CGFloat(nameView.frame.size.height))
         namelbl.font = UIFont(name: LatoRegular, size: CGFloat(12.0))
+        var width = commonmethodClass.widthOfString(usingFont: namelbl.font, text: namestring as NSString)
+        width = ceil(width)
+        namelbl.frame = CGRect(x: CGFloat(profileImage.frame.maxX + 8.0), y: CGFloat(0.0), width: CGFloat(width), height: CGFloat(nameView.frame.size.height-2.0))
         namelbl.backgroundColor = UIColor.clear
         namelbl.textColor = UIColor.white
-        namelbl.text = namestring
         nameView.addSubview(namelbl)
         
-        nameView.frame = CGRect(x: CGFloat((screenWidth - (namelbl.frame.maxX + 5.0)) / 2.0), y: CGFloat(25.0), width: CGFloat(namelbl.frame.maxX), height: CGFloat(25.0))
+        nameView.frame = CGRect(x: CGFloat((screenWidth - (namelbl.frame.maxX + 11.0)) / 2.0), y: CGFloat(25.0), width: CGFloat(namelbl.frame.maxX + 11.0), height: CGFloat(25.0))
         
         /*----------------------------------------------------------*/
         
-        priorityView.frame = CGRect(x: CGFloat((tasktopView.frame.size.width - 60.0) / 2.0), y: CGFloat(nameView.frame.maxY + 10.0), width: CGFloat(60.0), height: CGFloat(15.0))
+        priorityView.frame = CGRect(x: CGFloat((screenWidth - 60.0) / 2.0), y: CGFloat(nameView.frame.maxY + 10.0), width: CGFloat(60.0), height: CGFloat(15.0))
         priorityView.layer.cornerRadius = priorityView.frame.size.height / 2.0
         priorityView.layer.masksToBounds = true
         priorityView.backgroundColor = redColor
@@ -128,7 +129,7 @@ class TaskDetailViewController: UIViewController, ConnectionProtocol, UITextView
         if priority == "0"
         {
             priorityView.isHidden = true
-//            priorityView.frame = CGRect(x: CGFloat((tasktopView.frame.size.width - 60.0) / 2.0), y: CGFloat(nameView.frame.maxY), width: CGFloat(60.0), height: CGFloat(0.0))
+//            priorityView.frame = CGRect(x: CGFloat((screenWidth - 60.0) / 2.0), y: CGFloat(nameView.frame.maxY), width: CGFloat(60.0), height: CGFloat(0.0))
 
 //            starImage.image = UIImage(named: "grey_star.png")
 //            priorityView.backgroundColor = UIColor.clear
@@ -162,7 +163,7 @@ class TaskDetailViewController: UIViewController, ConnectionProtocol, UITextView
 
         let groupnameView = UIView()
         groupnameView.backgroundColor = UIColor.clear
-        groupnameView.frame = CGRect(x: CGFloat(0.0), y: CGFloat(tasktopView.frame.size.height - 35.0), width: CGFloat(tasktopView.frame.size.width), height: CGFloat(20.0))
+        groupnameView.frame = CGRect(x: CGFloat(0.0), y: CGFloat(tasktopView.frame.size.height - 35.0), width: CGFloat(screenWidth), height: CGFloat(20.0))
         tasktopView.addSubview(groupnameView)
         
         let groupimagestring = String(format: "%@%@",kfilePath, (taskDictionary["groupLogo"] as? String)!)
@@ -190,14 +191,14 @@ class TaskDetailViewController: UIViewController, ConnectionProtocol, UITextView
         groupnameView.addSubview(titlelbl)
         
         let groupwidth: CGFloat = titlelbl.intrinsicContentSize.width + 35.0
-        groupnameView.frame = CGRect(x: CGFloat((tasktopView.frame.size.width - groupwidth) / 2.0), y: CGFloat(tasktopView.frame.size.height - 35.0), width: groupwidth, height: CGFloat(20.0))
+        groupnameView.frame = CGRect(x: CGFloat((screenWidth - groupwidth) / 2.0), y: CGFloat(tasktopView.frame.size.height - 35.0), width: groupwidth, height: CGFloat(20.0))
         
         /*----------------------------------------------------------*/
         
         let datestring = String(format: "%@", (taskDictionary["time"] as? String)!)
         
         let datelbl = UILabel()
-        datelbl.frame = CGRect(x: CGFloat(tasktopView.frame.size.width-60.0), y: CGFloat(28.0), width: CGFloat(45.0), height: CGFloat(21.0))
+        datelbl.frame = CGRect(x: CGFloat(screenWidth-60.0), y: CGFloat(28.0), width: CGFloat(45.0), height: CGFloat(21.0))
         datelbl.font = UIFont(name: LatoRegular, size: CGFloat(11.0))
         datelbl.backgroundColor = UIColor.clear
         datelbl.textColor = UIColor(red: 163/255, green: 229/255, blue: 255/255, alpha: 1)
@@ -281,42 +282,39 @@ class TaskDetailViewController: UIViewController, ConnectionProtocol, UITextView
         }
 
         let descediticonbtn = UIButton()
-        descediticonbtn.frame = CGRect(x: CGFloat(screenWidth-40.0), y: CGFloat(tasktopView.frame.size.height), width: CGFloat(40.0), height: CGFloat(40.0))
-        descediticonbtn.titleLabel?.font = UIFont(name: Workaa_Font, size: CGFloat(14.0))
+        descediticonbtn.frame = CGRect(x: CGFloat(screenWidth-50.0), y: CGFloat(tasktopView.frame.size.height), width: CGFloat(50.0), height: CGFloat(50.0))
+        descediticonbtn.titleLabel?.font = UIFont(name: Workaa_Font, size: CGFloat(20.0))
         descediticonbtn.backgroundColor = UIColor.clear
         descediticonbtn.setTitleColor(UIColor.darkGray, for: .normal)
-        descediticonbtn.setTitle(editIcon, for: .normal)
+        descediticonbtn.setTitle(moreIcon, for: .normal)
         descediticonbtn.addTarget(self, action: #selector(TaskDetailViewController.desceditaction), for: .touchUpInside)
+        descediticonbtn.contentEdgeInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
         scrollView.addSubview(descediticonbtn)
         
         /*----------------------------------------------------------*/
 
         let assignString = String(format: "%@", taskDictionary.value(forKey: "assign") as! CVarArg)
-        if assignString == "0"
+        let ownString = String(format: "%@", taskDictionary.value(forKey: "own") as! CVarArg)
+        if assignString == "1" || ownString == "1"
         {
-            descediticonbtn.isHidden = true
-            titleediticonbtn.isHidden = true
+            descediticonbtn.isHidden = false
         }
         else
         {
-            descediticonbtn.isHidden = false
-            titleediticonbtn.isHidden = false
+            descediticonbtn.isHidden = true
         }
         
         for view : UIView in self.view.subviews
         {
-            for view1 : UIView in view.subviews
+            if view.frame.size.height==60
             {
-                if view1.frame.size.height==40
+                if assignString == "0"
                 {
-                    if assignString == "0"
-                    {
-                        view1.isHidden = true
-                    }
-                    else
-                    {
-                        view1.isHidden = false
-                    }
+                    view.isHidden = true
+                }
+                else
+                {
+                    view.isHidden = false
                 }
             }
         }
@@ -503,14 +501,53 @@ class TaskDetailViewController: UIViewController, ConnectionProtocol, UITextView
     {
         //taskdesc.isEditable = true
         
-        let queueeditObj = self.storyboard?.instantiateViewController(withIdentifier: "QueueEditViewID") as? QueueEditViewController
-        queueeditObj?.taskDictionary = taskDictionary
-        queueeditObj?.delegate = self
-        let navController = UINavigationController(rootViewController: queueeditObj!)
-        navController.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: LatoRegular, size: CGFloat(18.0))!, NSForegroundColorAttributeName : UIColor.white];
-        navController.navigationBar.barTintColor = blueColor
-        navController.navigationBar.isTranslucent = false
-        self.present(navController, animated: true, completion: nil)
+        let assignString = String(format: "%@", taskDictionary.value(forKey: "assign") as! CVarArg)
+        let ownString = String(format: "%@", taskDictionary.value(forKey: "own") as! CVarArg)
+        
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        if ownString == "1"
+        {
+            alert.addAction(UIAlertAction(title: "Edit Task", style: .default , handler:{ (UIAlertAction)in
+                
+                let queueeditObj = self.storyboard?.instantiateViewController(withIdentifier: "QueueEditViewID") as? QueueEditViewController
+                queueeditObj?.taskDictionary = self.taskDictionary
+                queueeditObj?.delegate = self
+                queueeditObj?.taskstring = "Edit Task"
+                let navController = UINavigationController(rootViewController: queueeditObj!)
+                navController.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: LatoRegular, size: CGFloat(18.0))!, NSForegroundColorAttributeName : UIColor.white];
+                navController.navigationBar.barTintColor = blueColor
+                navController.navigationBar.isTranslucent = false
+                self.present(navController, animated: true, completion: nil)
+
+            }))
+            alert.addAction(UIAlertAction(title: "Remove Task", style: .destructive , handler:{ (UIAlertAction)in
+                
+                self.connectionClass.queueDelete(groupId: self.taskDictionary.value(forKey: "groupId") as! String, taskid: self.taskDictionary.value(forKey: "id") as! String)
+                
+            }))
+        }
+        else
+        {
+            if assignString == "1"
+            {
+                alert.addAction(UIAlertAction(title: "Reject Task", style: .destructive , handler:{ (UIAlertAction)in
+                    
+                    self.connectionClass.queueReject(groupId: self.taskDictionary.value(forKey: "groupId") as! String, taskid: self.taskDictionary.value(forKey: "id") as! String)
+                    
+                }))
+            }
+        }
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler:{ (UIAlertAction)in
+            print("User click Dismiss button")
+        }))
+        self.present(alert, animated: true, completion: {
+            print("completion block")
+        })
+    }
+    
+    func dismissView()
+    {
+        self.dismiss(animated: true, completion: nil)
     }
     
     func refreshTaskDetails()
@@ -552,6 +589,19 @@ class TaskDetailViewController: UIViewController, ConnectionProtocol, UITextView
     
     @IBAction func assigntaskaction(sender : AnyObject)
     {
+        let queueeditObj = self.storyboard?.instantiateViewController(withIdentifier: "QueueEditViewID") as? QueueEditViewController
+        queueeditObj?.taskDictionary = taskDictionary
+        queueeditObj?.delegate = self
+        queueeditObj?.taskstring = "Assign Task"
+        queueeditObj?.userArray = userArray
+        let navController = UINavigationController(rootViewController: queueeditObj!)
+        navController.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: LatoRegular, size: CGFloat(18.0))!, NSForegroundColorAttributeName : UIColor.white];
+        navController.navigationBar.barTintColor = blueColor
+        navController.navigationBar.isTranslucent = false
+        self.present(navController, animated: true, completion: nil)
+        
+        return
+        
         if(tasktitlelbl.text?.characters.count==0)
         {
             self.showAlert(alerttitle: "Info", alertmsg: queueToTaskReponse.value(forKey: "taskRequired") as! String)
@@ -647,7 +697,8 @@ class TaskDetailViewController: UIViewController, ConnectionProtocol, UITextView
     
     func GetFailureReponseMethod(errorreponse: String)
     {
-        print("GetFailureReponseMethod")
+        print("GetFailureReponseMethod =>\(errorreponse)")
+        self.showAlert(alerttitle: "Info", alertmsg: errorreponse)
     }
     
     func GetReponseMethod(reponse : NSDictionary)
@@ -664,6 +715,10 @@ class TaskDetailViewController: UIViewController, ConnectionProtocol, UITextView
                 {
                     self.loadMemberView()
                 }
+            }
+            else
+            {
+                self.dismiss(animated: true, completion: nil)
             }
         }
         else

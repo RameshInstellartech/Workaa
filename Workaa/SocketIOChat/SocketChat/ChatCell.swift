@@ -58,6 +58,7 @@ class ChatCell: BaseCell
     @IBOutlet weak var rightcommentDetailslbl = UILabel()
     @IBOutlet weak var rightcommentMsglbl = KILabel()
     @IBOutlet weak var rightcommentstarimage = UIImageView()
+    @IBOutlet weak var rightcommentimage = AsyncImageView()
 
     // left comment text chat cell
     @IBOutlet weak var leftcommentView = UIView()
@@ -70,6 +71,7 @@ class ChatCell: BaseCell
     @IBOutlet weak var leftcommentDetailslbl = UILabel()
     @IBOutlet weak var leftcommentMsglbl = KILabel()
     @IBOutlet weak var leftcommentstarimage = UIImageView()
+    @IBOutlet weak var leftcommentimage = AsyncImageView()
 
     // right file chat cell
     @IBOutlet weak var rightfileView = UIView()

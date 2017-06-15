@@ -41,7 +41,8 @@ class HomeDetailViewController: UIViewController, CardsSwipingViewDelegate, call
         notifibtn.setTitle(notifiIcon, for: .normal)
 
         let revealViewController: SWRevealViewController? = self.revealViewController()
-        if revealViewController != nil {
+        if revealViewController != nil
+        {
             menubtn.addTarget(revealViewController, action: #selector(revealViewController?.revealToggle(_:)), for: .touchUpInside)
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
@@ -290,19 +291,22 @@ class HomeDetailViewController: UIViewController, CardsSwipingViewDelegate, call
         self.cardsSwipingView?.clearQueue()
         self.cardsSwipingView?.isHidden = false
         
-        var Ypos : CGFloat!
+        var Ypos = CGFloat()
+        var widthspace = CGFloat()
         Ypos = 30.0
+        widthspace = 20.0
         for i in startcount ..< cardcount
         {
             let bucketdictionary = queueArray[i] as! NSDictionary as? [AnyHashable: Any] ?? [:]
             
-            let card = CardView(frame: CGRect(x: CGFloat(0), y: CGFloat(Ypos), width: CGFloat(screenWidth - 20), height: cardheight.constant))
+            let card = CardView(frame: CGRect(x: CGFloat(0), y: CGFloat(Ypos), width: CGFloat(screenWidth - widthspace), height: cardheight.constant))
             card.delegate = self
             card.queueDictionary = bucketdictionary
             card.filepath = kfilePath
             self.cardsSwipingView?.enqueueCard(card)
-                
+                            
             Ypos = Ypos - 10.0
+            widthspace = widthspace + 10.0
         }
     }
     

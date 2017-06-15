@@ -29,8 +29,8 @@ class SignInViewController: UIViewController, UITextFieldDelegate, ConnectionPro
         
         connectionClass.delegate = self
         
-        emailtxtField.text = "ramesh@instellartech.com";
-        pwdtxtField.text = "password";
+//        emailtxtField.text = "ramesh@instellartech.com";
+//        pwdtxtField.text = "password";
         
         if(IS_IPHONE_6)
         {
@@ -56,7 +56,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate, ConnectionPro
         attributedString.addAttribute(NSForegroundColorAttributeName, value: blueColor , range: range)
         forgotlbl?.attributedText = attributedString
         
-        let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SignInViewController.SignUpMethod))
+        let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.forgotMethod))
         tapGesture.numberOfTapsRequired = 1
         forgotlbl?.addGestureRecognizer(tapGesture)
     }
@@ -68,16 +68,15 @@ class SignInViewController: UIViewController, UITextFieldDelegate, ConnectionPro
         self.navigationController?.navigationBar.isHidden = true
     }
     
-    func SignUpMethod()
+    func forgotMethod()
     {
-//        let signUpObj = self.storyboard?.instantiateViewController(withIdentifier: "SignUpID") as? SignUpViewController
-//        self.present(signUpObj!, animated: true, completion: nil)
+        let forgotObj = self.storyboard?.instantiateViewController(withIdentifier: "ForgotViewID") as? ForgotViewController
+        self.present(forgotObj!, animated: true, completion: nil)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool
     {
         textField.resignFirstResponder()
-        
         return true
     }
     
@@ -85,12 +84,14 @@ class SignInViewController: UIViewController, UITextFieldDelegate, ConnectionPro
     {
         if emailtxtField.count == 0 || pwdtxtField.count == 0
         {
-            alertClass.showAlert(alerttitle: "Info", alertmsg: signInReponse.value(forKey: "allFieldRequired") as! String)
+            //alertClass.showAlert(alerttitle: "Info", alertmsg: signInReponse.value(forKey: "allFieldRequired") as! String)
+            alertClass.showAlert(alerttitle: "Info", alertmsg: "allFieldRequired")
         }
-        else if pwdtxtField.count < 6 || pwdtxtField.count > 15
-        {
-            alertClass.showAlert(alerttitle: "Info", alertmsg: signInReponse.value(forKey: "passwordLength") as! String)
-        }
+//        else if pwdtxtField.count < 6 || pwdtxtField.count > 15
+//        {
+//            //alertClass.showAlert(alerttitle: "Info", alertmsg: signInReponse.value(forKey: "passwordLength") as! String)
+//            alertClass.showAlert(alerttitle: "Info", alertmsg: "allFieldRequired")
+//        }
 //        else if !validationClass.isValidEmail(testStr: emailtxtField.text!)
 //        {
 //            alertClass.showAlert(alerttitle: "Info", alertmsg: signInReponse.value(forKey: "invalidEmail") as! String)

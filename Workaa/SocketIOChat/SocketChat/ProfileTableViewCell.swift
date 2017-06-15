@@ -12,6 +12,9 @@ class ProfileTableViewCell: UITableViewCell
 {
     @IBOutlet weak var profileimage: AsyncImageView!
     @IBOutlet weak var profilename: UILabel!
+    @IBOutlet weak var locIcon: UILabel!
+    @IBOutlet weak var loclbl: UILabel!
+    @IBOutlet weak var locwidth = NSLayoutConstraint()
 
     override func awakeFromNib()
     {

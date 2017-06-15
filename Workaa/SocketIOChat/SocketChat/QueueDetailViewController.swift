@@ -8,7 +8,7 @@
 
 import UIKit
 
-class QueueDetailViewController: UIViewController, ConnectionProtocol, UITextViewDelegate
+class QueueDetailViewController: UIViewController, ConnectionProtocol, UITextViewDelegate, QueueUpdate
 {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var tasktitle: UITextView!
@@ -25,7 +25,7 @@ class QueueDetailViewController: UIViewController, ConnectionProtocol, UITextVie
     @IBOutlet weak var descediticonbtn: UIButton!
 
     var userArray = NSArray()
-    var queueDictionary = NSDictionary()
+    var queueDictionary = NSMutableDictionary()
     var morebtn: UIButton!
     var commonmethodClass = CommonMethodClass()
     var alertClass = AlertClass()
@@ -92,6 +92,8 @@ class QueueDetailViewController: UIViewController, ConnectionProtocol, UITextVie
         
         self.loadbottomView()
         
+        //titleediticonbtn.setTitle(editIcon, for: .normal)
+        
 //        titleediticonbtn.setTitle(editIcon, for: .normal)
 //        descediticonbtn.setTitle(editIcon, for: .normal)
 //        
@@ -124,6 +126,9 @@ class QueueDetailViewController: UIViewController, ConnectionProtocol, UITextVie
 //                }
 //            }
 //        }
+        
+        descediticonbtn.setTitle(moreIcon, for: .normal)
+        descediticonbtn.contentEdgeInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
     }
 
     override func viewWillAppear(_ animated: Bool)
@@ -272,7 +277,50 @@ class QueueDetailViewController: UIViewController, ConnectionProtocol, UITextVie
     
     @IBAction func desceditaction(sender : AnyObject)
     {
-        taskdesc.isEditable = true
+        //taskdesc.isEditable = true
+        
+        let assignString = String(format: "%@", queueDictionary.value(forKey: "assign") as! CVarArg)
+        let ownString = String(format: "%@", queueDictionary.value(forKey: "own") as! CVarArg)
+        
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        if ownString == "1"
+        {
+            alert.addAction(UIAlertAction(title: "Edit Task", style: .default , handler:{ (UIAlertAction)in
+                
+                let queueeditObj = self.storyboard?.instantiateViewController(withIdentifier: "QueueEditViewID") as? QueueEditViewController
+                queueeditObj?.taskDictionary = self.queueDictionary
+                queueeditObj?.delegate = self
+                queueeditObj?.taskstring = "Edit Task"
+                let navController = UINavigationController(rootViewController: queueeditObj!)
+                navController.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: LatoRegular, size: CGFloat(18.0))!, NSForegroundColorAttributeName : UIColor.white];
+                navController.navigationBar.barTintColor = blueColor
+                navController.navigationBar.isTranslucent = false
+                self.present(navController, animated: true, completion: nil)
+                
+            }))
+            alert.addAction(UIAlertAction(title: "Remove Task", style: .destructive , handler:{ (UIAlertAction)in
+                
+                self.connectionClass.queueDelete(groupId: self.queueDictionary.value(forKey: "groupId") as! String, taskid: self.queueDictionary.value(forKey: "id") as! String)
+                
+            }))
+        }
+        else
+        {
+            if assignString == "1"
+            {
+                alert.addAction(UIAlertAction(title: "Reject Task", style: .destructive , handler:{ (UIAlertAction)in
+                    
+                    self.connectionClass.queueReject(groupId: self.queueDictionary.value(forKey: "groupId") as! String, taskid: self.queueDictionary.value(forKey: "id") as! String)
+                    
+                }))
+            }
+        }
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler:{ (UIAlertAction)in
+            print("User click Dismiss button")
+        }))
+        self.present(alert, animated: true, completion: {
+            print("completion block")
+        })
     }
 
     @IBAction func lateraction(sender : AnyObject)
@@ -282,6 +330,19 @@ class QueueDetailViewController: UIViewController, ConnectionProtocol, UITextVie
     
     @IBAction func assigntaskaction(sender : AnyObject)
     {
+        let queueeditObj = self.storyboard?.instantiateViewController(withIdentifier: "QueueEditViewID") as? QueueEditViewController
+        queueeditObj?.taskDictionary = queueDictionary
+        queueeditObj?.delegate = self
+        queueeditObj?.taskstring = "Assign Task"
+        queueeditObj?.userArray = userArray
+        let navController = UINavigationController(rootViewController: queueeditObj!)
+        navController.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: LatoRegular, size: CGFloat(18.0))!, NSForegroundColorAttributeName : UIColor.white];
+        navController.navigationBar.barTintColor = blueColor
+        navController.navigationBar.isTranslucent = false
+        self.present(navController, animated: true, completion: nil)
+        
+        return
+        
         if(tasktitle.text.characters.count==0)
         {
             alertClass.showAlert(alerttitle: "Info", alertmsg: queueToTaskReponse.value(forKey: "taskRequired") as! String)
@@ -290,10 +351,10 @@ class QueueDetailViewController: UIViewController, ConnectionProtocol, UITextVie
         {
             alertClass.showAlert(alerttitle: "Info", alertmsg: queueToTaskReponse.value(forKey: "taskLength") as! String)
         }
-        else if(taskdesc.text.characters.count==0)
-        {
-            alertClass.showAlert(alerttitle: "Info", alertmsg: queueToTaskReponse.value(forKey: "infoRequired") as! String)
-        }
+//        else if(taskdesc.text.characters.count==0)
+//        {
+//            alertClass.showAlert(alerttitle: "Info", alertmsg: queueToTaskReponse.value(forKey: "infoRequired") as! String)
+//        }
         else if(emailArray.count==0)
         {
             alertClass.showAlert(alerttitle: "Info", alertmsg: queueToTaskReponse.value(forKey: "usersRequired") as! String)
@@ -304,6 +365,65 @@ class QueueDetailViewController: UIViewController, ConnectionProtocol, UITextVie
         }
     }
     
+    func dismissView()
+    {
+        for aviewcontroller : UIViewController in navigation().viewControllers
+        {
+            if let tasklistView = aviewcontroller as? TaskListViewController
+            {
+                tasklistView.getQueueList()
+                break
+            }
+        }
+        navigation().popViewController(animated: true)
+    }
+    
+    func refreshTaskDetails()
+    {
+        print("refreshTaskDetails =>\(queueDictionary)")
+        
+        let priority = String(format: "%@", queueDictionary.value(forKey: "priority") as! CVarArg)
+        if priority == "1"
+        {
+            statusView.isHidden = false
+        }
+        else
+        {
+            statusView.isHidden = true
+        }
+        
+        tasktitle.text = String(format: "%@", queueDictionary.value(forKey: "task") as! CVarArg)
+        tasktitleheight.constant = commonmethodClass.dynamicHeight(width: screenWidth-40, font: tasktitle.font!, string: tasktitle.text!)
+        if(tasktitleheight.constant<30.0)
+        {
+            tasktitleheight.constant = 30.0
+        }
+        else
+        {
+            tasktitleheight.constant = tasktitleheight.constant + 20.0
+        }
+        
+        taskdesc.text = String(format: "%@", queueDictionary.value(forKey: "info") as! CVarArg)
+        taskdescheight.constant = commonmethodClass.dynamicHeight(width: screenWidth-40, font: taskdesc.font!, string: taskdesc.text!)
+        if(taskdescheight.constant<30.0)
+        {
+            taskdescheight.constant = 30.0
+        }
+        else
+        {
+            taskdescheight.constant = taskdescheight.constant + 20.0
+        }
+        
+        for aviewcontroller : UIViewController in navigation().viewControllers
+        {
+            if let tasklistView = aviewcontroller as? TaskListViewController
+            {
+                tasklistView.getQueueList()
+                break
+            }
+        }
+     }
+
     // MARK: - UITextView Delegate
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool
@@ -376,6 +496,18 @@ class QueueDetailViewController: UIViewController, ConnectionProtocol, UITextVie
                 {
                     self.loadMemberView()
                 }
+            }
+            else
+            {
+                for aviewcontroller : UIViewController in navigation().viewControllers
+                {
+                    if let tasklistView = aviewcontroller as? TaskListViewController
+                    {
+                        tasklistView.getQueueList()
+                        break
+                    }
+                }
+                navigation().popViewController(animated: true)
             }
         }
         else

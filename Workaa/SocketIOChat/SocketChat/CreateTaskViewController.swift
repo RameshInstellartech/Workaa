@@ -86,8 +86,6 @@ class CreateTaskViewController: UIViewController, UITextFieldDelegate, UITextVie
 
         connectionClass.delegate = self
         
-        print("groupArray =>\(groupArray)")
-        
         NotificationCenter.default.addObserver(self, selector: #selector(CreateTaskViewController.handleKeyboardWillShowNotification(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(CreateTaskViewController.handleKeyboardWillHideNotification(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
@@ -521,6 +519,90 @@ class CreateTaskViewController: UIViewController, UITextFieldDelegate, UITextVie
             if let getgrouplist = getreponse.value(forKey: "groupList") as? NSArray
             {
                 groupArray = getgrouplist
+                
+                if groupArray.count == 1
+                {
+                    let groupdictionary = groupArray[0] as! NSDictionary
+                    
+                    /*------------------------------------------------------*/
+                    
+                    goruplbl.text = groupdictionary["name"] as? String
+                    queuegrouplogowidth.constant = 30.0
+                    queuegrouplogo.isHidden = false
+                    
+                    var filestring = String(format: "%@%@", kfilePath,groupdictionary.value(forKey: "logo") as! CVarArg)
+                    queuegrouplogourl = NSURL(string: filestring)!
+                    queuegrouplogo.imageURL = queuegrouplogourl as URL?
+                    
+                    queueGroupId = String(format: "%@",groupdictionary.value(forKey: "id") as! CVarArg)
+                    
+                    /*------------------------------------------------------*/
+                    
+                    mygoruplbl.text = groupdictionary["name"] as? String
+                    mytaskgrouplogowidth.constant = 30.0
+                    mytaskgrouplogo.isHidden = false
+                    
+                    filestring = String(format: "%@%@", kfilePath,groupdictionary.value(forKey: "logo") as! CVarArg)
+                    logourl = NSURL(string: filestring)!
+                    mytaskgrouplogo.imageURL = logourl as URL?
+                    
+                    myTaskGroupId = String(format: "%@",groupdictionary.value(forKey: "id") as! CVarArg)
+                    
+                    /*------------------------------------------------------*/
+                    
+                    if goruplbl.text != "Select a Group"
+                    {
+                        let predicate = NSPredicate(format: "name like %@",goruplbl.text!);
+                        let filteredArray = groupArray.filter { predicate.evaluate(with: $0) };
+                        if filteredArray.count > 0
+                        {
+                            let groupdictionary = filteredArray[0] as! NSDictionary
+                            let adminString = String(format: "%@", groupdictionary.value(forKey: "admin") as! CVarArg)
+                            if(commonmethodClass.retrieveteamadmin()=="1" || adminString=="1")
+                            {
+                                connectionClass.UserList(groupid: (groupdictionary["id"] as? String)!)
+                            }
+                            else
+                            {
+                                emailArray.removeAllObjects()
+                                memberscrollView.subviews.forEach { $0.removeFromSuperview() }
+                                userscrollheight.constant = 55.0
+                                memberscrollView.isHidden = true
+                            }
+                        }
+                    }
+                    
+                    /*------------------------------------------------------*/
+
+                    if mygoruplbl.text != "Select a Group"
+                    {
+                        if(switchtype.isOn)
+                        {
+                            let predicate = NSPredicate(format: "name like %@",mygoruplbl.text!);
+                            let filteredArray = groupArray.filter { predicate.evaluate(with: $0) };
+                            if filteredArray.count > 0
+                            {
+                                let groupdictionary = filteredArray[0] as! NSDictionary
+                                let hourstatus = String(format: "%@", groupdictionary.value(forKey: "hours") as! CVarArg)
+                                if hourstatus == "1"
+                                {
+                                    hourFieldheight.constant = 100.0
+                                    hourField.isHidden = false
+                                }
+                                else
+                                {
+                                    hourFieldheight.constant = 60.0
+                                    hourField.isHidden = true
+                                }
+                            }
+                            else
+                            {
+                                hourFieldheight.constant = 60.0
+                                hourField.isHidden = true
+                            }
+                        }
+                    }
+                }
             }
             if let users = getreponse.value(forKey: "usersList") as? NSArray
             {

@@ -15,9 +15,10 @@ import UIKit
 var kBaseURL = ""
 var kChatBaseURL = ""
 var kfilePath = ""
+var kfileUploadPath = ""
 
-//let kUrlPath = "http://192.168.1.2:82/ios/"
 let kUrlPath = "http://dotsit.in/backend/ios/"
+//let kUrlPath = "http://workaa.in/backend/ios/"
 
 // DEFINE AND INITAILZE Details
 
@@ -26,15 +27,16 @@ let rootViewController =  UIApplication.shared.keyWindow?.rootViewController
 let appstate = UIApplication.shared.applicationState
 
 func navigation() -> UINavigationController {
-    var NVc: UINavigationController?
-    let side: SWRevealViewController? = (rootViewController as? SWRevealViewController)
-    for viewcontroller: UIViewController in (side?.childViewControllers)! {
+    var NVc = UINavigationController()
+    var side = SWRevealViewController()
+    side = (rootViewController as? SWRevealViewController)!
+    for viewcontroller: UIViewController in (side.childViewControllers) {
         if (viewcontroller is UINavigationController) {
-            NVc = (viewcontroller as? UINavigationController)
+            NVc = (viewcontroller as? UINavigationController)!
             break
         }
     }
-    return NVc!
+    return NVc
 }
 
 var kDeviceToken = ""
@@ -150,6 +152,12 @@ let kcafeMessageStarred = "cafeMessageStarred/"
 let kdirectFileList = "directFileList/"
 let kcafeFileList = "cafeFileList/"
 let kqueueEdit = "queueEdit/"
+let kqueueDelete = "queueDelete/"
+let kqueueReject = "queueReject/"
+let kgetcafemsg = "cafeMessage/"
+let kgetdirectmsg = "directMessage/"
+let kgetgroupInfo = "groupInfo/"
+let kforgotPasswordRequest = "forgotPasswordRequest/"
 
 // Icon Codes
 
@@ -182,4 +190,5 @@ let adduserIcon = "\u{e91d}"
 let attachIcon = "\u{e91e}"
 let cmtIcon = "\u{e903}"
 let filesIcon = "\u{e915}"
+let moreIcon = "\u{e5d4}"
 

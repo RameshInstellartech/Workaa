@@ -52,26 +52,26 @@ extension ICTokenField {
 //    backgroundColor = UIColor(red:0.8, green:0.32, blue:0.24, alpha:1)
 
     textField.textColor = UIColor.darkGray
-    textField.font = UIFont (name: LatoRegular, size: 17)!
+    textField.font = UIFont (name: LatoRegular, size: 15)!
 
     attributedPlaceholder = NSAttributedString(
       string: String(describing: type(of: self)),
       attributes: [
         NSForegroundColorAttributeName: UIColor.lightGray,
-        NSFontAttributeName: UIFont (name: LatoRegular, size: 17)!
+        NSFontAttributeName: UIFont (name: LatoRegular, size: 15)!
       ]
     )
 
     normalTokenAttributes = [
       NSForegroundColorAttributeName: UIColor.darkGray,
       NSBackgroundColorAttributeName: lightgrayColor,
-      NSFontAttributeName: UIFont (name: LatoRegular, size: 17)!
+      NSFontAttributeName: UIFont (name: LatoRegular, size: 15)!
     ]
 
     highlightedTokenAttributes = [
       NSForegroundColorAttributeName: UIColor.white,
       NSBackgroundColorAttributeName: blueColor,
-      NSFontAttributeName: UIFont (name: LatoRegular, size: 17)!
+      NSFontAttributeName: UIFont (name: LatoRegular, size: 15)!
     ]
   }
 

@@ -30,12 +30,6 @@ class GroupListController: UIViewController, ConnectionProtocol, UITableViewDele
         
         connectionClass.delegate = self
         
-        if(commonmethodClass.retrieveteamadmin()=="1")
-        {
-            let groupButton : UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(GroupListController.CreateGroupAction))
-            self.navigationItem.rightBarButtonItems = [groupButton]
-        }
-        
         print("teamdictionary =>\(teamdictionary)")
         print("groupArray =>\(groupArray)")
         
@@ -79,7 +73,28 @@ class GroupListController: UIViewController, ConnectionProtocol, UITableViewDele
         
         self.title = "Groups"
         
+        if(commonmethodClass.retrieveteamadmin()=="1")
+        {
+            let groupButton : UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(GroupListController.CreateGroupAction))
+            self.navigationItem.rightBarButtonItem = groupButton
+        }
+        
         navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: LatoRegular, size: CGFloat(18.0))!, NSForegroundColorAttributeName : UIColor.white];
+    }
+    
+    func refreshObj()
+    {
+        if(commonmethodClass.retrieveteamadmin()=="1")
+        {
+            let groupButton : UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(GroupListController.CreateGroupAction))
+            self.navigationItem.rightBarButtonItem = groupButton
+        }
+        else
+        {
+            self.navigationItem.rightBarButtonItem = nil
+        }
+        
+        self.getGroupList()
     }
     
     func setRefreshControl()
