@@ -21,6 +21,7 @@ class GroupTaskDetailViewController: UIViewController
     @IBOutlet weak var profileimage: AsyncImageView!
     @IBOutlet weak var groupNamelbl: UILabel!
     @IBOutlet weak var memberscrollView: UIScrollView!
+    @IBOutlet weak var viewheight : NSLayoutConstraint!
 
     var morebtn: UIButton!
     var taskDictionary = NSDictionary()
@@ -82,6 +83,16 @@ class GroupTaskDetailViewController: UIViewController
         }
         
         self.loadMemberView(userArray: taskDictionary.value(forKey: "users") as! NSArray)
+        
+        let ownString = String(format: "%@", taskDictionary.value(forKey: "own") as! CVarArg)
+        if ownString == "1"
+        {
+            viewheight.constant = 60.0
+        }
+        else
+        {
+            viewheight.constant = 0.0
+        }
         
         self.loadbottomView()
     }
@@ -205,6 +216,26 @@ class GroupTaskDetailViewController: UIViewController
     {
         memberscrollView.isScrollEnabled = true
         morebtn.isHidden = true
+    }
+    
+    @IBAction func doneaction(sender : AnyObject)
+    {
+        let hour = String(format: "%@", taskDictionary.value(forKey: "hours") as! CVarArg)
+        let taskid = String(format: "%@", taskDictionary.value(forKey: "id") as! CVarArg)
+        if hour == "1"
+        {
+            self.alertClass.donetaskAlert(taskid: taskid)
+        }
+        else
+        {
+            self.alertClass.doneSaveAction(taskid: taskid, hours: "")
+        }
+    }
+    
+    @IBAction func notdoneaction(sender : AnyObject)
+    {
+        let taskid = String(format: "%@", taskDictionary.value(forKey: "id") as! CVarArg)
+        self.alertClass.notdonetaskAlert(taskid: taskid)
     }
     
     override func didReceiveMemoryWarning()

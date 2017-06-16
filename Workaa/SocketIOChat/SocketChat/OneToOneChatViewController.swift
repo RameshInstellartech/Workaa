@@ -29,7 +29,8 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
     var refreshControl = UIRefreshControl()
     var sectionArray = NSMutableArray()
     var msgdictionary = NSMutableDictionary()
-    
+    var myActivityIndicator = UIActivityIndicatorView()
+
     @IBOutlet weak var tblChat: UITableView!
     @IBOutlet weak var tvMessageEditor: PlaceholderTextView!
     @IBOutlet weak var conBottomEditor: NSLayoutConstraint!
@@ -99,6 +100,8 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
 //        tvMessageEditor.layer.borderColor = UIColor(red: CGFloat(216.0/255.0), green: CGFloat(216.0/255.0), blue: CGFloat(216.0/255.0), alpha: CGFloat(1.0)).cgColor
 //        tvMessageEditor.layer.borderWidth = 1.0
         
+        self.startanimating()
+        
         commonmethodClass.delayWithSeconds(0.0, completion: {
             self.getdirectmsg()
             self.getChatDetails()
@@ -123,6 +126,20 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
     }
     
     // MARK: - Viewcontroller Methods
+    
+    func startanimating()
+    {
+        myActivityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+        myActivityIndicator.center = CGPoint(x:view.center.x, y:view.center.y-64.0)
+        myActivityIndicator.hidesWhenStopped = true
+        self.view.addSubview(myActivityIndicator)
+        myActivityIndicator.startAnimating()
+    }
+    
+    func stopanimating()
+    {
+        myActivityIndicator.stopAnimating()
+    }
     
     func getdirectmsg()
     {
@@ -170,32 +187,34 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
     
     func animateTable()
     {
-        tblChat.reloadData()
+//        tblChat.reloadData()
+//        
+//        let cells = tblChat.visibleCells
+//        let tableHeight: CGFloat = tblChat.bounds.size.height
+//        
+//        for i in cells
+//        {
+//            let cell: UITableViewCell = i as UITableViewCell
+//            cell.transform = CGAffineTransform(translationX: 0, y: tableHeight)
+//        }
+//        
+//        var index = 0
+//        
+//        for a in cells
+//        {
+//            let cell: UITableViewCell = a as UITableViewCell
+//            UIView.animate(withDuration: 1.5, delay: 0.05 * Double(index), usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: [], animations: {
+//            cell.transform = CGAffineTransform(translationX: 0, y: 0);
+//            }, completion: nil)
+//        
+//            index += 1
+//        }
         
-        let cells = tblChat.visibleCells
-        let tableHeight: CGFloat = tblChat.bounds.size.height
+//        commonmethodClass.delayWithSeconds(1.0, completion: {
+//            self.scrollToBottom(animated: true)
+//        })
         
-        for i in cells
-        {
-            let cell: UITableViewCell = i as UITableViewCell
-            cell.transform = CGAffineTransform(translationX: 0, y: tableHeight)
-        }
-        
-        var index = 0
-        
-        for a in cells
-        {
-            let cell: UITableViewCell = a as UITableViewCell
-            UIView.animate(withDuration: 1.5, delay: 0.05 * Double(index), usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: [], animations: {
-            cell.transform = CGAffineTransform(translationX: 0, y: 0);
-            }, completion: nil)
-        
-            index += 1
-        }
-        
-        commonmethodClass.delayWithSeconds(1.0, completion: {
-            self.scrollToBottom(animated: true)
-        })
+        self.scrollToBottom(animated: false)
         
         if(commonmethodClass.getDirectChatVisibleViewcontroller())
         {
@@ -287,13 +306,13 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                         let unreadcount = self.userdictionary.value(forKey: "unread") as! NSInteger
                         directunreadcount = directunreadcount - unreadcount
                         
-                        for aviewcontroller : UIViewController in navigation().viewControllers
-                        {
-                            if let msgView = aviewcontroller as? MessageViewController
-                            {
-                                msgView.getUserList()
-                            }
-                        }
+//                        for aviewcontroller : UIViewController in navigation().viewControllers
+//                        {
+//                            if let msgView = aviewcontroller as? MessageViewController
+//                            {
+//                                msgView.getUserList()
+//                            }
+//                        }
                     }
                 }
             }
@@ -1435,6 +1454,7 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                 self.imageProgress.animateView(self.imageProgress, withAnimationType: kCATransitionFromTop)
             })
         }
+        self.stopanimating()
     }
     
     func GetReponseMethod(reponse : NSDictionary)
@@ -1447,57 +1467,16 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
             {
                 if let imagepath = filedictionary.value(forKey: "path") as? String
                 {
-                    var filesize : String!
-                    var filetype : String!
-                    filesize = ""
+                    var filetype = String()
                     filetype = "image"
-    
-                    if appDelegate.mediadata != nil
-                    {
-                        if appDelegate.mediadata.length > 0
-                        {
-                            let formatter = ByteCountFormatter()
-                            formatter.allowedUnits = ByteCountFormatter.Units.useAll
-                            filesize = formatter.string(fromByteCount: Int64((appDelegate.mediadata.length)))
-                            print("filesize =>\(filesize)")
-                            filetype = "file"
-                        }
-                    }
+                    
+                    var filesize = String(format: "%@", filedictionary.value(forKey: "size") as! CVarArg)
+                    
+                    let formatter = ByteCountFormatter()
+                    formatter.allowedUnits = ByteCountFormatter.Units.useAll
+                    filesize = formatter.string(fromByteCount: Int64(filesize)!)
                     
                     let chatdetails = ["userid":self.commonmethodClass.retrieveuserid(), "username":self.commonmethodClass.retrieveusername(), "message":"", "date":String(format: "%@", datareponse.value(forKey: "time") as! CVarArg), "teamid":self.commonmethodClass.retrieveteamid(), "imagepath":imagepath, "msgid":String(format: "%@", datareponse.value(forKey: "messageId") as! CVarArg), "imagetitle":String(format: "%@", filedictionary.value(forKey: "title") as! CVarArg), "filesize":filesize, "filecaption":String(format: "%@", filedictionary.value(forKey: "caption") as! CVarArg), "type":filetype, "sendertype":"right", "senderuserid":self.userdictionary.value(forKey: "id") as! String, "starmsg":"0", "flname" : self.commonmethodClass.retrievename()] as [String : Any]
-    
-                    let fileUrl = NSURL(string: imagepath)
-    
-                    if pickedImage != nil
-                    {
-                        let resizeimage : UIImage
-    
-                        if (pickedImage.size.width)>screenWidth
-                        {
-                            resizeimage = pickedImage.resizeWith(width: screenWidth)!
-                        }
-                        else
-                        {
-                            resizeimage = pickedImage
-                        }
-    
-                        print("resizeimage => \(resizeimage)")
-    
-                        appDelegate.createfilefolder(imageData: (resizeimage.lowestQualityJPEGNSData), imagepath: (fileUrl?.lastPathComponent)!)
-                        pickedImage = nil
-                        imageProgress.imageView.image = nil
-                    }
-                    else
-                    {
-                        if appDelegate.mediadata != nil
-                        {
-                            if appDelegate.mediadata.length > 0
-                            {
-                                appDelegate.createfilefolder(imageData: appDelegate.mediadata, imagepath: (fileUrl?.lastPathComponent)!)
-                                appDelegate.mediadata = nil
-                            }
-                        }
-                    }
     
                     appDelegate.saveOneToOneChatDetails(chatdetails: chatdetails as NSDictionary)
                     
@@ -1535,6 +1514,8 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                 laststring = String(format: "%@", datareponse.value(forKey: "last") as! CVarArg)
             }
         }
+        
+        self.stopanimating()
     }
     
     // MARK: - UIImagePickerControllerDelegate Methods
@@ -1970,8 +1951,8 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                             
                             cell.rightshareimagetextlbl?.text = sharemessage! as String
                             
-                            cell.rightshareimage?.showActivityIndicator = false
-                            cell.rightshareimage?.image = UIImage(contentsOfFile: path.path)
+//                            cell.rightshareimage?.showActivityIndicator = false
+//                            cell.rightshareimage?.image = UIImage(contentsOfFile: path.path)
                             cell.rightshareimage?.imageURL = fileUrl as URL?
                             
                             if favstring == "0"
@@ -2001,8 +1982,8 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                             
                             cell.leftshareimagetextlbl?.text = sharemessage! as String
                             
-                            cell.leftshareimage?.showActivityIndicator = false
-                            cell.leftshareimage?.image = UIImage(contentsOfFile: path.path)
+//                            cell.leftshareimage?.showActivityIndicator = false
+//                            cell.leftshareimage?.image = UIImage(contentsOfFile: path.path)
                             cell.leftshareimage?.imageURL = fileUrl as URL?
                             
                             var UserNametextwidth = commonmethodClass.widthOfString(usingFont: (cell.leftshareimageUserNamelbl?.font!)!, text: flname as NSString)
@@ -2392,8 +2373,8 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
                             cell.rightimageView?.isHidden = false
                             cell.leftimageView?.isHidden = true
     
-                            cell.rightchatimage?.showActivityIndicator = false
-                            cell.rightchatimage?.image = UIImage(contentsOfFile: path.path)
+//                            cell.rightchatimage?.showActivityIndicator = false
+//                            cell.rightchatimage?.image = UIImage(contentsOfFile: path.path)
                             cell.rightchatimage?.imageURL = fileUrl as URL?
         
                             cell.rightimageMessagelbl?.text = caption
@@ -2435,8 +2416,8 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
     
                             cell.leftimageUserTagNamelbl?.text = String(format: "@%@", senderNickname!)
     
-                            cell.leftchatimage?.showActivityIndicator = false
-                            cell.leftchatimage?.image = UIImage(contentsOfFile: path.path)
+//                            cell.leftchatimage?.showActivityIndicator = false
+//                            cell.leftchatimage?.image = UIImage(contentsOfFile: path.path)
                             cell.leftchatimage?.imageURL = fileUrl as URL?
     
                             cell.leftimageMessagelbl?.text = caption
@@ -2879,53 +2860,22 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
             {
                 starmsg = starmsgstring
             }
+            var filesize = String(format: "%@", filedictionary.value(forKey: "size") as! CVarArg)
+            let fileext = String(format: "%@", filedictionary.value(forKey: "ext") as! CVarArg)
+            var filetype = String()
             
-            var data : NSData!
-            var filetype : String!
-            
-            do {
-                
-                let imagestring = String(format: "%@%@", kfilePath,imagepath)
-                let fileUrl = NSURL(string: imagestring)
-                data = try NSData(contentsOf: fileUrl! as URL, options: NSData.ReadingOptions())
-                
-                if let image = UIImage(data: data as Data)
-                {
-                    filetype = "image"
-                    
-                    let resizeimage : UIImage
-                    
-                    if (image.size.width)>screenWidth
-                    {
-                        resizeimage = image.resizeWith(width: screenWidth)!
-                    }
-                    else
-                    {
-                        resizeimage = image
-                    }
-                    
-                    print("resizeimage => \(resizeimage)")
-                    
-                    appDelegate.createfilefolder(imageData: (resizeimage.lowestQualityJPEGNSData), imagepath: (fileUrl?.lastPathComponent)!)
-                }
-                else
-                {
-                    if data.length > 0
-                    {
-                        filetype = "file"
-                        
-                        appDelegate.createfilefolder(imageData: data, imagepath: (fileUrl?.lastPathComponent)!)
-                    }
-                }
-                
-            } catch {
-                print(error)
+            if (fileext.isEqual("jpg") || fileext.isEqual("png") || fileext.isEqual("jpeg") || fileext.isEqual("gif"))
+            {
+                filetype = "image"
+            }
+            else
+            {
+                filetype = "file"
             }
             
             let formatter = ByteCountFormatter()
             formatter.allowedUnits = ByteCountFormatter.Units.useAll
-            let filesize = formatter.string(fromByteCount: Int64((data?.length)!))
-            //            print("filesize =>\(filesize)")
+            filesize = formatter.string(fromByteCount: Int64(filesize)!)
             
             let chatdetails = ["userid":userid, "username":username, "message":"", "date":date, "teamid":self.commonmethodClass.retrieveteamid(), "imagepath":imagepath, "msgid": msgid, "imagetitle":title, "filesize":filesize, "filecaption":caption, "type":filetype, "sendertype":sendertype, "senderuserid":self.userdictionary.value(forKey: "id") as! String, "starmsg":starmsg, "flname" : flname] as [String : Any]
             
@@ -2935,7 +2885,7 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
     
     func saveshare(messageInfo : NSDictionary)
     {
-        print("messageInfo =>\(messageInfo)")
+//        print("messageInfo =>\(messageInfo)")
 
         if let shareDetails = messageInfo.value(forKey: "source_data") as? NSDictionary
         {

@@ -21,6 +21,7 @@ class GroupListController: UIViewController, ConnectionProtocol, UITableViewDele
     var commonmethodClass = CommonMethodClass()
     var bottomView : BottomView!
     var refreshControl = UIRefreshControl()
+    var myActivityIndicator = UIActivityIndicatorView()
 
     override func viewDidLoad()
     {
@@ -54,10 +55,6 @@ class GroupListController: UIViewController, ConnectionProtocol, UITableViewDele
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
         
-        commonmethodClass.delayWithSeconds(0.1, completion: {
-            self.getGroupList()
-        })
-        
         self.loadbottomView()
         
         self.setRefreshControl()
@@ -80,6 +77,8 @@ class GroupListController: UIViewController, ConnectionProtocol, UITableViewDele
         }
         
         navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName: UIFont(name: LatoRegular, size: CGFloat(18.0))!, NSForegroundColorAttributeName : UIColor.white];
+        
+        self.getGroupList()
     }
     
     func refreshObj()
@@ -129,9 +128,26 @@ class GroupListController: UIViewController, ConnectionProtocol, UITableViewDele
         self.view.addSubview(bottomView)
     }
     
+    func startanimating()
+    {
+        myActivityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+        myActivityIndicator.center = CGPoint(x:view.center.x, y:view.center.y-64.0)
+        myActivityIndicator.hidesWhenStopped = true
+        self.view.addSubview(myActivityIndicator)
+        myActivityIndicator.startAnimating()
+    }
+    
+    func stopanimating()
+    {
+        myActivityIndicator.stopAnimating()
+    }
+    
     func getGroupList()
     {
-        self.connectionClass.getGroupList()
+        self.startanimating()
+        commonmethodClass.delayWithSeconds(0.0, completion: {
+            self.connectionClass.getGroupList()
+        })
     }
     
     func CreateGroupAction()
@@ -145,6 +161,7 @@ class GroupListController: UIViewController, ConnectionProtocol, UITableViewDele
     func GetFailureReponseMethod(errorreponse: String)
     {
         print("GetFailureReponseMethod")
+        self.stopanimating()
     }
     
     func GetReponseMethod(reponse : NSDictionary)
@@ -163,6 +180,7 @@ class GroupListController: UIViewController, ConnectionProtocol, UITableViewDele
                 nongroupuserArray = getnongroupuserlist
             }
         }
+        self.stopanimating()
     }
     
     @IBAction func addTask(sender: AnyObject)

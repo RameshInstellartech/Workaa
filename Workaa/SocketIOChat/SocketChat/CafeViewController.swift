@@ -204,7 +204,7 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
         
         if(commonmethodClass.getCafeChatVisibleViewcontroller())
         {
-            performSelector(inBackground: #selector(self.resetcount), with: nil)
+            self.resetcount()
         }
     }
     
@@ -2917,6 +2917,7 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
                     filesize = formatter.string(fromByteCount: Int64(filesize)!)
                     
                     let chatdetails = ["userid":userid, "username":username, "message":"", "date":date, "teamid":teamid, "imagepath":imagepath, "msgid":msgId, "imagetitle":title, "filesize":filesize, "filecaption":caption, "starmsg":starred, "flname" : flname] as [String : Any]
+                    
                     appDelegate.saveCafeChatDetails(chatdetails: chatdetails as NSDictionary)
                     
                     self.commentsave(messageInfo: messageInfo)

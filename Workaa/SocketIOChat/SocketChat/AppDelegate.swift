@@ -1247,59 +1247,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             let title = String(format: "%@", filedictionary.value(forKey: "title") as! CVarArg)
             let caption = String(format: "%@", filedictionary.value(forKey: "caption") as! CVarArg)
             let flname = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg,messageInfo.value(forKey: "sendLastName") as! CVarArg)
-            
             var username = ""
             if let uname = messageInfo.value(forKey: "sendUsername") as? String
             {
                 username = uname
             }
-            
-            var data : NSData!
-            var filetype : String!
-            
-            do {
-                
-                let imagestring = String(format: "%@%@", kfilePath,imagepath)
-                let fileUrl = NSURL(string: imagestring)
-                data = try NSData(contentsOf: fileUrl! as URL, options: NSData.ReadingOptions())
-                
-                if let image = UIImage(data: data as Data)
-                {
-                    filetype = "image"
-                    
-                    let resizeimage : UIImage
-                    
-                    if (image.size.width)>screenWidth
-                    {
-                        resizeimage = image.resizeWith(width: screenWidth)!
-                    }
-                    else
-                    {
-                        resizeimage = image
-                    }
-                    
-                    print("resizeimage => \(resizeimage)")
-                    
-                    self.createfilefolder(imageData: (resizeimage.lowestQualityJPEGNSData), imagepath: (fileUrl?.lastPathComponent)!)
-                }
-                else
-                {
-                    if data.length > 0
-                    {
-                        filetype = "file"
-                        
-                        self.createfilefolder(imageData: data, imagepath: (fileUrl?.lastPathComponent)!)
-                    }
-                }
-                
-            } catch {
-                print(error)
-            }
-            
+            var filesize = String(format: "%@", filedictionary.value(forKey: "size") as! CVarArg)
+            let fileext = String(format: "%@", filedictionary.value(forKey: "ext") as! CVarArg)
+
             let formatter = ByteCountFormatter()
             formatter.allowedUnits = ByteCountFormatter.Units.useAll
-            let filesize = formatter.string(fromByteCount: Int64((data?.length)!))
-//            print("filesize =>\(filesize)")
+            filesize = formatter.string(fromByteCount: Int64(filesize)!)
+
+            var filetype = String()
+            if (fileext.isEqual("jpg") || fileext.isEqual("png") || fileext.isEqual("jpeg") || fileext.isEqual("gif"))
+            {
+                filetype = "image"
+            }
+            else
+            {
+                filetype = "file"
+            }
             
             let chatdetails = ["userid":userid, "username":username, "message":"", "date":date, "teamid":teamid, "imagepath":imagepath, "msgid":String(format: "%@", messageInfo.value(forKey: "messageId") as! CVarArg), "imagetitle":title, "filesize":filesize, "filecaption":caption, "type":filetype, "sendertype":"left", "senderuserid":userid, "starmsg":"0", "flname" : flname] as [String : Any]
             
@@ -1704,57 +1672,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             let caption = String(format: "%@", filedictionary.value(forKey: "caption") as! CVarArg)
             let flname = String(format: "%@ %@", messageInfo.value(forKey: "sendFirstName") as! CVarArg,messageInfo.value(forKey: "sendLastName") as! CVarArg)
             let username = String(format: "%@", messageInfo.value(forKey: "sendUsername") as! CVarArg)
+            var filesize = String(format: "%@", filedictionary.value(forKey: "size") as! CVarArg)
             
-            let imagestring = String(format: "%@%@", kfilePath,imagepath)
-            let fileUrl = NSURL(string: imagestring)
+            let formatter = ByteCountFormatter()
+            formatter.allowedUnits = ByteCountFormatter.Units.useAll
+            filesize = formatter.string(fromByteCount: Int64(filesize)!)
             
-            let queue = DispatchQueue.global(qos: .default)
-            queue.async(execute: {() -> Void in
-                do {
-                    
-                    let data = try NSData(contentsOf: fileUrl! as URL, options: NSData.ReadingOptions())
-                    if let image = UIImage(data: data as Data)
+            let chatdetails = ["userid":userid, "username":username, "message":"", "date":date, "groupid":groupid, "teamid":teamid, "imagepath":imagepath, "msgid":String(format: "%@", messageInfo.value(forKey: "messageId") as! CVarArg), "imagetitle":title, "filesize":filesize, "filecaption":caption, "starmsg":"0", "flname" : flname] as [String : Any]
+            
+            self.saveChatDetails(chatdetails: chatdetails as NSDictionary)
+            
+            self.commonmethodClass.delayWithSeconds(0.0, completion: {
+                if(!self.commonmethodClass.getGroupChatVisibleViewcontroller())
+                {
+                    if appstate == .active
                     {
-                        let resizeimage : UIImage
-                        if (image.size.width)>screenWidth
-                        {
-                            resizeimage = image.resizeWith(width: screenWidth)!
-                        }
-                        else
-                        {
-                            resizeimage = image
-                        }
-                        self.createfilefolder(imageData: (resizeimage.lowestQualityJPEGNSData), imagepath: (fileUrl?.lastPathComponent)!)
+                        self.showbanner(title: username, subtitle: String(format: "%@ : %@", socketOnReponse.value(forKey: "fileReceive") as! CVarArg, title), chattype: "groupChat")
                     }
-                    else
-                    {
-                        if data.length > 0
-                        {
-                            self.createfilefolder(imageData: data, imagepath: (fileUrl?.lastPathComponent)!)
-                        }
-                    }
-                    let formatter = ByteCountFormatter()
-                    formatter.allowedUnits = ByteCountFormatter.Units.useAll
-                    let filesize = formatter.string(fromByteCount: Int64((data.length)))
-//                    print("filesize =>\(filesize)")
-                    
-                    let chatdetails = ["userid":userid, "username":username, "message":"", "date":date, "groupid":groupid, "teamid":teamid, "imagepath":imagepath, "msgid":String(format: "%@", messageInfo.value(forKey: "messageId") as! CVarArg), "imagetitle":title, "filesize":filesize, "filecaption":caption, "starmsg":"0", "flname" : flname] as [String : Any]
-                    
-                    DispatchQueue.main.async(execute: {() -> Void in
-                        self.saveChatDetails(chatdetails: chatdetails as NSDictionary)
-                        self.commonmethodClass.delayWithSeconds(0.0, completion: {
-                            if(!self.commonmethodClass.getGroupChatVisibleViewcontroller())
-                            {
-                                if appstate == .active
-                                {
-                                    self.showbanner(title: username, subtitle: String(format: "%@ : %@", socketOnReponse.value(forKey: "fileReceive") as! CVarArg, title), chattype: "groupChat")
-                                }
-                            }
-                        })
-                    })
-                    
-                } catch {
-                    print(error)
                 }
             })
         }

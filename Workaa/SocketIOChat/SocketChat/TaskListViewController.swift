@@ -21,6 +21,7 @@ class TaskListViewController: UIViewController, UITableViewDelegate, UITableView
     var alertClass = AlertClass()
     var bottomView : BottomView!
     var refreshControl = UIRefreshControl()
+    var myActivityIndicator = UIActivityIndicatorView()
 
     override func viewDidLoad()
     {
@@ -54,11 +55,7 @@ class TaskListViewController: UIViewController, UITableViewDelegate, UITableView
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
         
-        commonmethodClass.delayWithSeconds(0.1, completion: {
-            self.getQueueList()
-            self.getMyBucketList()
-            self.getGroupList()
-        })
+        self.getQueueList()
         
         self.loadbottomView()
         
@@ -121,19 +118,42 @@ class TaskListViewController: UIViewController, UITableViewDelegate, UITableView
         self.view.addSubview(bottomView)
     }
     
+    func startanimating()
+    {
+        myActivityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+        myActivityIndicator.center = CGPoint(x:view.center.x, y:view.center.y-64.0)
+        myActivityIndicator.hidesWhenStopped = true
+        self.view.addSubview(myActivityIndicator)
+        myActivityIndicator.startAnimating()
+    }
+    
+    func stopanimating()
+    {
+        myActivityIndicator.stopAnimating()
+    }
+    
     func getMyBucketList()
     {
-        self.connectionClass.getMyBucketList()
+        self.startanimating()
+        commonmethodClass.delayWithSeconds(0.0, completion: {
+            self.connectionClass.getMyBucketList()
+        })
     }
     
     func getQueueList()
     {
-        self.connectionClass.getQueueList()
+        self.startanimating()
+        commonmethodClass.delayWithSeconds(0.0, completion: {
+            self.connectionClass.getQueueList()
+        })
     }
     
     func getGroupList()
     {
-        self.connectionClass.getGroupList()
+        self.startanimating()
+        commonmethodClass.delayWithSeconds(0.0, completion: {
+            self.connectionClass.getGroupList()
+        })
     }
     
     func loadSegment()
@@ -148,8 +168,8 @@ class TaskListViewController: UIViewController, UITableViewDelegate, UITableView
         segmentedControl.borderColor = UIColor(red: CGFloat(233.0 / 255.0), green: CGFloat(233.0 / 255.0), blue: CGFloat(233.0 / 255.0), alpha: CGFloat(1.0))
         segmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown
         segmentedControl.isVerticalDividerEnabled = false
-        segmentedControl.titleTextAttributes = [NSFontAttributeName: UIFont(name: LatoRegular, size: CGFloat(17.0))!, NSForegroundColorAttributeName: UIColor.lightGray]
-        segmentedControl.selectedTitleTextAttributes = [NSFontAttributeName: UIFont(name: LatoRegular, size: CGFloat(17.0))!, NSForegroundColorAttributeName: UIColor.darkGray]
+        segmentedControl.titleTextAttributes = [NSFontAttributeName: UIFont(name: LatoRegular, size: CGFloat(15.0))!, NSForegroundColorAttributeName: UIColor.lightGray]
+        segmentedControl.selectedTitleTextAttributes = [NSFontAttributeName: UIFont(name: LatoRegular, size: CGFloat(15.0))!, NSForegroundColorAttributeName: UIColor.darkGray]
         segmentedControl.selectionIndicatorColor = blueColor
         segmentedControl.addTarget(self, action: #selector(self.segmentedControlChangedValue), for: .valueChanged)
         self.view.addSubview(segmentedControl)
@@ -157,7 +177,18 @@ class TaskListViewController: UIViewController, UITableViewDelegate, UITableView
     
     func segmentedControlChangedValue(_ segmentedControl: HMSegmentedControl)
     {
-        tbltasklist.reloadData()
+        if(self.segmentedControl.selectedSegmentIndex==0)
+        {
+            self.getQueueList()
+        }
+        else if(self.segmentedControl.selectedSegmentIndex==1)
+        {
+            self.getMyBucketList()
+        }
+        else if(self.segmentedControl.selectedSegmentIndex==2)
+        {
+            self.getGroupList()
+        }
     }
     
     // MARK: Connection Delegate
@@ -165,6 +196,7 @@ class TaskListViewController: UIViewController, UITableViewDelegate, UITableView
     func GetFailureReponseMethod(errorreponse: String)
     {
         print("GetFailureReponseMethod")
+        self.stopanimating()
     }
     
     func GetReponseMethod(reponse : NSDictionary)
@@ -187,6 +219,7 @@ class TaskListViewController: UIViewController, UITableViewDelegate, UITableView
             }
             tbltasklist.reloadData()
         }
+        self.stopanimating()
     }
     
     // MARK: UITableView Delegate and Datasource Methods

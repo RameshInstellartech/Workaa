@@ -9,10 +9,9 @@
 import UIKit
 import Photos
 
-class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, ConnectionProtocol, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate, ICTokenFieldDelegate
+class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, ConnectionProtocol, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate, ICTokenFieldDelegate
 {
     @IBOutlet weak var scrollView : UIScrollView!
-    @IBOutlet weak var tblprofile: UITableView!
     @IBOutlet weak var pickerView : UIPickerView!
     @IBOutlet weak var pickView : UIView!
     @IBOutlet weak var datePicker: UIDatePicker!
@@ -24,14 +23,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     var generalInfoArray = NSArray()
     var workInfoArray = NSArray()
     var contactInfoArray = NSArray()
-    var imageBool : Bool!
-    var imagecount : NSInteger!
-    var generalInfoBool : Bool!
-    var generalInfocount : NSInteger!
-    var workInfoBool : Bool!
-    var workInfocount : NSInteger!
-    var contactInfoBool : Bool!
-    var contactInfocount : NSInteger!
     var alertClass = AlertClass()
     var imgData : NSData!
     var pickimage : UIImage!
@@ -42,18 +33,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     var generalInfoDictionary = NSDictionary()
     var contactInfoDictionary = NSDictionary()
     var workInfoDictionary = NSDictionary()
-    var generaleditBool : Bool!
-    var workinfoeditBool : Bool!
-    var contactInfoeditBool : Bool!
     var genderArray = NSArray()
-    var gendertxtfield = UITextField()
-    var brithdaytxtfield = UITextField()
-    var firstnametxtfield = UITextField()
-    var lastnametxtfield = UITextField()
-    var locationtxtfield = UITextField()
-    var phonetxtfield = UITextField()
-    var designationtxtfield = UITextField()
     var scrollheight = CGFloat()
+    var myActivityIndicator = UIActivityIndicatorView()
 
     override func viewDidLoad()
     {
@@ -62,18 +44,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         connectionClass.delegate = self
         
-        imagecount = 0
-        imageBool = false
-        generalInfocount = 0
-        generalInfoBool = false
-        workInfocount = 0
-        workInfoBool = false
-        contactInfocount = 0
-        contactInfoBool = false
         profileString = ""
-        generaleditBool = false
-        workinfoeditBool = false
-        contactInfoeditBool = false
         
         generalInfoArray = ["First name", "Last name", "Gender", "Birthday", "Location"] as NSArray
         workInfoArray = ["Designation", "Skills"] as NSArray
@@ -98,17 +69,11 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
         
-        commonmethodClass.delayWithSeconds(0.1, completion: {
-            self.getProfileInfo()
-        })
+        self.getProfileInfo()
         
         NotificationCenter.default.addObserver(self, selector: #selector(ProfileViewController.handleKeyboardWillShowNotification(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(ProfileViewController.handleKeyboardWillHideNotification(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        
-        tblprofile.register(UINib(nibName: "ProfileInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "ProfileInfoCell")
-        
-        tblprofile.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -571,9 +536,26 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         scrollheight = scrollView.contentSize.height
     }
 
+    func startanimating()
+    {
+        myActivityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+        myActivityIndicator.center = CGPoint(x:view.center.x, y:view.center.y-64.0)
+        myActivityIndicator.hidesWhenStopped = true
+        self.view.addSubview(myActivityIndicator)
+        myActivityIndicator.startAnimating()
+    }
+    
+    func stopanimating()
+    {
+        myActivityIndicator.stopAnimating()
+    }
+    
     func getProfileInfo()
     {
-        self.connectionClass.getUserInfo()
+        self.startanimating()
+        commonmethodClass.delayWithSeconds(0.0, completion: {
+            self.connectionClass.getUserInfo()
+        })
     }
     
     func saveaction(sender: UIButton!)
@@ -707,96 +689,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-    func expandaction(sender: UIButton!)
-    {
-        if sender.currentTitle == "IMAGE INFO"
-        {
-            if(!imageBool)
-            {
-//                if profileString == ""
-//                {
-//                    imageBool = false
-//                    imagecount = 0
-//                }
-//                else
-//                {
-                    imageBool = true
-                    imagecount = 1
-                //}
-            }
-            else
-            {
-                imageBool = false
-                imagecount = 0
-            }
-        }
-        else if sender.currentTitle == "GENERAL INFO"
-        {
-            if(!generalInfoBool)
-            {
-                if generalInfoDictionary.count == 0
-                {
-                    generalInfoBool = false
-                    generalInfocount = 0
-                }
-                else
-                {
-                    generalInfoBool = true
-                    generalInfocount = 5
-                }
-            }
-            else
-            {
-                generalInfoBool = false
-                generalInfocount = 0
-            }
-        }
-        else if sender.currentTitle == "WORK INFO"
-        {
-            if(!workInfoBool)
-            {
-                if workInfoDictionary.count == 0
-                {
-                    workInfoBool = false
-                    workInfocount = 0
-                }
-                else
-                {
-                    workInfoBool = true
-                    workInfocount = 2
-                }
-            }
-            else
-            {
-                workInfoBool = false
-                workInfocount = 0
-            }
-        }
-        else if sender.currentTitle == "CONTACT INFO"
-        {
-            if(!contactInfoBool)
-            {
-                if contactInfoDictionary.count == 0
-                {
-                    contactInfoBool = false
-                    contactInfocount = 0
-                }
-                else
-                {
-                    contactInfoBool = true
-                    contactInfocount = 3
-                }
-            }
-            else
-            {
-                contactInfoBool = false
-                contactInfocount = 0
-            }
-        }
-        
-        UIView.transition(with: tblprofile, duration: 0.3, options: .transitionCrossDissolve, animations: {self.tblprofile.reloadData()}, completion: nil)
-    }
-    
     func pickerAction(_ sender: UITapGestureRecognizer)
     {
         self.view.endEditing(true)
@@ -855,7 +747,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let dateString = dateFormatter.string(from: sender.date)
-        generaleditBool = true
         for view : UIView in scrollView.subviews
         {
             if view.tag == 1
@@ -942,6 +833,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     func GetFailureReponseMethod(errorreponse: String)
     {
         print("GetFailureReponseMethod")
+        self.stopanimating()
     }
     
     func GetReponseMethod(reponse : NSDictionary)
@@ -990,19 +882,16 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     if((InfoDict.value(forKey: "address")) != nil)
                     {
                         contactInfoDictionary = InfoDict
-                        contactInfoeditBool = false
                         self.resetbtncolor(index: 3)
                     }
                     else if((InfoDict.value(forKey: "occupation")) != nil)
                     {
                         workInfoDictionary = InfoDict
-                        workinfoeditBool = false
                         self.resetbtncolor(index: 2)
                     }
                     else
                     {
                         generalInfoDictionary = InfoDict
-                        generaleditBool = false
                         self.resetbtncolor(index: 1)
                     }
                 }
@@ -1039,6 +928,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 self.loadProfile()
             }
         }
+        
+        self.stopanimating()
     }
     
     // MARK: - UITextView Delegate
@@ -1130,385 +1021,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         dismiss(animated: true, completion: nil)
     }
     
-    // MARK: UITableView Delegate and Datasource methods
-    
-    func numberOfSections(in tableView: UITableView) -> Int
-    {
-        return 4
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
-    {
-        if(section==0)
-        {
-            return imagecount
-        }
-        else if(section==1)
-        {
-            return generalInfocount
-        }
-        else if(section==2)
-        {
-            return workInfocount
-        }
-        else if(section==3)
-        {
-            return contactInfocount
-        }
-        return 0
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-    {
-        if(indexPath.section==0)
-        {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "profileCell", for: indexPath)
-            
-            let profileImg = cell.contentView.viewWithTag(1) as? AsyncImageView
-            profileImg?.layer.borderWidth = 1.0
-            profileImg?.layer.borderColor = lightgrayColor.cgColor
-            
-            let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ProfileViewController.profileaction))
-            tapGesture.numberOfTapsRequired = 1
-            profileImg?.addGestureRecognizer(tapGesture)
-            
-            if(pickimage != nil)
-            {
-                profileImg?.image = pickimage
-            }
-            else
-            {
-                if profileString != ""
-                {
-                    let imagestring = String(format: "%@%@", kfilePath,profileString)
-                    let fileUrl = NSURL(string: imagestring)
-                    profileImg?.imageURL = fileUrl as URL?
-                }
-            }
-            
-            return cell
-        }
-        else
-        {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileInfoCell", for: indexPath) as! ProfileInfoTableViewCell
-            
-            let titlelbl = cell.titlelbl
-            let txtfield = cell.txtfield
-            let addtxtfield = cell.textfield
-            addtxtfield?.isHidden = true
-            txtfield?.isHidden = false
-
-            addtxtfield?.delegate = self
-            txtfield?.delegate = self
-            txtfield?.tag = indexPath.section
-
-            if(indexPath.section==1)
-            {
-                txtfield?.isUserInteractionEnabled = true
-
-                titlelbl?.text = generalInfoArray[indexPath.row] as? String
-                
-                txtfield?.placeholder = generalInfoArray[indexPath.row] as? String
-                
-                if(indexPath.row==0)
-                {
-                    if firstnametxtfield.text?.characters.count == 0
-                    {
-                        txtfield?.text = String(format: "%@", generalInfoDictionary.value(forKey: "firstName") as! CVarArg)
-                    }
-                    else
-                    {
-                        txtfield?.text = String(format: "%@", firstnametxtfield.text!)
-                    }
-                    
-                    firstnametxtfield = txtfield!
-                }
-                else if(indexPath.row==1)
-                {
-                    if lastnametxtfield.text?.characters.count == 0
-                    {
-                        txtfield?.text = String(format: "%@", generalInfoDictionary.value(forKey: "lastName") as! CVarArg)
-                    }
-                    else
-                    {
-                        txtfield?.text = String(format: "%@", lastnametxtfield.text!)
-                    }
-                    
-                    lastnametxtfield = txtfield!
-                }
-                else if(indexPath.row==2)
-                {
-                    if gendertxtfield.text?.characters.count == 0
-                    {
-                        let gender = String(format: "%@", generalInfoDictionary.value(forKey: "gender") as! CVarArg)
-                        if gender == ""
-                        {
-                            txtfield?.text = gender
-                        }
-                        else
-                        {
-                            for item in genderArray
-                            {
-                                let obj = item as! NSDictionary
-                                let idstring = String(format: "%@", obj.value(forKey: "id") as! CVarArg)
-                                if idstring==gender
-                                {
-                                    let name = String(format: "%@", obj.value(forKey: "name") as! CVarArg)
-                                    txtfield?.text = name
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        txtfield?.text = String(format: "%@", gendertxtfield.text!)
-                    }
-                    
-                    gendertxtfield = txtfield!
-                }
-                else if(indexPath.row==3)
-                {
-                    if brithdaytxtfield.text?.characters.count == 0
-                    {
-                        let brithday = String(format: "%@", generalInfoDictionary.value(forKey: "dob") as! CVarArg)
-                        txtfield?.text = String(format: "%@", commonmethodClass.convertDate(date: brithday))
-                    }
-                    else
-                    {
-                        txtfield?.text = String(format: "%@", brithdaytxtfield.text!)
-                    }
-                    
-                    brithdaytxtfield = txtfield!
-                }
-                else if(indexPath.row==4)
-                {
-                    if locationtxtfield.text?.characters.count == 0
-                    {
-                        txtfield?.text = String(format: "%@", generalInfoDictionary.value(forKey: "location") as! CVarArg)
-                    }
-                    else
-                    {
-                        txtfield?.text = String(format: "%@", locationtxtfield.text!)
-                    }
-                    
-                    locationtxtfield = txtfield!
-                }
-            }
-            else if(indexPath.section==2)
-            {
-                txtfield?.isUserInteractionEnabled = true
-
-                titlelbl?.text = workInfoArray[indexPath.row] as? String
-                
-                txtfield?.placeholder = workInfoArray[indexPath.row] as? String
-                
-                if(indexPath.row==0)
-                {
-                    if designationtxtfield.text?.characters.count == 0
-                    {
-                        txtfield?.text = String(format: "%@", workInfoDictionary.value(forKey: "occupation") as! CVarArg)
-                    }
-                    else
-                    {
-                        txtfield?.text = String(format: "%@", designationtxtfield.text!)
-                    }
-                    
-                    designationtxtfield = txtfield!
-                }
-                else if(indexPath.row==1)
-                {
-                    txtfield?.isHidden = true
-                    
-//                    print("TEXT*** =>\(skillsfield.texts)")
-                    
-                    if skillsfield.texts.count == 0
-                    {
-                        var text = String(format: "%@", workInfoDictionary.value(forKey: "skills") as! CVarArg)
-                        text = String(text.characters.filter { !" \n\t\r()".characters.contains($0) })
-                        let array = (text.components(separatedBy: ",")) as NSArray
-//                        print("array =>\(array)")
-                        
-                        skillsfield.frame = CGRect(x: (txtfield?.frame.origin.x)!-10.0, y: (txtfield?.frame.origin.y)!, width: (txtfield?.frame.size.width)!+10.0, height: (txtfield?.frame.size.height)!)
-                        skillsfield.delegate = self
-                        if text == ""
-                        {
-                            skillsfield.placeholder = txtfield?.placeholder
-                        }
-                        else
-                        {
-                            skillsfield.placeholder = ""
-                        }
-                        skillsfield.backgroundColor = UIColor.clear
-                        cell.contentView.addSubview(skillsfield)
-                        
-                        for item in array
-                        {
-                            let obj = item as! String
-                            skillsfield.textField.text = obj
-                            skillsfield.completeCurrentInputText()
-                        }
-                    }
-                }
-            }
-            else if(indexPath.section==3)
-            {
-                titlelbl?.text = contactInfoArray[indexPath.row] as? String
-                
-                txtfield?.placeholder = contactInfoArray[indexPath.row] as? String
-                
-                if(indexPath.row==0)
-                {
-                    if phonetxtfield.text?.characters.count == 0
-                    {
-                        txtfield?.text = String(format: "%@", contactInfoDictionary.value(forKey: "phone") as! CVarArg)
-                    }
-                    else
-                    {
-                        txtfield?.text = String(format: "%@", phonetxtfield.text!)
-                    }
-                    
-                    txtfield?.isUserInteractionEnabled = true
-                    phonetxtfield = txtfield!
-                }
-                else if(indexPath.row==1)
-                {
-                    txtfield?.text = String(format: "%@", commonmethodClass.retrieveemail())
-                    txtfield?.isUserInteractionEnabled = false
-                }
-                else if(indexPath.row==2)
-                {
-//                    addtxtfield?.placeholder = (contactInfoArray[indexPath.row] as? String)!
-//                    if addresstxtfield.text?.characters.count == 0
-//                    {
-//                        addtxtfield?.text = String(format: "%@", contactInfoDictionary.value(forKey: "address") as! CVarArg)
-//                    }
-//                    else
-//                    {
-//                        addtxtfield?.text = String(format: "%@", addresstxtfield.text!)
-//                    }
-//                    addresstxtfield = addtxtfield!
-//                    txtfield?.isHidden = true
-//                    addtxtfield?.isHidden = false
-                }
-            }
-            
-            return cell
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
-    {
-        if(indexPath.section==0)
-        {
-            return 190.0
-        }
-        else
-        {
-            if(indexPath.section==3)
-            {
-                if(indexPath.row==2)
-                {
-                    var txtheight = commonmethodClass.dynamicHeight(width: screenWidth-160, font: UIFont (name: LatoRegular, size: 15)!, string: String(format: "%@", contactInfoDictionary.value(forKey: "address") as! CVarArg))
-                    txtheight = txtheight + 10.0
-                    txtheight = ceil(txtheight)
-                    if(txtheight<50.0)
-                    {
-                        return 50.0
-                    }
-                    else
-                    {
-                        return txtheight
-                    }
-                }
-                else
-                {
-                    return 50.0
-                }
-            }
-            else
-            {
-                return 50.0
-            }
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
-    {
-        if(section==0)
-        {
-            return 0.0
-        }
-        else
-        {
-            return 50.0
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
-    {
-        let  headerCell = tableView.dequeueReusableCell(withIdentifier: "HeaderCell")
-        let titlelbl = headerCell?.contentView.viewWithTag(1) as? UILabel
-        let savebtn = headerCell?.contentView.viewWithTag(2) as? UIButton
-        let btn = headerCell?.contentView.viewWithTag(3) as? UIButton
-        btn?.addTarget(self, action: #selector(self.expandaction(sender:)), for: .touchUpInside)
-        savebtn?.addTarget(self, action: #selector(self.saveaction(sender:)), for: .touchUpInside)
-        savebtn?.tag = section
-        
-        switch (section)
-        {
-            case 0:
-                titlelbl?.text = "IMAGE INFO";
-//                if(pickimage != nil)
-//                {
-//                    savebtn?.setTitleColor(greenColor, for: .normal)
-//                }
-//                else
-//                {
-//                    savebtn?.setTitleColor(UIColor.lightGray, for: .normal)
-//                }
-                break
-            case 1:
-                titlelbl?.text = "GENERAL INFO";
-                if(generaleditBool==true)
-                {
-                    savebtn?.setTitleColor(greenColor, for: .normal)
-                }
-                else
-                {
-                    savebtn?.setTitleColor(UIColor.lightGray, for: .normal)
-                }
-                break
-            case 2:
-                titlelbl?.text = "WORK INFO";
-                if(workinfoeditBool==true)
-                {
-                    savebtn?.setTitleColor(greenColor, for: .normal)
-                }
-                else
-                {
-                    savebtn?.setTitleColor(UIColor.lightGray, for: .normal)
-                }
-                break
-            case 3:
-                titlelbl?.text = "CONTACT INFO";
-                if(contactInfoeditBool==true)
-                {
-                    savebtn?.setTitleColor(greenColor, for: .normal)
-                }
-                else
-                {
-                    savebtn?.setTitleColor(UIColor.lightGray, for: .normal)
-                }
-                break
-            default:
-            break
-        }
-        
-        btn?.setTitle(titlelbl?.text, for: .normal)
-        
-        return headerCell
-    }
-    
     // MARK: - PickerView Delegate
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int
@@ -1531,7 +1043,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     {
         let genderdictionary = genderArray[row] as! NSDictionary
         print("genderdictionary =>\(genderdictionary)")
-        generaleditBool = true
         for view : UIView in scrollView.subviews
         {
             if view.tag == 1

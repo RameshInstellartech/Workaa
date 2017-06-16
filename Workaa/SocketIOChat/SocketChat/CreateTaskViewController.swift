@@ -323,8 +323,8 @@ class CreateTaskViewController: UIViewController, UITextFieldDelegate, UITextVie
         segmentedControl.borderColor = UIColor(red: CGFloat(233.0 / 255.0), green: CGFloat(233.0 / 255.0), blue: CGFloat(233.0 / 255.0), alpha: CGFloat(1.0))
         segmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown
         segmentedControl.isVerticalDividerEnabled = false
-        segmentedControl.titleTextAttributes = [NSFontAttributeName: UIFont(name: LatoRegular, size: CGFloat(17.0))!, NSForegroundColorAttributeName: UIColor.lightGray]
-        segmentedControl.selectedTitleTextAttributes = [NSFontAttributeName: UIFont(name: LatoRegular, size: CGFloat(17.0))!, NSForegroundColorAttributeName: UIColor.darkGray]
+        segmentedControl.titleTextAttributes = [NSFontAttributeName: UIFont(name: LatoRegular, size: CGFloat(15.0))!, NSForegroundColorAttributeName: UIColor.lightGray]
+        segmentedControl.selectedTitleTextAttributes = [NSFontAttributeName: UIFont(name: LatoRegular, size: CGFloat(15.0))!, NSForegroundColorAttributeName: UIColor.darkGray]
         segmentedControl.selectionIndicatorColor = blueColor
         segmentedControl.addTarget(self, action: #selector(self.segmentedControlChangedValue), for: .valueChanged)
         self.view.addSubview(segmentedControl)
@@ -630,6 +630,44 @@ class CreateTaskViewController: UIViewController, UITextFieldDelegate, UITextVie
     
     @IBAction func doneAction(sender : AnyObject)
     {
+        if groupArray.count > 0
+        {
+            let selrow = pickerView.selectedRow(inComponent: 0)
+            let groupdictionary = groupArray[selrow] as! NSDictionary
+            if(segmentedControl.selectedSegmentIndex==0)
+            {
+                if goruplbl.text == "Select a Group"
+                {
+                    goruplbl.text = groupdictionary["name"] as? String
+                    queuegrouplogowidth.constant = 30.0
+                    queuegrouplogo.isHidden = false
+                    
+                    let filestring = String(format: "%@%@", kfilePath,groupdictionary.value(forKey: "logo") as! CVarArg)
+                    queuegrouplogourl = NSURL(string: filestring)!
+                    queuegrouplogo.imageURL = queuegrouplogourl as URL?
+                    
+                    queueGroupId = String(format: "%@",groupdictionary.value(forKey: "id") as! CVarArg)
+                }
+            }
+            else if(segmentedControl.selectedSegmentIndex==1)
+            {
+                if mygoruplbl.text == "Select a Group"
+                {
+                    mygoruplbl.text = groupdictionary["name"] as? String
+                    mytaskgrouplogowidth.constant = 30.0
+                    mytaskgrouplogo.isHidden = false
+                    
+                    let filestring = String(format: "%@%@", kfilePath,groupdictionary.value(forKey: "logo") as! CVarArg)
+                    logourl = NSURL(string: filestring)!
+                    mytaskgrouplogo.imageURL = logourl as URL?
+                    
+                    myTaskGroupId = String(format: "%@",groupdictionary.value(forKey: "id") as! CVarArg)
+                }
+            }
+        }
+        
+        /*-------------------------------------------------------*/
+        
         pickView.isHidden = true
         taskField.resignFirstResponder()
         descriptionView.resignFirstResponder()

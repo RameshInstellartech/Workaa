@@ -28,6 +28,7 @@ class HomeDetailViewController: UIViewController, CardsSwipingViewDelegate, call
     var cardcount = NSInteger()
     var startcount = NSInteger()
     var refreshControl = UIRefreshControl()
+    var myActivityIndicator = UIActivityIndicatorView()
 
     override func viewDidLoad()
     {
@@ -71,10 +72,22 @@ class HomeDetailViewController: UIViewController, CardsSwipingViewDelegate, call
         
         self.cardheight.constant = 290.0
         
-        commonmethodClass.delayWithSeconds(0.0, completion: {
-            self.getQueueList()
-            self.getMyBucketList()
-        })
+        self.getQueueList()
+        self.getMyBucketList()
+    }
+    
+    func startanimating()
+    {
+        myActivityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
+        myActivityIndicator.center = CGPoint(x:view.center.x, y:view.center.y-64.0)
+        myActivityIndicator.hidesWhenStopped = true
+        self.view.addSubview(myActivityIndicator)
+        myActivityIndicator.startAnimating()
+    }
+    
+    func stopanimating()
+    {
+        myActivityIndicator.stopAnimating()
     }
     
     func setRefreshControl()
@@ -107,12 +120,17 @@ class HomeDetailViewController: UIViewController, CardsSwipingViewDelegate, call
     
     func getMyBucketList()
     {
-        self.connectionClass.getMyBucketList()
+        commonmethodClass.delayWithSeconds(0.0, completion: {
+            self.connectionClass.getMyBucketList()
+        })
     }
     
     func getQueueList()
     {
-        self.connectionClass.getQueueList()
+        self.startanimating()
+        commonmethodClass.delayWithSeconds(0.0, completion: {
+            self.connectionClass.getQueueList()
+        })
     }
     
     func loadCheckInView()
@@ -315,6 +333,7 @@ class HomeDetailViewController: UIViewController, CardsSwipingViewDelegate, call
     func GetFailureReponseMethod(errorreponse: String)
     {
         print("GetFailureReponseMethod")
+        self.stopanimating()
     }
     
     func GetReponseMethod(reponse : NSDictionary)
@@ -348,6 +367,8 @@ class HomeDetailViewController: UIViewController, CardsSwipingViewDelegate, call
                 self.loadScrollView()
             }
         }
+        
+        self.stopanimating()
     }
 
     // MARK: didReceiveMemoryWarning

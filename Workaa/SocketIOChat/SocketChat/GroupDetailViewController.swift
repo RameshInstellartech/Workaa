@@ -21,6 +21,7 @@ class GroupDetailViewController: UIViewController, UITableViewDelegate, UITableV
     var commonmethodClass = CommonMethodClass()
     var bottomView : BottomView!
     var refreshControl = UIRefreshControl()
+    var myActivityIndicator = UIActivityIndicatorView()
 
     override func viewDidLoad()
     {
@@ -153,19 +154,39 @@ class GroupDetailViewController: UIViewController, UITableViewDelegate, UITableV
         self.view.addSubview(bottomView)
     }
     
+    func startanimating()
+    {
+        myActivityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+        myActivityIndicator.center = CGPoint(x:view.center.x, y:view.center.y-64.0)
+        myActivityIndicator.hidesWhenStopped = true
+        self.view.addSubview(myActivityIndicator)
+        myActivityIndicator.startAnimating()
+    }
+    
+    func stopanimating()
+    {
+        myActivityIndicator.stopAnimating()
+    }
+    
     func getCurrentTask()
     {
-        self.connectionClass.getCurrentTask(groupid: groupdictionary.value(forKey: "id") as! String)
+        self.startanimating()
+        commonmethodClass.delayWithSeconds(0.0, completion: {
+            self.connectionClass.getCurrentTask(groupid: self.groupdictionary.value(forKey: "id") as! String)
+        })
     }
     
     func getPastTask()
     {
-        self.connectionClass.getPastTask(groupid: groupdictionary.value(forKey: "id") as! String)
+        self.startanimating()
+        commonmethodClass.delayWithSeconds(0.0, completion: {
+            self.connectionClass.getPastTask(groupid: self.groupdictionary.value(forKey: "id") as! String)
+        })
     }
 
     func loadSegment()
     {
-        segmentedControl = HMSegmentedControl(sectionTitles: ["Past ", "Current", "Messages"])
+        segmentedControl = HMSegmentedControl(sectionTitles: ["Past  ", "Current", "Messages"])
         segmentedControl.autoresizingMask = [.flexibleRightMargin, .flexibleWidth]
         segmentedControl.backgroundColor = UIColor.white
         segmentedControl.frame = CGRect(x: CGFloat(0.0), y: CGFloat(0.0), width: CGFloat(screenWidth), height: CGFloat(45.0))
@@ -175,8 +196,8 @@ class GroupDetailViewController: UIViewController, UITableViewDelegate, UITableV
         segmentedControl.borderColor = UIColor(red: CGFloat(233.0 / 255.0), green: CGFloat(233.0 / 255.0), blue: CGFloat(233.0 / 255.0), alpha: CGFloat(1.0))
         segmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown
         segmentedControl.isVerticalDividerEnabled = false
-        segmentedControl.titleTextAttributes = [NSFontAttributeName: UIFont(name: LatoRegular, size: CGFloat(17.0))!, NSForegroundColorAttributeName: UIColor.lightGray]
-        segmentedControl.selectedTitleTextAttributes = [NSFontAttributeName: UIFont(name: LatoRegular, size: CGFloat(17.0))!, NSForegroundColorAttributeName: UIColor.darkGray]
+        segmentedControl.titleTextAttributes = [NSFontAttributeName: UIFont(name: LatoRegular, size: CGFloat(15.0))!, NSForegroundColorAttributeName: UIColor.lightGray]
+        segmentedControl.selectedTitleTextAttributes = [NSFontAttributeName: UIFont(name: LatoRegular, size: CGFloat(15.0))!, NSForegroundColorAttributeName: UIColor.darkGray]
         segmentedControl.selectionIndicatorColor = blueColor
         segmentedControl.addTarget(self, action: #selector(self.segmentedControlChangedValue), for: .valueChanged)
         segmentedControl.setSelectedSegmentIndex(1, animated: true)
@@ -208,6 +229,7 @@ class GroupDetailViewController: UIViewController, UITableViewDelegate, UITableV
     func GetFailureReponseMethod(errorreponse: String)
     {
         print("GetFailureReponseMethod")
+        self.stopanimating()
     }
     
     func GetReponseMethod(reponse : NSDictionary)
@@ -229,6 +251,7 @@ class GroupDetailViewController: UIViewController, UITableViewDelegate, UITableV
                 tbltasklist.reloadData()
             }
         }
+        self.stopanimating()
     }
     
     // MARK: UITableView Delegate and Datasource Methods
