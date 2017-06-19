@@ -4005,7 +4005,7 @@ and username on workaa.</string>
                                     <constraint firstItem="UHJ-xk-EnP" firstAttribute="top" secondItem="rty-7Y-6av" secondAttribute="bottom" constant="15" id="zrM-LN-zkP"/>
                                 </constraints>
                             </scrollView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="68I-xm-5cB">
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="68I-xm-5cB">
                                 <rect key="frame" x="0.0" y="448" width="320" height="60"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zss-j7-024">
@@ -4080,6 +4080,7 @@ and username on workaa.</string>
                         <outlet property="taskdescheight" destination="PG1-Oa-s0B" id="spI-eU-aR9"/>
                         <outlet property="tasktitle" destination="l8c-oO-3XM" id="3aq-h0-80r"/>
                         <outlet property="tasktitleheight" destination="Asg-np-cE5" id="vuI-1k-HPQ"/>
+                        <outlet property="viewheight" destination="gn2-GE-wc4" id="w17-kZ-LpY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x2O-8q-NS2" userLabel="First Responder" sceneMemberID="firstResponder"/>

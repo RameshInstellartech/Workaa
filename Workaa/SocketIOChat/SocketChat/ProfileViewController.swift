@@ -9,7 +9,7 @@
 import UIKit
 import Photos
 
-class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, ConnectionProtocol, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate, ICTokenFieldDelegate
+class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, ConnectionProtocol, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate, ICTokenFieldDelegate, TITokenFieldDelegate
 {
     @IBOutlet weak var scrollView : UIScrollView!
     @IBOutlet weak var pickerView : UIPickerView!
@@ -19,7 +19,9 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     private let skillsfield = CustomizedTokenField()
     var addresstxtView = PlaceholderTextView()
-
+    var tokenView: KSTokenView = KSTokenView(frame: .zero)
+    var tokenFieldView = TITokenFieldView()
+    
     var generalInfoArray = NSArray()
     var workInfoArray = NSArray()
     var contactInfoArray = NSArray()
@@ -35,6 +37,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     var workInfoDictionary = NSDictionary()
     var genderArray = NSArray()
     var scrollheight = CGFloat()
+    var keyboardheight = CGFloat()
     var myActivityIndicator = UIActivityIndicatorView()
 
     override func viewDidLoad()
@@ -97,6 +100,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         {
             if let keyboardFrame = (userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue
             {
+                keyboardheight = keyboardFrame.size.height
+
                 scrollView.contentSize = CGSize(width: screenWidth, height: scrollheight+keyboardFrame.size.height)
             }
         }
@@ -379,25 +384,56 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                             let array = (text.components(separatedBy: ",")) as NSArray
                             //                        print("array =>\(array)")
                             
-                            skillsfield.frame = CGRect(x: CGFloat(worklbl.frame.maxX-5.0), y: CGFloat(0.0), width: CGFloat(screenWidth-worklbl.frame.maxX-10.0), height: CGFloat(50.0))
-                            skillsfield.delegate = self
-                            if text == ""
-                            {
-                                skillsfield.placeholder = String(format: "%@", workInfoArray[j-1] as! CVarArg)
-                            }
-                            else
-                            {
-                                skillsfield.placeholder = ""
-                            }
-                            skillsfield.backgroundColor = UIColor.clear
-                            workview.addSubview(skillsfield)
+                            tokenFieldView = TITokenFieldView(frame: CGRect(x: CGFloat(worklbl.frame.maxX+5.0), y: CGFloat(0.0), width: CGFloat(screenWidth-worklbl.frame.maxX-20.0), height: CGFloat(50.0)))
+                            tokenFieldView.tokenField.delegate = self
+                            tokenFieldView.backgroundColor = UIColor.clear
+                            tokenFieldView.tokenField.placeholder = String(format: "%@", workInfoArray[j-1] as! CVarArg)
+                            workview.addSubview(tokenFieldView)
+                            
+//                            tokenFieldView.tokenField.addTarget(self, action: #selector(self.tokenFieldFrameDidChange), for: (TITokenFieldControlEventFrameDidChange as? UIControlEvents)!)
+//                            tokenView = KSTokenView(frame: CGRect(x: CGFloat(worklbl.frame.maxX-5.0), y: CGFloat(0.0), width: CGFloat(screenWidth-worklbl.frame.maxX-10.0), height: CGFloat(50.0)))
+//                            tokenView.backgroundColor = UIColor.yellow
+//                            //tokenView.delegate = self
+//                            if text == ""
+//                            {
+//                                tokenView.placeholder = String(format: "%@", workInfoArray[j-1] as! CVarArg)
+//                            }
+//                            else
+//                            {
+//                                tokenView.placeholder = ""
+//                            }
+//                            tokenView.style = .squared
+//                            workview.addSubview(tokenView)
+                            
+//                            skillsfield.frame = CGRect(x: CGFloat(worklbl.frame.maxX-5.0), y: CGFloat(0.0), width: CGFloat(screenWidth-worklbl.frame.maxX-10.0), height: CGFloat(50.0))
+//                            skillsfield.delegate = self
+//                            if text == ""
+//                            {
+//                                skillsfield.placeholder = String(format: "%@", workInfoArray[j-1] as! CVarArg)
+//                            }
+//                            else
+//                            {
+//                                skillsfield.placeholder = ""
+//                            }
+//                            skillsfield.backgroundColor = UIColor.clear
+//                            workview.addSubview(skillsfield)
                             
                             for item in array
                             {
                                 let obj = item as! String
-                                skillsfield.textField.text = obj
-                                skillsfield.completeCurrentInputText()
+                                tokenFieldView.tokenField.addToken(withTitle: obj)
+                                tokenFieldView.tokenField.layoutTokens(animated: true)
+                                
+//                                let token: KSToken = KSToken(title: obj)
+//                                tokenView.addToken(token)
+                                
+//                                skillsfield.textField.text = obj
+//                                skillsfield.completeCurrentInputText()
                             }
+//                            if array.count > 0
+//                            {
+//                                tokenView._tokenField.tokenize()
+//                            }
                         }
                         
                         if j != 2
@@ -535,6 +571,39 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         scrollheight = scrollView.contentSize.height
     }
+    
+    func getframe(_ height: CGFloat)
+    {
+        var viewheight = CGFloat()
+        if height > 50.0
+        {
+            viewheight = height - 50.0
+        }
+        else
+        {
+            viewheight = 0.0
+        }
+        
+        var frame1 = tokenFieldView.superview?.frame
+        frame1?.size.height = 50.0+viewheight
+        tokenFieldView.superview?.frame = frame1!
+        
+        var frame2 = tokenFieldView.superview?.superview?.frame
+        frame2?.size.height = 150.0+viewheight
+        tokenFieldView.superview?.superview?.frame = frame2!
+        
+        for view : UIView in scrollView.subviews
+        {
+            if view.tag == 3
+            {
+                var frame3 = view.frame
+                frame3.origin.y = 640.0+viewheight
+                view.frame = frame3
+                
+                scrollView.contentSize = CGSize(width: CGFloat(screenWidth), height: view.frame.maxY+20.0)
+            }
+        }
+    }
 
     func startanimating()
     {
@@ -655,7 +724,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                     }
                 }
 
-                let skillsstring = String(format: "%@", skillsfield.texts as CVarArg)
+                let skillsstring = String(format: "%@", tokenFieldView.tokenTitles.componentsJoined(by: ",") as CVarArg)
                 self.connectionClass.UpdateWorkInfo(occupation: occupation, skills: skillsstring)
             }
             else if(sender.tag==3)
@@ -709,6 +778,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             pickView.isHidden = true
             datepickView.isHidden = false
         }
+        
+        scrollView.setContentOffset(CGPoint(x: 0.0, y: 240.0), animated: true)
     }
     
     func profileaction()
@@ -938,11 +1009,46 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     {
         pickView.isHidden = true
         datepickView.isHidden = true
+        
+        let bottomOffset = CGPoint(x: 0.0, y: scrollView.contentSize.height - scrollView.bounds.size.height)
+        scrollView.setContentOffset(bottomOffset, animated: true)
     }
     
     func textViewDidChange(_ textView: UITextView)
     {
         self.updatebtncolor(index: 3)
+        
+        var addressheight = CGFloat()
+        addressheight = 0.0
+        var txtheight = commonmethodClass.dynamicHeight(width: screenWidth-160, font: textView.font!, string: textView.text)
+        txtheight = txtheight + 10.0
+        txtheight = ceil(txtheight)
+        if(txtheight<42.0)
+        {
+            txtheight = 42.0
+        }
+        addressheight = txtheight - 42.0
+        
+        var frame = self.addresstxtView.frame
+        frame.size.height = txtheight
+        self.addresstxtView.frame  = frame
+        
+        var frame1 = textView.superview?.frame
+        frame1?.size.height = 50.0+addressheight
+        textView.superview?.frame  = frame1!
+        
+        var frame2 = textView.superview?.superview?.frame
+        frame2?.size.height = 200.0+addressheight
+        textView.superview?.superview?.frame  = frame2!
+        
+        var size = scrollView.contentSize
+        size.height = (textView.superview?.superview?.frame.maxY)!+20.0+keyboardheight
+        scrollView.contentSize = size
+        
+        let bottomOffset = CGPoint(x: 0.0, y: scrollView.contentSize.height - scrollView.bounds.size.height)
+        scrollView.setContentOffset(bottomOffset, animated: true)
+        
+        scrollheight = scrollView.contentSize.height-keyboardheight
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool
@@ -961,11 +1067,28 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     {
         pickView.isHidden = true
         datepickView.isHidden = true
+        
+        let index = (textField.superview?.superview?.tag)!
+        if index == 1
+        {
+            scrollView.setContentOffset(CGPoint(x: 0.0, y: 240.0), animated: true)
+        }
+        if index == 2
+        {
+            scrollView.setContentOffset(CGPoint(x: 0.0, y: 490.0), animated: true)
+        }
+        if index == 3
+        {
+            scrollView.setContentOffset(CGPoint(x: 0.0, y: 640.0), animated: true)
+        }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool
     {
-        textField.resignFirstResponder()
+        if textField != tokenFieldView.tokenField
+        {
+            textField.resignFirstResponder()
+        }
         return true
     }
     
@@ -1072,6 +1195,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     func tokenFieldDidBeginEditing(_ tokenField: ICTokenField) {
         print(#function)
+        scrollView.setContentOffset(CGPoint(x: 0.0, y: 490.0), animated: true)
     }
     
     func tokenFieldDidEndEditing(_ tokenField: ICTokenField) {

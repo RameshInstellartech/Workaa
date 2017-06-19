@@ -463,19 +463,16 @@ class OneToOneChatViewController: UIViewController, ConnectionProtocol, UITableV
     
     func scrollToBottom(animated: Bool)
     {
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300))
+        let numberOfSections = self.tblChat.numberOfSections
+        
+        if numberOfSections > 0
         {
-            let numberOfSections = self.tblChat.numberOfSections
+            let numberOfRows = self.tblChat.numberOfRows(inSection: numberOfSections-1)
             
-            if numberOfSections > 0
+            if numberOfRows > 0
             {
-                let numberOfRows = self.tblChat.numberOfRows(inSection: numberOfSections-1)
-                
-                if numberOfRows > 0
-                {
-                    let indexPath = IndexPath(row: numberOfRows-1, section: (numberOfSections-1))
-                    self.tblChat.scrollToRow(at: indexPath, at: .bottom, animated: animated)
-                }
+                let indexPath = IndexPath(row: numberOfRows-1, section: (numberOfSections-1))
+                self.tblChat.scrollToRow(at: indexPath, at: .bottom, animated: animated)
             }
         }
     }

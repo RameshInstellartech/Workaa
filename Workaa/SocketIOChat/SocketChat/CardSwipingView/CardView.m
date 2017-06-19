@@ -253,7 +253,7 @@ static const NSUInteger kCornerRadius = 20.0f;
     CGFloat descheight = (groupnameView.frame.origin.y-descYpos)-10.0;
     
     UILabel *desclbl = [[UILabel alloc] init];
-    desclbl.frame = CGRectMake(0.0, descYpos, _topMatterView.frame.size.width, descheight);
+    desclbl.frame = CGRectMake(5.0, descYpos, _topMatterView.frame.size.width-10.0, descheight);
     desclbl.font = [UIFont fontWithName:@"Lato-Regular" size:15.0];
     desclbl.backgroundColor = [UIColor clearColor];
     desclbl.textColor = [UIColor blackColor];

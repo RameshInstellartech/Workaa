@@ -373,5 +373,13 @@ class AlertClass: UIView, ConnectionProtocol, UITextViewDelegate
                 break
             }
         }
+        for aviewcontroller : UIViewController in navigation().viewControllers
+        {
+            if let grouptaskView = aviewcontroller as? GroupTaskDetailViewController
+            {
+                grouptaskView.close()
+                break
+            }
+        }
     }
 }

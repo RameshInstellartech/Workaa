@@ -85,7 +85,8 @@ class GroupTaskDetailViewController: UIViewController
         self.loadMemberView(userArray: taskDictionary.value(forKey: "users") as! NSArray)
         
         let ownString = String(format: "%@", taskDictionary.value(forKey: "own") as! CVarArg)
-        if ownString == "1"
+        let taskownString = String(format: "%@", taskDictionary.value(forKey: "taskOwnDone") as! CVarArg)
+        if ownString == "1" && taskownString == "0"
         {
             viewheight.constant = 60.0
         }
@@ -236,6 +237,20 @@ class GroupTaskDetailViewController: UIViewController
     {
         let taskid = String(format: "%@", taskDictionary.value(forKey: "id") as! CVarArg)
         self.alertClass.notdonetaskAlert(taskid: taskid)
+    }
+    
+    func close()
+    {
+        navigation().popViewController(animated: true)
+        
+        for aviewcontroller : UIViewController in navigation().viewControllers
+        {
+            if let groupdetailView = aviewcontroller as? GroupDetailViewController
+            {
+                groupdetailView.getCurrentTask()
+                break
+            }
+        }
     }
     
     override func didReceiveMemoryWarning()
