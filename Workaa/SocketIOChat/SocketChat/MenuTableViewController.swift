@@ -41,11 +41,14 @@ class MenuTableViewController: UIViewController, UITableViewDelegate, UITableVie
         overlayView.backgroundColor = UIColor.clear
         self.revealViewController().frontViewController.view.addSubview(overlayView)
         
-        let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.closeView))
-        tapGesture.numberOfTapsRequired = 1
-        overlayView.addGestureRecognizer(tapGesture)
+        overlayView.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+        overlayView.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
         
-//        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(self.closeView))
+//        let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self.revealViewController(), action: #selector(self.revealViewController().revealToggle(_:)))
+//        tapGesture.numberOfTapsRequired = 1
+//        overlayView.addGestureRecognizer(tapGesture)
+//        
+//        let panGestureRecognizer = UIPanGestureRecognizer(target: self.revealViewController(), action: #selector(self.revealViewController().revealToggle(_:)))
 //        overlayView.addGestureRecognizer(panGestureRecognizer)
     }
     
@@ -54,6 +57,8 @@ class MenuTableViewController: UIViewController, UITableViewDelegate, UITableVie
         super.viewWillDisappear(animated)
         
         overlayView.removeFromSuperview()
+        
+        self.revealViewController().frontViewController.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
     }
     
     func closeView()
@@ -102,11 +107,13 @@ class MenuTableViewController: UIViewController, UITableViewDelegate, UITableVie
         {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileCell", for: indexPath) as! ProfileTableViewCell
             
-            let imagestring = String(format: "%@%@", kfilePath,commonmethodClass.retrieveprofileimg())
+            let imagestring = String(format: "%@%@", kfilePath,appDelegate.profilePicString)
             let fileUrl = NSURL(string: imagestring)
             cell.profileimage?.imageURL = fileUrl as URL?
             
             cell.profilename.text = String(format: "%@",commonmethodClass.retrieveusername().uppercased)
+            
+            cell.loclbl.text = String(format: "%@",appDelegate.locationString)
             
             return cell
         }
@@ -217,34 +224,9 @@ class MenuTableViewController: UIViewController, UITableViewDelegate, UITableVie
         else if(indexPath.row==5)
         {
             connectionClass.logOut()
-            
-            self.revealViewController().revealToggle(animated: false)
-            commonmethodClass.removeallkey()
-            
-            var isView : Bool!
-            isView = false
-            
-            var viewcontroller = UIViewController()
-            
-            for aviewcontroller : UIViewController in navigation().viewControllers
-            {
-                if aviewcontroller is WelcomeViewController
-                {
-                    viewcontroller = aviewcontroller
-                    isView = true
-                    break
-                }
-            }
-            
-            if isView==true
-            {
-                navigation().popToViewController(viewcontroller, animated: false)
-            }
-            else
-            {
-                let welcomeObj = storyboard?.instantiateViewController(withIdentifier: "WelcomeViewID") as? WelcomeViewController
-                navigation().pushViewController(welcomeObj!, animated: false)
-            }
+            self.revealViewController().revealToggle(animated: true)
+            appDelegate.gotoHome()
+            SocketIOManager.sharedInstance.closeConnection()
         }
     }
     

@@ -78,6 +78,8 @@ class HomeDetailViewController: UIViewController, CardsSwipingViewDelegate, call
     
     func startanimating()
     {
+        self.stopanimating()
+        
         myActivityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
         myActivityIndicator.center = CGPoint(x:view.center.x, y:view.center.y-64.0)
         myActivityIndicator.hidesWhenStopped = true
@@ -103,7 +105,6 @@ class HomeDetailViewController: UIViewController, CardsSwipingViewDelegate, call
     {
         commonmethodClass.delayWithSeconds(1.0, completion: {
             self.cardsSwipingView?.clearQueue()
-            self.cardheight.constant = 290.0
             self.getQueueList()
             self.getMyBucketList()
             self.refreshControl.endRefreshing()
@@ -274,6 +275,7 @@ class HomeDetailViewController: UIViewController, CardsSwipingViewDelegate, call
         
         if queueArray.count == 0
         {
+            self.cardsSwipingView?.clearQueue()
             self.cardheight.constant = 0.0
         }
         else
@@ -359,6 +361,15 @@ class HomeDetailViewController: UIViewController, CardsSwipingViewDelegate, call
                     }
                     
                     self.addCard()
+                }
+                if queueArray.count == 0
+                {
+                    self.cardsSwipingView?.clearQueue()
+                    self.cardheight.constant = 0.0
+                }
+                else
+                {
+                    self.cardheight.constant = 290.0
                 }
             }
             if let getmybucketlist = getreponse.value(forKey: "taskList") as? NSArray

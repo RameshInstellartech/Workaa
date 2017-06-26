@@ -25,7 +25,7 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
     @IBOutlet weak var groupfavmsg: UILabel!
     @IBOutlet weak var groupmemaction: UIView!
 
-    var groupdictionary = NSDictionary()
+    var groupid = String()
     var groupInfodictionary = NSDictionary()
     var selecteduserArray = NSMutableArray()
     var userListView = UserListView()
@@ -33,6 +33,7 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
     var commonmethodClass = CommonMethodClass()
     var imgData : NSData!
     var sendertag = NSInteger()
+    var myActivityIndicator = UIActivityIndicatorView()
 
     override func viewDidLoad()
     {
@@ -80,8 +81,8 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
         
         tblteamlist.register(UINib(nibName: "GroupUserTableViewCell", bundle: nil), forCellReuseIdentifier: "GroupUserCell")
         
-        print("groupdictionary =>\(groupdictionary)")
-        
+        print("groupid =>\(groupid)")
+
         for view : UIView in groupmemaction.subviews
         {
             for view1 : UIView in view.subviews
@@ -99,6 +100,8 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
             }
         }
         
+        scrollView.isHidden = true
+        self.startanimating()
         commonmethodClass.delayWithSeconds(0.0, completion: {
             self.getGroupInfo()
         })
@@ -113,6 +116,22 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
         self.navigationController?.navigationBar.isHidden = false
         
         navigationController?.navigationBar.barTintColor = blueColor
+    }
+    
+    func startanimating()
+    {
+        self.stopanimating()
+        
+        myActivityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+        myActivityIndicator.center = CGPoint(x:view.center.x, y:view.center.y-64.0)
+        myActivityIndicator.hidesWhenStopped = true
+        self.view.addSubview(myActivityIndicator)
+        myActivityIndicator.startAnimating()
+    }
+    
+    func stopanimating()
+    {
+        myActivityIndicator.stopAnimating()
     }
     
     func typeswitchValueDidChange()
@@ -151,7 +170,7 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
     
     func getGroupInfo()
     {
-        connectionClass.getGroupInfo(groupid: String(format: "%@", groupdictionary.value(forKey: "id") as! CVarArg))
+        connectionClass.getGroupInfo(groupid: groupid)
     }
     
     func profileaction()
@@ -428,6 +447,7 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
     func GetFailureReponseMethod(errorreponse: String)
     {
         print("GetFailureReponseMethod")
+        self.stopanimating()
     }
     
     func GetReponseMethod(reponse : NSDictionary)
@@ -495,6 +515,8 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
 
                 if let users = groupInfo.value(forKey: "users_list") as? NSArray
                 {
+                    selecteduserArray.removeAllObjects()
+
                     for item in users
                     {
                         let obj = item as! NSDictionary
@@ -507,8 +529,12 @@ class GroupDetailsInfoViewController: UIViewController, UITableViewDelegate, UIT
                         tblteamlist.reloadData()
                     }
                 }
+                
+                scrollView.isHidden = false
             }
         }
+        
+        self.stopanimating()
     }
 
     // MARK: UITableView Delegate and Datasource Methods

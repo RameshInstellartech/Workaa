@@ -8,6 +8,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="INSTELLAR.ttf">
+            <string>icomoon</string>
+        </array>
         <array key="Lato-Bold.ttf">
             <string>Lato-Bold</string>
         </array>
@@ -40,9 +43,9 @@
                                 <constraint firstAttribute="width" constant="70" id="FXE-yf-AsB"/>
                                 <constraint firstAttribute="height" constant="50" id="LwE-cL-u3w"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="15"/>
-                            <state key="normal" title="Close">
-                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" name="icomoon" family="icomoon" pointSize="22"/>
+                            <state key="normal">
+                                <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
                                 <action selector="closeactionWithSender:" destination="iN0-l3-epB" eventType="touchUpInside" id="zuK-mz-L84"/>
@@ -107,6 +110,7 @@
                 <constraint firstItem="E3U-4V-v5c" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="70" id="mmk-AD-u92"/>
             </constraints>
             <connections>
+                <outlet property="closebtn" destination="r3l-TB-YLz" id="1wG-CL-dXa"/>
                 <outlet property="editTextView" destination="wdD-5l-eAE" id="DUa-20-cq0"/>
                 <outlet property="editTextViewheight" destination="JyU-uL-c8M" id="bKa-Ld-Mcx"/>
                 <outlet property="editView" destination="E3U-4V-v5c" id="YIm-lk-qL6"/>

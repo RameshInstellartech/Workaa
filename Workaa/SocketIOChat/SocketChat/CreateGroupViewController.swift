@@ -279,6 +279,10 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate, UITextVi
         {
             alertClass.showAlert(alerttitle: "Info", alertmsg: groupCreateReponse.value(forKey: "invalidName") as! String)
         }
+        else if (groupnametxtField.text?.characters.count)! < 3
+        {
+            alertClass.showAlert(alerttitle: "Info", alertmsg: "Name minimum 3")
+        }
         else if (groupnametxtField.text?.characters.count)! > 50
         {
             alertClass.showAlert(alerttitle: "Info", alertmsg: groupCreateReponse.value(forKey: "nameLength") as! String)

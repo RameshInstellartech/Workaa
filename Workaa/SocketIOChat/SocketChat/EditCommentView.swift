@@ -17,6 +17,8 @@ class EditCommentView: UIView, UITextViewDelegate
     @IBOutlet weak var editplaceholderlbl : UILabel!
     @IBOutlet weak var editViewheight: NSLayoutConstraint!
     @IBOutlet weak var editTextViewheight: NSLayoutConstraint!
+    @IBOutlet weak var closebtn : UIButton!
+
     var viewheight : CGFloat!
     var textheight : CGFloat!
     var keyboardheight : CGFloat!
@@ -63,6 +65,9 @@ class EditCommentView: UIView, UITextViewDelegate
         textheight = editTextViewheight.constant
         
         editTextView.becomeFirstResponder()
+        
+        closebtn.setTitle(closeIcon, for: .normal)
+        closebtn.contentEdgeInsets = UIEdgeInsets(top: 0, left: 28, bottom: 0, right: 0)
     }
     
     @IBAction func saveaction(sender: UIButton)

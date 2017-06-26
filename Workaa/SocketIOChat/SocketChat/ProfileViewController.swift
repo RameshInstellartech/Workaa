@@ -9,7 +9,7 @@
 import UIKit
 import Photos
 
-class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, ConnectionProtocol, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate, ICTokenFieldDelegate, TITokenFieldDelegate
+class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, ConnectionProtocol, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate, TITokenFieldDelegate
 {
     @IBOutlet weak var scrollView : UIScrollView!
     @IBOutlet weak var pickerView : UIPickerView!
@@ -17,9 +17,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var datepickView : UIView!
     
-    private let skillsfield = CustomizedTokenField()
     var addresstxtView = PlaceholderTextView()
-    var tokenView: KSTokenView = KSTokenView(frame: .zero)
     var tokenFieldView = TITokenFieldView()
     
     var generalInfoArray = NSArray()
@@ -384,56 +382,18 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                             let array = (text.components(separatedBy: ",")) as NSArray
                             //                        print("array =>\(array)")
                             
-                            tokenFieldView = TITokenFieldView(frame: CGRect(x: CGFloat(worklbl.frame.maxX+5.0), y: CGFloat(0.0), width: CGFloat(screenWidth-worklbl.frame.maxX-20.0), height: CGFloat(50.0)))
+                            tokenFieldView = TITokenFieldView(frame: CGRect(x: CGFloat(worklbl.frame.maxX+5.0), y: CGFloat(5.0), width: CGFloat(screenWidth-worklbl.frame.maxX-20.0), height: CGFloat(50.0)))
                             tokenFieldView.tokenField.delegate = self
                             tokenFieldView.backgroundColor = UIColor.clear
                             tokenFieldView.tokenField.placeholder = String(format: "%@", workInfoArray[j-1] as! CVarArg)
                             workview.addSubview(tokenFieldView)
-                            
-//                            tokenFieldView.tokenField.addTarget(self, action: #selector(self.tokenFieldFrameDidChange), for: (TITokenFieldControlEventFrameDidChange as? UIControlEvents)!)
-//                            tokenView = KSTokenView(frame: CGRect(x: CGFloat(worklbl.frame.maxX-5.0), y: CGFloat(0.0), width: CGFloat(screenWidth-worklbl.frame.maxX-10.0), height: CGFloat(50.0)))
-//                            tokenView.backgroundColor = UIColor.yellow
-//                            //tokenView.delegate = self
-//                            if text == ""
-//                            {
-//                                tokenView.placeholder = String(format: "%@", workInfoArray[j-1] as! CVarArg)
-//                            }
-//                            else
-//                            {
-//                                tokenView.placeholder = ""
-//                            }
-//                            tokenView.style = .squared
-//                            workview.addSubview(tokenView)
-                            
-//                            skillsfield.frame = CGRect(x: CGFloat(worklbl.frame.maxX-5.0), y: CGFloat(0.0), width: CGFloat(screenWidth-worklbl.frame.maxX-10.0), height: CGFloat(50.0))
-//                            skillsfield.delegate = self
-//                            if text == ""
-//                            {
-//                                skillsfield.placeholder = String(format: "%@", workInfoArray[j-1] as! CVarArg)
-//                            }
-//                            else
-//                            {
-//                                skillsfield.placeholder = ""
-//                            }
-//                            skillsfield.backgroundColor = UIColor.clear
-//                            workview.addSubview(skillsfield)
                             
                             for item in array
                             {
                                 let obj = item as! String
                                 tokenFieldView.tokenField.addToken(withTitle: obj)
                                 tokenFieldView.tokenField.layoutTokens(animated: true)
-                                
-//                                let token: KSToken = KSToken(title: obj)
-//                                tokenView.addToken(token)
-                                
-//                                skillsfield.textField.text = obj
-//                                skillsfield.completeCurrentInputText()
                             }
-//                            if array.count > 0
-//                            {
-//                                tokenView._tokenField.tokenize()
-//                            }
                         }
                         
                         if j != 2
@@ -601,12 +561,26 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                 view.frame = frame3
                 
                 scrollView.contentSize = CGSize(width: CGFloat(screenWidth), height: view.frame.maxY+20.0)
+                scrollheight = scrollView.contentSize.height
+
+                if keyboardheight > 0.0
+                {
+                    scrollView.setContentOffset(CGPoint(x: 0.0, y: 490.0), animated: true)
+                }
             }
         }
+    }
+    
+    func tokenField(_ tokenField: TITokenField, willRemove token: TIToken) -> Bool
+    {
+        self.updatebtncolor(index: 2)
+        return true
     }
 
     func startanimating()
     {
+        self.stopanimating()
+        
         myActivityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
         myActivityIndicator.center = CGPoint(x:view.center.x, y:view.center.y-64.0)
         myActivityIndicator.hidesWhenStopped = true
@@ -920,7 +894,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                     pickimage = nil
                     imgData = nil
                     profileString = profilestring
-                    commonmethodClass.saveprofileimg(profileImg: profilestring as NSString)
+                    appDelegate.profilePicString = profilestring
                     
                     for view : UIView in scrollView.subviews
                     {
@@ -963,6 +937,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                     else
                     {
                         generalInfoDictionary = InfoDict
+                        appDelegate.locationString = String(format: "%@", InfoDict.value(forKey: "location") as! CVarArg)
                         self.resetbtncolor(index: 1)
                     }
                 }
@@ -977,11 +952,13 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                     if let profilestring = profilereponse.value(forKey: "pic") as? String
                     {
                         profileString = profilestring
+                        appDelegate.profilePicString = profilestring
                     }
                 }
                 if let generalreponse = profileDictionary.value(forKey: "generalInfo") as? NSDictionary
                 {
                     generalInfoDictionary = generalreponse
+                    appDelegate.locationString = String(format: "%@", generalreponse.value(forKey: "location") as! CVarArg)
                 }
                 if let contactreponse = profileDictionary.value(forKey: "contactInfo") as? NSDictionary
                 {
@@ -1189,43 +1166,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             }
         }
         self.updatebtncolor(index: 1)
-    }
-    
-    // MARK: - ICTokenFieldDelegate
-    
-    func tokenFieldDidBeginEditing(_ tokenField: ICTokenField) {
-        print(#function)
-        scrollView.setContentOffset(CGPoint(x: 0.0, y: 490.0), animated: true)
-    }
-    
-    func tokenFieldDidEndEditing(_ tokenField: ICTokenField) {
-        print(#function)
-    }
-    
-    func tokenFieldWillReturn(_ tokenField: ICTokenField) {
-        print(#function)
-        self.updatebtncolor(index: 2)
-    }
-    
-    func tokenField(_ tokenField: ICTokenField, didChangeInputText text: String) {
-        print("Typing \"\(text)\"")
-    }
-    
-    func tokenField(_ tokenField: ICTokenField, shouldCompleteText text: String) -> Bool {
-        print("Should add \"\(text)\"?")
-        return text != "42"
-    }
-    
-    func tokenField(_ tokenField: ICTokenField, didCompleteText text: String) {
-        print("Added \"\(text)\"")
-    }
-    
-    func tokenField(_ tokenField: ICTokenField, didDeleteText text: String, atIndex index: Int) {
-        print("Deleted \"\(text)\"")
-    }
-    
-    func tokenField(_ tokenField: ICTokenField, subsequentDelimiterForCompletedText text: String) -> String {
-        return " "
     }
     
     // MARK: - didReceiveMemoryWarning

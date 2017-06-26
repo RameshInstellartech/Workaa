@@ -142,7 +142,7 @@ class GroupDetailViewController: UIViewController, UITableViewDelegate, UITableV
         self.title = ""
         
         let groupdetailsViewObj = self.storyboard?.instantiateViewController(withIdentifier: "GroupDetailsInfoViewID") as? GroupDetailsInfoViewController
-        groupdetailsViewObj?.groupdictionary = groupdictionary
+        groupdetailsViewObj?.groupid = String(format: "%@", groupdictionary.value(forKey: "id") as! CVarArg)
         self.navigationController?.pushViewController(groupdetailsViewObj!, animated: true)
     }
     
@@ -156,6 +156,8 @@ class GroupDetailViewController: UIViewController, UITableViewDelegate, UITableV
     
     func startanimating()
     {
+        self.stopanimating()
+        
         myActivityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
         myActivityIndicator.center = CGPoint(x:view.center.x, y:view.center.y-64.0)
         myActivityIndicator.hidesWhenStopped = true

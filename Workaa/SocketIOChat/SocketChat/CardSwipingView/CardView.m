@@ -173,51 +173,51 @@ static const NSUInteger kCornerRadius = 20.0f;
     
     /*-----------------------------------------------------*/
     
-    UIView *btnView = [[UIView alloc] init];
-    btnView.backgroundColor = [UIColor colorWithRed:249.0/255.0 green:248.0/255.0 blue:248.0/255.0 alpha:1.0];
-    btnView.frame = CGRectMake(0.0, _topMatterView.frame.size.height-60.0, _topMatterView.frame.size.width, 60.0);
-    [_topMatterView addSubview:btnView];
+    CGFloat btnYpos = _topMatterView.frame.size.height-35.0;
+    CGFloat btnheight = 0.0;
     
-    CGFloat btnwidth = (btnView.frame.size.width-75.0)/2.0;
-    NSLog(@"btnwidth = %f",btnwidth);
-    
-    UIButton *laterbutton = [UIButton buttonWithType:UIButtonTypeSystem];
-    laterbutton.frame = CGRectMake(25.0, (btnView.frame.size.height-30.0)/2.0, btnwidth, 30.0);
-    laterbutton.backgroundColor = [UIColor redColor];
-    [laterbutton setTitle:@"Later" forState:UIControlStateNormal];
-    [laterbutton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    laterbutton.titleLabel.font = [UIFont fontWithName:@"Lato-Regular" size:13.0];
-    laterbutton.layer.cornerRadius = laterbutton.frame.size.height/2.0;
-    laterbutton.layer.masksToBounds = YES;
-    [laterbutton addTarget:self.superview action:@selector(dismissTopCardToLeft) forControlEvents:UIControlEventTouchUpInside];
-    [btnView addSubview:laterbutton];
-    
-    UIButton *taskbutton = [UIButton buttonWithType:UIButtonTypeSystem];
-    taskbutton.frame = CGRectMake(CGRectGetMaxX(laterbutton.frame)+25.0, (btnView.frame.size.height-30.0)/2.0, btnwidth, 30.0);
-    taskbutton.backgroundColor = [UIColor colorWithRed:24.0/255.0 green:208.0/255.0 blue:124.0/255.0 alpha:1.0];
-//    [taskbutton setTitle:@"Assign Task" forState:UIControlStateNormal];
-    [taskbutton setTitle:@"Edit & Assign" forState:UIControlStateNormal];
-    [taskbutton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    taskbutton.titleLabel.font = [UIFont fontWithName:@"Lato-Regular" size:13.0];
-    taskbutton.layer.cornerRadius = taskbutton.frame.size.height/2.0;
-    taskbutton.layer.masksToBounds = YES;
-    [taskbutton addTarget:self action:@selector(expandaction) forControlEvents:UIControlEventTouchUpInside];
-    [btnView addSubview:taskbutton];
-    
-    if([assignString isEqualToString:@"0"])
+    if([assignString isEqualToString:@"1"])
     {
-        btnView.hidden = YES;
-    }
-    else
-    {
-        btnView.hidden = NO;
+        UIView *btnView = [[UIView alloc] init];
+        btnView.backgroundColor = [UIColor colorWithRed:249.0/255.0 green:248.0/255.0 blue:248.0/255.0 alpha:1.0];
+        btnView.frame = CGRectMake(0.0, _topMatterView.frame.size.height-60.0, _topMatterView.frame.size.width, 60.0);
+        [_topMatterView addSubview:btnView];
+        
+        CGFloat btnwidth = (btnView.frame.size.width-75.0)/2.0;
+        NSLog(@"btnwidth = %f",btnwidth);
+        
+        UIButton *laterbutton = [UIButton buttonWithType:UIButtonTypeSystem];
+        laterbutton.frame = CGRectMake(25.0, (btnView.frame.size.height-30.0)/2.0, btnwidth, 30.0);
+        laterbutton.backgroundColor = [UIColor redColor];
+        [laterbutton setTitle:@"Later" forState:UIControlStateNormal];
+        [laterbutton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        laterbutton.titleLabel.font = [UIFont fontWithName:@"Lato-Regular" size:13.0];
+        laterbutton.layer.cornerRadius = laterbutton.frame.size.height/2.0;
+        laterbutton.layer.masksToBounds = YES;
+        [laterbutton addTarget:self.superview action:@selector(dismissTopCardToLeft) forControlEvents:UIControlEventTouchUpInside];
+        [btnView addSubview:laterbutton];
+        
+        UIButton *taskbutton = [UIButton buttonWithType:UIButtonTypeSystem];
+        taskbutton.frame = CGRectMake(CGRectGetMaxX(laterbutton.frame)+25.0, (btnView.frame.size.height-30.0)/2.0, btnwidth, 30.0);
+        taskbutton.backgroundColor = [UIColor colorWithRed:24.0/255.0 green:208.0/255.0 blue:124.0/255.0 alpha:1.0];
+        //    [taskbutton setTitle:@"Assign Task" forState:UIControlStateNormal];
+        [taskbutton setTitle:@"Edit & Assign" forState:UIControlStateNormal];
+        [taskbutton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        taskbutton.titleLabel.font = [UIFont fontWithName:@"Lato-Regular" size:13.0];
+        taskbutton.layer.cornerRadius = taskbutton.frame.size.height/2.0;
+        taskbutton.layer.masksToBounds = YES;
+        [taskbutton addTarget:self action:@selector(expandaction) forControlEvents:UIControlEventTouchUpInside];
+        [btnView addSubview:taskbutton];
+        
+        btnYpos = btnView.frame.origin.y-35.0;
+        btnheight = btnView.frame.size.height;
     }
     
     /*-----------------------------------------------------*/
     
     UIView *groupnameView = [[UIView alloc] init];
     groupnameView.backgroundColor = [UIColor clearColor];
-    groupnameView.frame = CGRectMake(0.0, btnView.frame.origin.y-35.0, _topMatterView.frame.size.width, 20.0);
+    groupnameView.frame = CGRectMake(0.0, btnYpos, _topMatterView.frame.size.width, 20.0);
     [_topMatterView addSubview:groupnameView];
     
     NSString *groupimagestring = [NSString stringWithFormat:@"%@%@",filepath,[queueDictionary valueForKey:@"groupLogo"]];
@@ -244,7 +244,7 @@ static const NSUInteger kCornerRadius = 20.0f;
     [groupnameView addSubview:titlelbl];
     
     CGFloat groupwidth = titlelbl.intrinsicContentSize.width + 35.0;
-    groupnameView.frame = CGRectMake((_topMatterView.frame.size.width-groupwidth)/2.0, btnView.frame.origin.y-35.0, groupwidth, 20.0);
+    groupnameView.frame = CGRectMake((_topMatterView.frame.size.width-groupwidth)/2.0, btnYpos, groupwidth, 20.0);
     
     /*-----------------------------------------------------*/
     
@@ -265,7 +265,7 @@ static const NSUInteger kCornerRadius = 20.0f;
     /*-----------------------------------------------------*/
     
     UIButton *overlaybutton = [UIButton buttonWithType:UIButtonTypeCustom];
-    overlaybutton.frame = CGRectMake(0.0, 0.0, _topMatterView.frame.size.width, _topMatterView.frame.size.height-btnView.frame.size.height);
+    overlaybutton.frame = CGRectMake(0.0, 0.0, _topMatterView.frame.size.width, _topMatterView.frame.size.height-btnheight);
     overlaybutton.backgroundColor = [UIColor clearColor];
     [overlaybutton addTarget:self action:@selector(expandaction) forControlEvents:UIControlEventTouchUpInside];
     [_topMatterView addSubview:overlaybutton];

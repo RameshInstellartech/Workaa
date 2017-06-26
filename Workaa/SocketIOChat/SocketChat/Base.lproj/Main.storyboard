@@ -3828,7 +3828,7 @@ and username on workaa.</string>
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hqj-1Z-xCz">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hqj-1Z-xCz">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="448"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="He2-jP-QGH" customClass="AsyncImageView">
@@ -3877,7 +3877,7 @@ and username on workaa.</string>
                                         <rect key="frame" x="145" y="100" width="60" height="15"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellowstar.png" translatesAutoresizingMaskIntoConstraints="NO" id="FZM-zh-uHR">
-                                                <rect key="frame" x="5" y="2.5" width="10" height="10"/>
+                                                <rect key="frame" x="5" y="3" width="10" height="10"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="10" id="0Xe-y3-fX3"/>
                                                     <constraint firstAttribute="width" constant="10" id="ecg-As-h4t"/>
@@ -3967,15 +3967,30 @@ and username on workaa.</string>
                                             <constraint firstAttribute="height" constant="65" id="llA-gu-1ln"/>
                                         </constraints>
                                     </scrollView>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="6s4-ZP-sQh">
+                                        <rect key="frame" x="0.0" y="309" width="320" height="100"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="100" id="37J-xJ-mcX"/>
+                                        </constraints>
+                                        <color key="separatorColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
+                                        <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="Rcp-xw-g9v" id="BSl-qd-Trg"/>
+                                            <outlet property="delegate" destination="Rcp-xw-g9v" id="ZEd-9J-ncJ"/>
+                                        </connections>
+                                    </tableView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="uew-t0-BZu" firstAttribute="top" secondItem="l8c-oO-3XM" secondAttribute="bottom" constant="10" id="4P3-PB-W6S"/>
+                                    <constraint firstAttribute="trailing" secondItem="6s4-ZP-sQh" secondAttribute="trailing" id="6MY-bL-QYC"/>
                                     <constraint firstItem="He2-jP-QGH" firstAttribute="leading" secondItem="Hqj-1Z-xCz" secondAttribute="leading" constant="15" id="Awq-wg-SNi"/>
                                     <constraint firstItem="icj-yi-Kju" firstAttribute="top" secondItem="l8c-oO-3XM" secondAttribute="bottom" constant="10" id="BwK-NL-qTd"/>
                                     <constraint firstItem="QWT-Q5-JLm" firstAttribute="top" secondItem="Hqj-1Z-xCz" secondAttribute="top" constant="15" id="CgR-F2-pat"/>
                                     <constraint firstItem="l8c-oO-3XM" firstAttribute="leading" secondItem="Hqj-1Z-xCz" secondAttribute="leading" constant="10" id="Cs4-HV-Ljz"/>
                                     <constraint firstAttribute="trailing" secondItem="QWT-Q5-JLm" secondAttribute="trailing" constant="15" id="HCS-OI-gFn"/>
                                     <constraint firstAttribute="trailing" secondItem="UHJ-xk-EnP" secondAttribute="trailing" id="Itf-gb-qJk"/>
+                                    <constraint firstItem="6s4-ZP-sQh" firstAttribute="leading" secondItem="Hqj-1Z-xCz" secondAttribute="leading" id="JQM-57-Uf4"/>
                                     <constraint firstItem="460-uN-E5x" firstAttribute="top" secondItem="l8c-oO-3XM" secondAttribute="bottom" constant="10" id="KnI-D6-VzJ"/>
                                     <constraint firstItem="2bs-Ks-r7F" firstAttribute="leading" secondItem="Hqj-1Z-xCz" secondAttribute="leading" constant="15" id="Lai-KA-bBN"/>
                                     <constraint firstItem="Jjc-Rq-fyn" firstAttribute="leading" secondItem="Hqj-1Z-xCz" secondAttribute="leading" id="Loc-Ic-9io"/>
@@ -3986,7 +4001,6 @@ and username on workaa.</string>
                                     <constraint firstItem="rty-7Y-6av" firstAttribute="top" secondItem="nGu-HO-Kja" secondAttribute="bottom" id="Tmx-n5-0bK"/>
                                     <constraint firstAttribute="trailing" secondItem="460-uN-E5x" secondAttribute="trailing" constant="15" id="WaC-R0-gDk"/>
                                     <constraint firstItem="QWT-Q5-JLm" firstAttribute="leading" secondItem="He2-jP-QGH" secondAttribute="trailing" constant="10" id="Yyr-n8-B0E"/>
-                                    <constraint firstAttribute="bottom" secondItem="cnM-d6-buc" secondAttribute="bottom" constant="20" id="cWc-7l-cGc"/>
                                     <constraint firstItem="nGu-HO-Kja" firstAttribute="top" secondItem="Jjc-Rq-fyn" secondAttribute="bottom" constant="10" id="cj6-EJ-cup"/>
                                     <constraint firstAttribute="trailing" secondItem="l8c-oO-3XM" secondAttribute="trailing" constant="10" id="cqu-Wb-wVq"/>
                                     <constraint firstItem="2bs-Ks-r7F" firstAttribute="top" secondItem="UHJ-xk-EnP" secondAttribute="bottom" constant="10" id="dCj-Zf-bLQ"/>
@@ -4000,6 +4014,7 @@ and username on workaa.</string>
                                     <constraint firstAttribute="trailing" secondItem="cnM-d6-buc" secondAttribute="trailing" constant="15" id="sBv-bE-j6R"/>
                                     <constraint firstItem="Jjc-Rq-fyn" firstAttribute="top" secondItem="460-uN-E5x" secondAttribute="bottom" constant="18" id="ud6-Bk-aap"/>
                                     <constraint firstItem="nGu-HO-Kja" firstAttribute="leading" secondItem="Hqj-1Z-xCz" secondAttribute="leading" constant="15" id="v7y-PV-Jd7"/>
+                                    <constraint firstItem="6s4-ZP-sQh" firstAttribute="top" secondItem="rty-7Y-6av" secondAttribute="bottom" constant="15" id="wSw-PR-Gvn"/>
                                     <constraint firstAttribute="trailing" secondItem="nGu-HO-Kja" secondAttribute="trailing" constant="15" id="x8z-pO-6ZA"/>
                                     <constraint firstItem="He2-jP-QGH" firstAttribute="top" secondItem="Hqj-1Z-xCz" secondAttribute="top" constant="15" id="xJH-Z0-UNh"/>
                                     <constraint firstItem="UHJ-xk-EnP" firstAttribute="top" secondItem="rty-7Y-6av" secondAttribute="bottom" constant="15" id="zrM-LN-zkP"/>
@@ -4080,6 +4095,8 @@ and username on workaa.</string>
                         <outlet property="taskdescheight" destination="PG1-Oa-s0B" id="spI-eU-aR9"/>
                         <outlet property="tasktitle" destination="l8c-oO-3XM" id="3aq-h0-80r"/>
                         <outlet property="tasktitleheight" destination="Asg-np-cE5" id="vuI-1k-HPQ"/>
+                        <outlet property="tblheight" destination="37J-xJ-mcX" id="Nm2-7Y-CTK"/>
+                        <outlet property="tbllist" destination="6s4-ZP-sQh" id="O9k-Px-nZg"/>
                         <outlet property="viewheight" destination="gn2-GE-wc4" id="w17-kZ-LpY"/>
                     </connections>
                 </viewController>

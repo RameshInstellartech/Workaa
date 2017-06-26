@@ -7,10 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1302AB741EF52AA8005FE8A5 /* KSToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1302AB701EF52AA8005FE8A5 /* KSToken.swift */; };
-		1302AB751EF52AA8005FE8A5 /* KSTokenField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1302AB711EF52AA8005FE8A5 /* KSTokenField.swift */; };
-		1302AB761EF52AA8005FE8A5 /* KSTokenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1302AB721EF52AA8005FE8A5 /* KSTokenView.swift */; };
-		1302AB771EF52AA8005FE8A5 /* KSUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1302AB731EF52AA8005FE8A5 /* KSUtils.swift */; };
 		130337501EA20D9700A3E8FD /* BottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1303374F1EA20D9700A3E8FD /* BottomView.swift */; };
 		130337521EA20E8100A3E8FD /* BottomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 130337511EA20E8100A3E8FD /* BottomView.xib */; };
 		131261491EBDE19C0039F394 /* GroupDetailsInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 131261481EBDE19C0039F394 /* GroupDetailsInfoViewController.swift */; };
@@ -68,11 +64,6 @@
 		13521FE01E86659B005CCCFB /* ProfileInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13521FDE1E86659B005CCCFB /* ProfileInfoTableViewCell.swift */; };
 		13521FE11E86659B005CCCFB /* ProfileInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13521FDF1E86659B005CCCFB /* ProfileInfoTableViewCell.xib */; };
 		13521FE31E86777B005CCCFB /* PlaceholderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13521FE21E86777B005CCCFB /* PlaceholderTextView.swift */; };
-		13521FF91E86B061005CCCFB /* ICBackspaceTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13521FF51E86B061005CCCFB /* ICBackspaceTextField.swift */; };
-		13521FFA1E86B061005CCCFB /* ICInsetLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13521FF61E86B061005CCCFB /* ICInsetLabel.swift */; };
-		13521FFB1E86B061005CCCFB /* ICToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13521FF71E86B061005CCCFB /* ICToken.swift */; };
-		13521FFC1E86B061005CCCFB /* ICTokenField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13521FF81E86B061005CCCFB /* ICTokenField.swift */; };
-		13521FFE1E86B18F005CCCFB /* CustomizedTokenField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13521FFD1E86B18F005CCCFB /* CustomizedTokenField.swift */; };
 		135442FC1E6E9A2A00A61B96 /* TeamTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135442FA1E6E9A2900A61B96 /* TeamTableViewCell.swift */; };
 		135442FD1E6E9A2A00A61B96 /* TeamTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 135442FB1E6E9A2A00A61B96 /* TeamTableViewCell.xib */; };
 		1357B4201E83A3DC0079E2CE /* CurrentTaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1357B41E1E83A3DC0079E2CE /* CurrentTaskTableViewCell.swift */; };
@@ -84,7 +75,6 @@
 		1359313A1DC9CA8C00D1AA27 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135931391DC9CA8C00D1AA27 /* SignUpViewController.swift */; };
 		135AE7DD1E712D3E003A6D36 /* TeamInviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135AE7DC1E712D3E003A6D36 /* TeamInviteViewController.swift */; };
 		135CE30E1E6585D0003C36AE /* QueueDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135CE30D1E6585D0003C36AE /* QueueDetailViewController.swift */; };
-		135D61511EE7EEDC00FE7B8D /* AlphaGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 135D61501EE7EEDC00FE7B8D /* AlphaGradientView.m */; };
 		135E296C1E6068D300C8FF0C /* TaskDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135E296B1E6068D300C8FF0C /* TaskDetailViewController.swift */; };
 		135ED47E1DD196CA002A9BF4 /* CommonMethodClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135ED47D1DD196CA002A9BF4 /* CommonMethodClass.swift */; };
 		135ED4801DD1C9ED002A9BF4 /* TeamListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135ED47F1DD1C9ED002A9BF4 /* TeamListViewController.swift */; };
@@ -206,10 +196,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1302AB701EF52AA8005FE8A5 /* KSToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KSToken.swift; sourceTree = "<group>"; };
-		1302AB711EF52AA8005FE8A5 /* KSTokenField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KSTokenField.swift; sourceTree = "<group>"; };
-		1302AB721EF52AA8005FE8A5 /* KSTokenView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KSTokenView.swift; sourceTree = "<group>"; };
-		1302AB731EF52AA8005FE8A5 /* KSUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KSUtils.swift; sourceTree = "<group>"; };
 		1303374F1EA20D9700A3E8FD /* BottomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomView.swift; sourceTree = "<group>"; };
 		130337511EA20E8100A3E8FD /* BottomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BottomView.xib; sourceTree = "<group>"; };
 		131261481EBDE19C0039F394 /* GroupDetailsInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupDetailsInfoViewController.swift; sourceTree = "<group>"; };
@@ -273,11 +259,6 @@
 		13521FDE1E86659B005CCCFB /* ProfileInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileInfoTableViewCell.swift; sourceTree = "<group>"; };
 		13521FDF1E86659B005CCCFB /* ProfileInfoTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileInfoTableViewCell.xib; sourceTree = "<group>"; };
 		13521FE21E86777B005CCCFB /* PlaceholderTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceholderTextView.swift; sourceTree = "<group>"; };
-		13521FF51E86B061005CCCFB /* ICBackspaceTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICBackspaceTextField.swift; sourceTree = "<group>"; };
-		13521FF61E86B061005CCCFB /* ICInsetLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICInsetLabel.swift; sourceTree = "<group>"; };
-		13521FF71E86B061005CCCFB /* ICToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICToken.swift; sourceTree = "<group>"; };
-		13521FF81E86B061005CCCFB /* ICTokenField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICTokenField.swift; sourceTree = "<group>"; };
-		13521FFD1E86B18F005CCCFB /* CustomizedTokenField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomizedTokenField.swift; sourceTree = "<group>"; };
 		135442FA1E6E9A2900A61B96 /* TeamTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamTableViewCell.swift; sourceTree = "<group>"; };
 		135442FB1E6E9A2A00A61B96 /* TeamTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TeamTableViewCell.xib; sourceTree = "<group>"; };
 		1357B41E1E83A3DC0079E2CE /* CurrentTaskTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentTaskTableViewCell.swift; sourceTree = "<group>"; };
@@ -289,8 +270,6 @@
 		135931391DC9CA8C00D1AA27 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		135AE7DC1E712D3E003A6D36 /* TeamInviteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamInviteViewController.swift; sourceTree = "<group>"; };
 		135CE30D1E6585D0003C36AE /* QueueDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueDetailViewController.swift; sourceTree = "<group>"; };
-		135D614F1EE7EEDC00FE7B8D /* AlphaGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlphaGradientView.h; sourceTree = "<group>"; };
-		135D61501EE7EEDC00FE7B8D /* AlphaGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlphaGradientView.m; sourceTree = "<group>"; };
 		135E296B1E6068D300C8FF0C /* TaskDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskDetailViewController.swift; sourceTree = "<group>"; };
 		135ED47D1DD196CA002A9BF4 /* CommonMethodClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonMethodClass.swift; sourceTree = "<group>"; };
 		135ED47F1DD1C9ED002A9BF4 /* TeamListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamListViewController.swift; sourceTree = "<group>"; };
@@ -499,26 +478,8 @@
 			children = (
 				13675B791EF7BAA5000A004F /* TITokenField.h */,
 				13675B7A1EF7BAA5000A004F /* TITokenField.m */,
-				1302AB701EF52AA8005FE8A5 /* KSToken.swift */,
-				1302AB711EF52AA8005FE8A5 /* KSTokenField.swift */,
-				1302AB721EF52AA8005FE8A5 /* KSTokenView.swift */,
-				1302AB731EF52AA8005FE8A5 /* KSUtils.swift */,
-				13521FF51E86B061005CCCFB /* ICBackspaceTextField.swift */,
-				13521FF61E86B061005CCCFB /* ICInsetLabel.swift */,
-				13521FF71E86B061005CCCFB /* ICToken.swift */,
-				13521FF81E86B061005CCCFB /* ICTokenField.swift */,
-				13521FFD1E86B18F005CCCFB /* CustomizedTokenField.swift */,
 			);
 			path = TokenField;
-			sourceTree = "<group>";
-		};
-		135D614E1EE7EEA200FE7B8D /* AlphaGradient */ = {
-			isa = PBXGroup;
-			children = (
-				135D614F1EE7EEDC00FE7B8D /* AlphaGradientView.h */,
-				135D61501EE7EEDC00FE7B8D /* AlphaGradientView.m */,
-			);
-			name = AlphaGradient;
 			sourceTree = "<group>";
 		};
 		135ED4BB1DD1FE27002A9BF4 /* AsiHttpRequest */ = {
@@ -701,7 +662,6 @@
 		C075D71B1C5E0E81009F9044 /* SocketChat */ = {
 			isa = PBXGroup;
 			children = (
-				135D614E1EE7EEA200FE7B8D /* AlphaGradient */,
 				13521FF41E86B061005CCCFB /* TokenField */,
 				1377F1DD1E768D1D0049D5D2 /* PopUp */,
 				134289971E729A4400346EA9 /* CustomSwitch */,
@@ -1025,12 +985,10 @@
 				C075D7671C5E17DD009F9044 /* SocketParsable.swift in Sources */,
 				13C42B0F1EADDF9D00CCB72B /* Banner.swift in Sources */,
 				136558171DFA818300B32386 /* Regex.swift in Sources */,
-				13521FFC1E86B061005CCCFB /* ICTokenField.swift in Sources */,
 				13EA738C1EB8C9230054B218 /* teamUserTableViewCell.swift in Sources */,
 				13490A7A1E41C38000B46EE5 /* EditCommentView.swift in Sources */,
 				1341D4871EC19DE200738FBE /* FilesTableViewCell.swift in Sources */,
 				13906CCD1E3B143600792C05 /* PhotoViewController.swift in Sources */,
-				13521FFE1E86B18F005CCCFB /* CustomizedTokenField.swift in Sources */,
 				C075D75A1C5E17DD009F9044 /* SocketEngine.swift in Sources */,
 				C075D75E1C5E17DD009F9044 /* SocketEngineSpec.swift in Sources */,
 				1369A4981E7AB06F00CE3202 /* BucketDetailViewController.swift in Sources */,
@@ -1046,11 +1004,9 @@
 				135ED4E91DD1FE27002A9BF4 /* NSString+SBJSON.m in Sources */,
 				13A9F9301DC1D96100E71942 /* SocketExtensions.swift in Sources */,
 				1350CEB21E65620E006E9763 /* GroupTableViewCell.swift in Sources */,
-				13521FFA1E86B061005CCCFB /* ICInsetLabel.swift in Sources */,
 				1357B4271E83D0820079E2CE /* GroupTaskDetailViewController.swift in Sources */,
 				13D4B73E1E9381CB007115FA /* CreateTeamCodeViewController.swift in Sources */,
 				1342899E1E729A9F00346EA9 /* TTSwitch.m in Sources */,
-				135D61511EE7EEDC00FE7B8D /* AlphaGradientView.m in Sources */,
 				13A9F92A1DC1D59700E71942 /* SocketIOClientSpec.swift in Sources */,
 				135ED4E01DD1FE27002A9BF4 /* ASIAuthenticationDialog.m in Sources */,
 				C075D7611C5E17DD009F9044 /* SocketFixUTF8.swift in Sources */,
@@ -1072,7 +1028,6 @@
 				134AAEEA1E68279000CA7991 /* SWRevealViewController.m in Sources */,
 				13A9F92C1DC1D6B100E71942 /* SSLSecurity.swift in Sources */,
 				134AAECE1E67F0B700CA7991 /* WelcomeViewController.swift in Sources */,
-				1302AB741EF52AA8005FE8A5 /* KSToken.swift in Sources */,
 				135ED4EA1DD1FE27002A9BF4 /* SBJSON.m in Sources */,
 				1377F1E31E768D1D0049D5D2 /* UIViewController+ENPopUp.m in Sources */,
 				137343981E5ECF1B00818530 /* CardView.m in Sources */,
@@ -1082,14 +1037,12 @@
 				138B12CB1E94B9CF007984A1 /* CheckInView.swift in Sources */,
 				C075D7601C5E17DD009F9044 /* SocketEventHandler.swift in Sources */,
 				1341D4841EC18CE200738FBE /* FilesViewController.swift in Sources */,
-				1302AB771EF52AA8005FE8A5 /* KSUtils.swift in Sources */,
 				1375616E1E89101200C7C78A /* OneToOneChatViewController.swift in Sources */,
 				C075D7631C5E17DD009F9044 /* SocketIOClientOption.swift in Sources */,
 				1342B1261E018A4500AC2080 /* CmtCell.swift in Sources */,
 				135E296C1E6068D300C8FF0C /* TaskDetailViewController.swift in Sources */,
 				1359313A1DC9CA8C00D1AA27 /* SignUpViewController.swift in Sources */,
 				1380531E1DCDF0190023F37F /* AlertClass.swift in Sources */,
-				1302AB761EF52AA8005FE8A5 /* KSTokenView.swift in Sources */,
 				134FA4621E64676B00647B3D /* QueueTableViewCell.swift in Sources */,
 				135ED47E1DD196CA002A9BF4 /* CommonMethodClass.swift in Sources */,
 				134289961E72800000346EA9 /* CreateGroupViewController.swift in Sources */,
@@ -1111,7 +1064,6 @@
 				136558111DFA804600B32386 /* SwiftLinkPreview.swift in Sources */,
 				134FA4591E6432D900647B3D /* TaskListViewController.swift in Sources */,
 				134AAEEC1E682C5600CA7991 /* MenuTableViewController.swift in Sources */,
-				13521FF91E86B061005CCCFB /* ICBackspaceTextField.swift in Sources */,
 				134FA45D1E643E9E00647B3D /* HMSegmentedControl.m in Sources */,
 				C075D7641C5E17DD009F9044 /* SocketIOClientStatus.swift in Sources */,
 				C075D75D1C5E17DD009F9044 /* SocketEnginePollable.swift in Sources */,
@@ -1119,7 +1071,6 @@
 				137561661E88E9CC00C7C78A /* MessageViewController.swift in Sources */,
 				13A9F92E1DC1D6F200E71942 /* SocketIOClientConfiguration.swift in Sources */,
 				13D4B7401E93E1A1007115FA /* CreateTeamPasswordViewController.swift in Sources */,
-				1302AB751EF52AA8005FE8A5 /* KSTokenField.swift in Sources */,
 				13853F3B1E696B0C005ECC08 /* MenuTableViewCell.swift in Sources */,
 				13675B7B1EF7BAA5000A004F /* TITokenField.m in Sources */,
 				C075D7621C5E17DD009F9044 /* SocketIOClient.swift in Sources */,
@@ -1138,7 +1089,6 @@
 				C075D7691C5E17DD009F9044 /* SocketTypes.swift in Sources */,
 				13431A4A1DC9F3A80016C024 /* Common.swift in Sources */,
 				137D6E771DE2DF1D00ECD546 /* SymmetricCryptor.swift in Sources */,
-				13521FFB1E86B061005CCCFB /* ICToken.swift in Sources */,
 				C075D7651C5E17DD009F9044 /* SocketLogger.swift in Sources */,
 				C075D71D1C5E0E81009F9044 /* AppDelegate.swift in Sources */,
 				1364EA841ECC4A770081A235 /* GroupUserTableViewCell.swift in Sources */,

@@ -438,26 +438,26 @@ class CommonMethodClass: NSObject
         return email
     }
     
-    func saveprofileimg(profileImg : NSString)
-    {
-        let encodedObject = NSKeyedArchiver.archivedData(withRootObject: profileImg)
-        UserDefaults.standard.setValue(encodedObject, forKey: "Profile_Pic")
-        UserDefaults.standard.synchronize()
-    }
-    
-    func retrieveprofileimg() -> NSString
-    {
-        if AlreadyExist(Key: "Profile_Pic")
-        {
-            let decodedObject = UserDefaults.standard.value(forKey: "Profile_Pic") as! Data
-            let profileImg = NSKeyedUnarchiver.unarchiveObject(with: decodedObject) as! NSString
-            return profileImg
-        }
-        else
-        {
-            return ""
-        }
-    }
+//    func saveprofileimg(profileImg : NSString)
+//    {
+//        let encodedObject = NSKeyedArchiver.archivedData(withRootObject: profileImg)
+//        UserDefaults.standard.setValue(encodedObject, forKey: "Profile_Pic")
+//        UserDefaults.standard.synchronize()
+//    }
+//    
+//    func retrieveprofileimg() -> NSString
+//    {
+//        if AlreadyExist(Key: "Profile_Pic")
+//        {
+//            let decodedObject = UserDefaults.standard.value(forKey: "Profile_Pic") as! Data
+//            let profileImg = NSKeyedUnarchiver.unarchiveObject(with: decodedObject) as! NSString
+//            return profileImg
+//        }
+//        else
+//        {
+//            return ""
+//        }
+//    }
     
     func retrieveUsernameToken() -> NSString
     {

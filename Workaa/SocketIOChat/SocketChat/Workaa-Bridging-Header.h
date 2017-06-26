@@ -17,5 +17,4 @@
 #import "SWRevealViewController.h"
 #import "TTFadeSwitch.h"
 #import "UIViewController+ENPopUp.h"
-#import "AlphaGradientView.h"
 #import "TITokenField.h"

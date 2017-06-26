@@ -29,8 +29,8 @@ class SignInViewController: UIViewController, UITextFieldDelegate, ConnectionPro
         
         connectionClass.delegate = self
         
-//        emailtxtField.text = "ramesh@instellartech.com";
-//        pwdtxtField.text = "password";
+        emailtxtField.text = "ramesh@instellartech.com";
+        pwdtxtField.text = "password";
         
         if(IS_IPHONE_6)
         {
@@ -117,7 +117,8 @@ class SignInViewController: UIViewController, UITextFieldDelegate, ConnectionPro
 
             if let userdatareponse = datareponse.value(forKey: "userData") as? NSDictionary
             {
-                commonmethodClass.saveprofileimg(profileImg: userdatareponse.value(forKey: "profilePic") as! NSString)
+                appDelegate.profilePicString = String(format: "%@", userdatareponse.value(forKey: "profilePic") as! CVarArg)
+                appDelegate.locationString = String(format: "%@", userdatareponse.value(forKey: "location") as! CVarArg)
             }
             if let teamInfo = datareponse.value(forKey: "teamInfo") as? NSDictionary
             {
@@ -129,7 +130,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate, ConnectionPro
             SocketIOManager.sharedInstance.VerifySocket() { (messageInfo) -> Void in
                 print("Send messageInfo =>\(messageInfo)")
             }
-                        
+            
             let homedetailObj = self.storyboard?.instantiateViewController(withIdentifier: "HomeDetailViewID") as? HomeDetailViewController
             self.navigationController?.pushViewController(homedetailObj!, animated: true)
         }

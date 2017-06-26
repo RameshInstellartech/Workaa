@@ -119,6 +119,8 @@ class CafeViewController: UIViewController, ConnectionProtocol, UITableViewDeleg
     
     func startanimating()
     {
+        self.stopanimating()
+        
         myActivityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
         myActivityIndicator.center = CGPoint(x:view.center.x, y:view.center.y-64.0)
         myActivityIndicator.hidesWhenStopped = true

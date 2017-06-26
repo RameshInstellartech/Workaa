@@ -36,6 +36,7 @@ class SocketIOManager: NSObject
     
     func SocketConnected()
     {
+        print("SocketConnected")
         if !commonmethodClass.retrieveteamid().isEqual(to: "")
         {
             self.VerifySocket() { (messageInfo) -> Void in
@@ -565,14 +566,15 @@ class SocketIOManager: NSObject
         }
     }
     
-    func VerifySocket(completionHandler: @escaping (_ messageInfo: [String: AnyObject]) -> Void)
+    func VerifySocket(completionHandler: @escaping (_ messageInfo: NSDictionary) -> Void)
     {
         let verifydictionary = ["token": commonmethodClass.retrieveUsernameToken()] as [String : Any]
         print("verifydictionary =>\(verifydictionary)");
         
         socket.emitWithAck("VerifySocket", verifydictionary)(0) {data in
             print("got ack =>\(data)")
-            let messageDictionary = [String: AnyObject]()
+            var messageDictionary : NSDictionary!
+            messageDictionary = data[0] as! NSDictionary
             completionHandler(messageDictionary)
         }
     }

@@ -73,30 +73,7 @@ class BottomView: UIView
                 return
             }
             
-            var isView : Bool!
-            isView = false
-            
-            var viewcontroller = UIViewController()
-            
-            for aviewcontroller : UIViewController in navigation().viewControllers
-            {
-                if aviewcontroller is HomeDetailViewController
-                {
-                    viewcontroller = aviewcontroller
-                    isView = true
-                    break
-                }
-            }
-            
-            if isView==true
-            {
-                navigation().popToViewController(viewcontroller, animated: false)
-            }
-            else
-            {
-                let homedetailObj = storyboard.instantiateViewController(withIdentifier: "HomeDetailViewID") as? HomeDetailViewController
-                navigation().pushViewController(homedetailObj!, animated: false)
-            }
+            appDelegate.gotoWall()
         }
         else if sender.tag == 2
         {
@@ -105,30 +82,7 @@ class BottomView: UIView
                 return
             }
             
-            var isView : Bool!
-            isView = false
-            
-            var viewcontroller = UIViewController()
-            
-            for aviewcontroller : UIViewController in navigation().viewControllers
-            {
-                if aviewcontroller is TaskListViewController
-                {
-                    viewcontroller = aviewcontroller
-                    isView = true
-                    break
-                }
-            }
-            
-            if isView==true
-            {
-                navigation().popToViewController(viewcontroller, animated: false)
-            }
-            else
-            {
-                let tasklistObj = storyboard.instantiateViewController(withIdentifier: "TaskListViewID") as? TaskListViewController
-                navigation().pushViewController(tasklistObj!, animated: false)
-            }
+            appDelegate.gotoTaskList()
         }
         else if sender.tag == 3
         {
@@ -142,30 +96,7 @@ class BottomView: UIView
                 return
             }
             
-            var isView : Bool!
-            isView = false
-            
-            var viewcontroller = UIViewController()
-            
-            for aviewcontroller : UIViewController in navigation().viewControllers
-            {
-                if aviewcontroller is MessageViewController
-                {
-                    viewcontroller = aviewcontroller
-                    isView = true
-                    break
-                }
-            }
-            
-            if isView==true
-            {
-                navigation().popToViewController(viewcontroller, animated: false)
-            }
-            else
-            {
-                let msgObj = storyboard.instantiateViewController(withIdentifier: "MessageViewID") as? MessageViewController
-                navigation().pushViewController(msgObj!, animated: false)
-            }
+            appDelegate.gotoMessenger()
         }
         else if sender.tag == 5
         {

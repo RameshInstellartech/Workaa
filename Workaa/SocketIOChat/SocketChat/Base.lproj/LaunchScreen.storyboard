@@ -1,27 +1,53 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8150" systemVersion="15A204g" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="iMY-iN-scu">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8122"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
-        <scene sceneID="EHf-IW-A2E">
+        <scene sceneID="ZzI-62-aRe">
             <objects>
-                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                <viewController id="iMY-iN-scu" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Llm-lL-Icb"/>
-                        <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
+                        <viewControllerLayoutGuide type="top" id="goF-wn-ERA"/>
+                        <viewControllerLayoutGuide type="bottom" id="R4r-xa-VX9"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <view key="view" contentMode="scaleToFill" id="KQv-0a-rfN">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="oeU-t6-86h">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VAz-MC-Xjx">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.8027212668" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="VAz-MC-Xjx" firstAttribute="leading" secondItem="KQv-0a-rfN" secondAttribute="leading" id="4bZ-9P-F9U"/>
+                            <constraint firstAttribute="trailing" secondItem="VAz-MC-Xjx" secondAttribute="trailing" id="Fx5-pr-dKS"/>
+                            <constraint firstItem="oeU-t6-86h" firstAttribute="leading" secondItem="KQv-0a-rfN" secondAttribute="leading" id="LCu-Cx-1xa"/>
+                            <constraint firstItem="oeU-t6-86h" firstAttribute="top" secondItem="KQv-0a-rfN" secondAttribute="top" id="Ol5-X8-5kH"/>
+                            <constraint firstAttribute="trailing" secondItem="oeU-t6-86h" secondAttribute="trailing" id="aeg-7i-27z"/>
+                            <constraint firstItem="R4r-xa-VX9" firstAttribute="top" secondItem="VAz-MC-Xjx" secondAttribute="bottom" id="iv2-3G-UCs"/>
+                            <constraint firstItem="R4r-xa-VX9" firstAttribute="top" secondItem="oeU-t6-86h" secondAttribute="bottom" id="nv7-1y-0Ro"/>
+                            <constraint firstItem="VAz-MC-Xjx" firstAttribute="top" secondItem="KQv-0a-rfN" secondAttribute="top" id="qoq-T9-iab"/>
+                        </constraints>
                     </view>
+                    <nil key="simulatedTopBarMetrics"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZD6-Lr-HUV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="11484" y="618"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="splash.jpg" width="1080" height="1920"/>
+    </resources>
 </document>

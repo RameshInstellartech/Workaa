@@ -11,6 +11,21 @@ import CoreData
 import Photos
 import AVKit
 
+class GradientView: UIView {
+    override open class var layerClass: AnyClass {
+        return CAGradientLayer.classForCoder()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        let gradientLayer = self.layer as! CAGradientLayer
+        gradientLayer.colors = [
+            UIColor.white.cgColor,
+            UIColor.init(colorLiteralRed: 1, green: 1, blue: 1, alpha: 0).cgColor
+        ]
+    }
+}
+
 class PhotoViewController: UIViewController, UIScrollViewDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, UIDocumentInteractionControllerDelegate
 {
     var topView: UIView!
@@ -45,8 +60,6 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate, UITextViewDel
     var filetitlelbl : UILabel!
     var dictionary = NSDictionary()
     let commentbutton = UIButton()
-    var topgradient = AlphaGradientView()
-    var bottomgradient = AlphaGradientView()
 
     override func viewDidLoad()
     {
@@ -69,22 +82,17 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate, UITextViewDel
         imageView.isUserInteractionEnabled = true
         self.zoomeableScrollView.addSubview(imageView)
         self.theImageView = imageView
-        
-//        topgradient = AlphaGradientView(frame: CGRect(x: CGFloat(0.0), y: CGFloat(0.0), width: CGFloat(screenWidth), height: CGFloat(70.0)))
-//        topgradient.direction = GRADIENT_UP
-//        topgradient.color = UIColor(white: 0.0, alpha: 0.3)
-//        self.view.addSubview(topgradient)
-        
+                
         topView = UIView()
-        topView.frame = CGRect(x: CGFloat(0.0), y: CGFloat(20.0), width: CGFloat(screenWidth), height: CGFloat(44.0))
+        topView.frame = CGRect(x: CGFloat(0.0), y: CGFloat(0.0), width: CGFloat(screenWidth), height: CGFloat(100.0))
         topView.backgroundColor = UIColor.clear
         topView.isHidden = true
         self.view.addSubview(topView)
         
-//        let gradient:CAGradientLayer = CAGradientLayer()
-//        gradient.frame.size = topView.frame.size
-//        gradient.colors = [UIColor.white.cgColor,UIColor.white.withAlphaComponent(0).cgColor]
-//        topView.layer.addSublayer(gradient)
+        let topgradientLayer = CAGradientLayer()
+        topgradientLayer.frame = CGRect(x: CGFloat(0.0), y: CGFloat(0.0), width: CGFloat(topView.frame.size.width), height: CGFloat(topView.frame.size.height))
+        topgradientLayer.colors = [UIColor.black.withAlphaComponent(0.6).cgColor, UIColor.clear.cgColor]
+        topView.layer.addSublayer(topgradientLayer)
         
         let closebutton = UIButton()
         closebutton.addTarget(self, action: #selector(self.onBackgroundTap), for: .touchUpInside)
@@ -92,11 +100,11 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate, UITextViewDel
         closebutton.setTitle(closeIcon, for: .normal)
         closebutton.setTitleColor(UIColor.white, for: .normal)
         closebutton.titleLabel?.font = UIFont(name: Workaa_Font, size: 25.0)
-        closebutton.frame = CGRect(x: CGFloat(UIScreen.main.bounds.size.width - 44.0), y: CGFloat(0.0), width: CGFloat(44.0), height: CGFloat(44.0))
+        closebutton.frame = CGRect(x: CGFloat(UIScreen.main.bounds.size.width - 44.0), y: CGFloat(20.0), width: CGFloat(44.0), height: CGFloat(44.0))
         topView.addSubview(closebutton)
         
         grouplogo = AsyncImageView()
-        grouplogo.frame = CGRect(x: CGFloat(10.0), y: CGFloat(5.0), width: CGFloat(34.0), height: CGFloat(34.0))
+        grouplogo.frame = CGRect(x: CGFloat(10.0), y: CGFloat(25.0), width: CGFloat(34.0), height: CGFloat(34.0))
         grouplogo.layer.cornerRadius = grouplogo.frame.size.height / 2.0
         grouplogo.layer.masksToBounds = true
         grouplogo.backgroundColor = UIColor.clear
@@ -107,7 +115,7 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate, UITextViewDel
         topView.addSubview(grouplogo)
         
         usernamelbl = UILabel()
-        usernamelbl.frame = CGRect(x: CGFloat(grouplogo.frame.maxX+10.0), y: CGFloat(0.0), width: CGFloat((closebutton.frame.origin.x-(grouplogo.frame.maxX+10.0))), height: CGFloat(22.0))
+        usernamelbl.frame = CGRect(x: CGFloat(grouplogo.frame.maxX+10.0), y: CGFloat(20.0), width: CGFloat((closebutton.frame.origin.x-(grouplogo.frame.maxX+10.0))), height: CGFloat(22.0))
         usernamelbl.font = UIFont(name: LatoBold, size: CGFloat(15.0))
         usernamelbl.backgroundColor = UIColor.clear
         usernamelbl.textColor = UIColor.white
@@ -115,7 +123,7 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate, UITextViewDel
         topView.addSubview(usernamelbl)
         
         filetitlelbl = UILabel()
-        filetitlelbl.frame = CGRect(x: CGFloat(grouplogo.frame.maxX+10.0), y: CGFloat(22.0), width: CGFloat((closebutton.frame.origin.x-(grouplogo.frame.maxX+10.0))), height: CGFloat(22.0))
+        filetitlelbl.frame = CGRect(x: CGFloat(grouplogo.frame.maxX+10.0), y: CGFloat(42.0), width: CGFloat((closebutton.frame.origin.x-(grouplogo.frame.maxX+10.0))), height: CGFloat(22.0))
         filetitlelbl.font = UIFont(name: LatoBold, size: CGFloat(15.0))
         filetitlelbl.backgroundColor = UIColor.clear
         filetitlelbl.textColor = UIColor.white
@@ -123,18 +131,22 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate, UITextViewDel
         topView.addSubview(filetitlelbl)
         
         bottomView = UIView()
-        bottomView.frame = CGRect(x: CGFloat(0.0), y: CGFloat(UIScreen.main.bounds.size.height - 44.0), width: CGFloat(UIScreen.main.bounds.size.width), height: CGFloat(44.0))
+        bottomView.frame = CGRect(x: CGFloat(0.0), y: CGFloat(UIScreen.main.bounds.size.height - 100.0), width: CGFloat(UIScreen.main.bounds.size.width), height: CGFloat(100.0))
         bottomView.backgroundColor = UIColor.clear
         bottomView.isHidden = true
         self.view.addSubview(bottomView)
         
-//        let commentbutton = UIButton()
+        let bottomgradientLayer = CAGradientLayer()
+        bottomgradientLayer.frame = CGRect(x: CGFloat(0.0), y: CGFloat(0.0), width: CGFloat(bottomView.frame.size.width), height: CGFloat(bottomView.frame.size.height))
+        bottomgradientLayer.colors = [UIColor.clear.cgColor, UIColor.black.withAlphaComponent(0.6).cgColor]
+        bottomView.layer.addSublayer(bottomgradientLayer)
+        
         commentbutton.addTarget(self, action: #selector(self.commentAction), for: .touchUpInside)
         commentbutton.backgroundColor = UIColor.clear
         commentbutton.setTitle(cmtIcon, for: .normal)
         commentbutton.setTitleColor(UIColor.white, for: .normal)
         commentbutton.titleLabel?.font = UIFont(name: Workaa_Font, size: 25.0)
-        commentbutton.frame = CGRect(x: CGFloat(UIScreen.main.bounds.size.width - 44.0), y: CGFloat(0.0), width: CGFloat(44.0), height: CGFloat(44.0))
+        commentbutton.frame = CGRect(x: CGFloat(UIScreen.main.bounds.size.width - 44.0), y: CGFloat(bottomView.frame.size.height-44.0), width: CGFloat(44.0), height: CGFloat(44.0))
         bottomView.addSubview(commentbutton)
         
         let doubleTap = UITapGestureRecognizer(target: self, action: #selector(self.handleDoubleTap))

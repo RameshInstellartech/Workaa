@@ -116,13 +116,28 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
     override func viewDidLoad()
     {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
         
         loadcount = 30
         laststring = "0"
         
-        self.title = String(format: "%@", groupdictionary.value(forKey: "name") as! CVarArg)
+        let containView = UIView()
+        containView.frame = CGRect(x: 0.0, y: 0.0, width: 35.0, height: 35.0)
+        let groupimagestring = String(format: "%@%@",kfilePath, (groupdictionary["logo"] as? String)!)
+        let groupImage = AsyncImageView()
+        groupImage.frame = CGRect(x: CGFloat(0.0), y: CGFloat(0.0), width: CGFloat(containView.frame.size.width), height: CGFloat(containView.frame.size.height))
+        groupImage.layer.cornerRadius = groupImage.frame.size.height / 2.0
+        groupImage.layer.masksToBounds = true
+        groupImage.backgroundColor = UIColor.clear
+        groupImage.imageURL = URL(string: groupimagestring)
+        groupImage.contentMode = .scaleAspectFill
+        groupImage.clipsToBounds = true
+        containView.addSubview(groupImage)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: containView)
+        
+        let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.loadGroupDetails))
+        tapGesture.numberOfTapsRequired = 1
+        containView.addGestureRecognizer(tapGesture)
         
         print("teamdictionary =>\(teamdictionary)")
         print("groupdictionary =>\(groupdictionary)")
@@ -174,6 +189,8 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
     {
         super.viewWillAppear(animated)
         
+        self.title = String(format: "%@", groupdictionary.value(forKey: "name") as! CVarArg)
+        
         self.navigationController?.navigationBar.isHidden = false
         
         navigationController?.navigationBar.barTintColor = greenColor
@@ -181,8 +198,19 @@ class GroupViewController: UIViewController, ConnectionProtocol, UITableViewDele
     
     // MARK: - Viewcontroller Methods
     
+    func loadGroupDetails()
+    {
+        self.title = ""
+        
+        let groupdetailsViewObj = self.storyboard?.instantiateViewController(withIdentifier: "GroupDetailsInfoViewID") as? GroupDetailsInfoViewController
+        groupdetailsViewObj?.groupid = String(format: "%@", groupdictionary.value(forKey: "id") as! CVarArg)
+        self.navigationController?.pushViewController(groupdetailsViewObj!, animated: true)
+    }
+    
     func startanimating()
     {
+        self.stopanimating()
+        
         myActivityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
         myActivityIndicator.center = CGPoint(x:view.center.x, y:view.center.y-64.0)
         myActivityIndicator.hidesWhenStopped = true

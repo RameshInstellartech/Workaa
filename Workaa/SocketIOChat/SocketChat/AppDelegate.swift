@@ -23,6 +23,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
     var locationManager = CLLocationManager()
     var latitudeString = String()
     var longitudeString = String()
+    var addressString = String()
+    var locationString = String()
+    var profilePicString = String()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool
     {        
@@ -126,16 +129,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
         {
             let userLocation:CLLocation = locations[0] as CLLocation
             
-            // manager.stopUpdatingLocation()
-            
             latitudeString = String(format: "%.6f", userLocation.coordinate.latitude)
             longitudeString = String(format: "%.6f", userLocation.coordinate.longitude)
+            
+            CLGeocoder().reverseGeocodeLocation(userLocation) { (placemarks, error) in
+                
+                if error != nil
+                {
+                    print(error ?? "Unknown Error")
+                }
+                else
+                {
+                    if let placemark = placemarks?[0]
+                    {
+                        let addressdictionary = placemark.addressDictionary! as NSDictionary
+                        if addressdictionary.count > 0
+                        {
+                            let addressarray = addressdictionary.value(forKey: "FormattedAddressLines") as! NSArray
+                            if addressarray.count > 0
+                            {
+                                self.addressString = String(format: "%@", addressarray.componentsJoined(by: ", "))
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error)
     {
-        print("Error \(error)")
+        //print("Error \(error)")
     }
     
     func getAppLabel()
@@ -245,6 +269,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
             if let groupUnread = datareponse.value(forKey: "groupUnreadCount") as? NSInteger
             {
                 groupunreadcount = groupUnread
+            }
+            if let userInfo = datareponse.value(forKey: "userInfo") as? NSDictionary
+            {
+                let adminstring = String(format: "%@", userInfo.value(forKey: "admin") as! CVarArg)
+                self.commonmethodClass.saveteamadmin(admin: adminstring)
+                
+                if let profilestring = userInfo.value(forKey: "profilePic") as? String
+                {
+                    profilePicString = profilestring
+                }
+                if let locstring = userInfo.value(forKey: "location") as? String
+                {
+                    locationString = locstring
+                }
             }
         }
     }
@@ -420,10 +458,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
                             self.commonmethodClass.delayWithSeconds(0.0, completion: {
                                 if(!self.commonmethodClass.getGroupChatVisibleViewcontroller())
                                 {
-                                    let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-                                    let groupViewObj = storyBoard.instantiateViewController(withIdentifier: "GroupViewID") as? GroupViewController
-                                    groupViewObj?.groupdictionary = groupdictionary
-                                    navigation().pushViewController(groupViewObj!, animated: false)
+//                                    if appstate != .active
+//                                    {
+                                        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                                        let groupViewObj = storyBoard.instantiateViewController(withIdentifier: "GroupViewID") as? GroupViewController
+                                        groupViewObj?.groupdictionary = groupdictionary
+                                        navigation().pushViewController(groupViewObj!, animated: false)
+                                    //}
                                 }
                             })
                         }
@@ -510,39 +551,64 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
                             UIApplication.shared.scheduleLocalNotification(notification)
                         }
                     }
-                    else if key == "groupUserRemoveAdmin"
-                    {
-                        self.showAlert(message: key, key: key)
-                    }
-                    else if key == "groupUserMarkAdmin"
-                    {
-                        self.showAlert(message: key, key: key)
-                    }
-                    else if key == "teamUserMarkAdmin"
-                    {
-                        self.showAlert(message: key, key: key)
-                    }
-                    else if key == "teamUserRemoveAdmin"
-                    {
-                        self.showAlert(message: key, key: key)
-                    }
-                    else if key == "groupCreate"
-                    {
-                        self.showAlert(message: key, key: key)
-                    }
-                    else if key == "queueAdd"
-                    {
-                        self.showAlert(message: key, key: key)
-                    }
-                    else if key == "groupInvite"
-                    {
-                        self.showAlert(message: key, key: key)
-                    }
                     else
                     {
                         if key != "userStatus"
                         {
-                            self.showAlert(message: key, key: key)
+                            if let dataresponse = messageInfo.value(forKey: "data") as? NSDictionary
+                            {
+                                var message = String()
+                                if key == "taskAdd" || key == "myTaskAdd"
+                                {
+                                    message = String(format: "%@ %@ added a new task : %@ for %@", dataresponse.value(forKey: "firstName") as! CVarArg, dataresponse.value(forKey: "lastName") as! CVarArg, dataresponse.value(forKey: "taskTitle") as! CVarArg, dataresponse.value(forKey: "groupName") as! CVarArg)
+                                }
+                                else if key == "queueAdd"
+                                {
+                                    message = String(format: "%@ %@ added a new queue : %@ for %@", dataresponse.value(forKey: "firstName") as! CVarArg, dataresponse.value(forKey: "lastName") as! CVarArg, dataresponse.value(forKey: "queueTitle") as! CVarArg, dataresponse.value(forKey: "groupName") as! CVarArg)
+                                }
+                                else if key == "userProfileData"
+                                {
+                                    if let locstring = dataresponse.value(forKey: "location") as? String
+                                    {
+                                        self.locationString = locstring
+                                    }
+                                }
+                                else if key == "profilePic"
+                                {
+                                    if let profilestring = dataresponse.value(forKey: "profilePic") as? String
+                                    {
+                                        self.profilePicString = profilestring
+                                    }
+                                }
+                                else if key == "queueEdit" || key == "queueRemove"
+                                {
+                                    if let objView = navigation().visibleViewController as? HomeDetailViewController
+                                    {
+                                        objView.getQueueList()
+                                        objView.getMyBucketList()
+                                    }
+                                    if let objView = navigation().visibleViewController as? TaskListViewController
+                                    {
+                                        objView.getQueueList()
+                                    }
+                                }
+                                else if key == "queueReject"
+                                {
+                                    message = String(format: "%@ %@ reject a queue", dataresponse.value(forKey: "firstName") as! CVarArg, dataresponse.value(forKey: "lastName") as! CVarArg)
+                                }
+                                else if key == "ownTaskDone"
+                                {
+                                    message = String(format: "%@ %@ done a task : %@ in %@", dataresponse.value(forKey: "firstName") as! CVarArg, dataresponse.value(forKey: "lastName") as! CVarArg, dataresponse.value(forKey: "taskTitle") as! CVarArg, dataresponse.value(forKey: "groupName") as! CVarArg)
+                                }
+                                else
+                                {
+                                    message = key
+                                }
+                                if key != "userProfileData" && key != "profilePic" && key != "queueEdit" && key != "queueRemove"
+                                {
+                                    self.showAlert(message: message, key: key, datareponse: dataresponse)
+                                }
+                            }
                         }
                     }
                 }
@@ -550,95 +616,303 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
         }
     }
     
-    func showAlert(message : String, key : String)
+    func showAlert(message : String, key : String, datareponse : NSDictionary)
     {
         // Display message alert body in a alert dialog window
         let alertController = UIAlertController(title: "", message: message, preferredStyle: .alert)
         
         let okAction = UIAlertAction(title: "Ok", style: .default) { (action:UIAlertAction!) in
             print("Ok button tapped");
-            if key == "groupUserRemoveAdmin"
+            if key == "teamUserAdd" || key == "teamUserRemove"
             {
-                if let objView = navigation().visibleViewController as? GroupListController
+                var useridstring = String()
+                if key == "teamUserAdd"
                 {
-                    objView.refreshObj()
-                }
-            }
-            else if key == "groupUserMarkAdmin"
-            {
-                if let objView = navigation().visibleViewController as? GroupListController
-                {
-                    objView.refreshObj()
-                }
-            }
-            else if key == "teamUserMarkAdmin"
-            {
-                self.commonmethodClass.saveteamadmin(admin: "1")
-                
-                if let objView = navigation().visibleViewController as? HomeDetailViewController
-                {
-                    objView.getQueueList()
-                    objView.getMyBucketList()
-                }
-                if let objView = navigation().visibleViewController as? TaskListViewController
-                {
-                    objView.getQueueList()
-                    objView.getMyBucketList()
-                    objView.getGroupList()
-                }
-                if let objView = navigation().visibleViewController as? GroupListController
-                {
-                    objView.refreshObj()
-                }
-            }
-            else if key == "teamUserRemoveAdmin"
-            {
-                self.commonmethodClass.saveteamadmin(admin: "0")
-                
-                if let objView = navigation().visibleViewController as? HomeDetailViewController
-                {
-                    objView.getQueueList()
-                    objView.getMyBucketList()
-                }
-                if let objView = navigation().visibleViewController as? TaskListViewController
-                {
-                    objView.getQueueList()
-                    objView.getMyBucketList()
-                    objView.getGroupList()
-                }
-                if let objView = navigation().visibleViewController as? GroupListController
-                {
-                    objView.refreshObj()
-                }
-            }
-            else if key == "groupCreate"
-            {
-                if let objView = navigation().visibleViewController as? GroupListController
-                {
-                    objView.refreshObj()
+                    useridstring = String(format: "%@", datareponse.value(forKey: "addUserId") as! CVarArg)
                 }
                 else
                 {
-                    
+                    useridstring = String(format: "%@", datareponse.value(forKey: "removeUserId") as! CVarArg)
+                }
+                
+                if useridstring==self.commonmethodClass.retrieveuserid() as String
+                {
+                    self.gotoHome()
+                }
+                else
+                {
+                    if let objView = navigation().visibleViewController as? MessageViewController
+                    {
+                        objView.segmentedControl.setSelectedSegmentIndex(0, animated: true)
+                        objView.getUserList()
+                    }
+                    else
+                    {
+                        self.gotoMessenger()
+                    }
                 }
             }
-            else if key == "queueAdd"
+            else if key == "teamUserMarkAdmin" || key == "teamUserRemoveAdmin"
             {
-                //self.gotoHome()
+                var useridstring = String()
+                if key == "teamUserMarkAdmin"
+                {
+                    useridstring = String(format: "%@", datareponse.value(forKey: "addUserId") as! CVarArg)
+                }
+                else
+                {
+                    useridstring = String(format: "%@", datareponse.value(forKey: "removeUserId") as! CVarArg)
+                }
+                if useridstring==self.commonmethodClass.retrieveuserid() as String
+                {
+                    if key == "teamUserMarkAdmin"
+                    {
+                        self.commonmethodClass.saveteamadmin(admin: "1")
+                    }
+                    else
+                    {
+                        self.commonmethodClass.saveteamadmin(admin: "0")
+                    }
+                    
+                    if let objView = navigation().visibleViewController as? HomeDetailViewController
+                    {
+                        objView.getQueueList()
+                        objView.getMyBucketList()
+                    }
+                    if let objView = navigation().visibleViewController as? TaskListViewController
+                    {
+                        objView.getQueueList()
+                        objView.getMyBucketList()
+                        objView.getGroupList()
+                    }
+                    if let objView = navigation().visibleViewController as? GroupListController
+                    {
+                        objView.refreshObj()
+                    }
+                    if let objView = navigation().visibleViewController as? QueueDetailViewController
+                    {
+                        objView.dismissView()
+                    }
+                }
             }
-            else if key == "groupInvite"
+            else if key == "groupCreate" || key == "groupInvite"
+            {
+                if let objView = navigation().visibleViewController as? GroupDetailsInfoViewController
+                {
+                    objView.groupid = String(format: "%@", datareponse.value(forKey: "groupId") as! CVarArg)
+                    objView.getGroupInfo()
+                }
+                else
+                {
+                    let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                    let groupdetailsViewObj = storyBoard.instantiateViewController(withIdentifier: "GroupDetailsInfoViewID") as? GroupDetailsInfoViewController
+                    groupdetailsViewObj?.groupid = String(format: "%@", datareponse.value(forKey: "groupId") as! CVarArg)
+                    navigation().pushViewController(groupdetailsViewObj!, animated: true)
+                }
+            }
+            else if key == "groupUserRemove"
+            {
+                let useridstring = String(format: "%@", datareponse.value(forKey: "removeUserId") as! CVarArg)
+                if useridstring==self.commonmethodClass.retrieveuserid() as String
+                {
+                    if let objView = navigation().visibleViewController as? GroupListController
+                    {
+                        objView.refreshObj()
+                    }
+                    else
+                    {
+                        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                        let groupObj = storyBoard.instantiateViewController(withIdentifier: "GroupListID") as? GroupListController
+                        navigation().pushViewController(groupObj!, animated: false)
+                    }
+                }
+                else
+                {
+                    if let objView = navigation().visibleViewController as? GroupDetailsInfoViewController
+                    {
+                        objView.groupid = String(format: "%@", datareponse.value(forKey: "groupId") as! CVarArg)
+                        objView.getGroupInfo()
+                    }
+                    else
+                    {
+                        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                        let groupdetailsViewObj = storyBoard.instantiateViewController(withIdentifier: "GroupDetailsInfoViewID") as? GroupDetailsInfoViewController
+                        groupdetailsViewObj?.groupid = String(format: "%@", datareponse.value(forKey: "groupId") as! CVarArg)
+                        navigation().pushViewController(groupdetailsViewObj!, animated: true)
+                    }
+                }
+            }
+            else if key == "groupUserMarkAdmin" || key == "groupUserRemoveAdmin"
+            {
+                if let objView = navigation().visibleViewController as? GroupDetailsInfoViewController
+                {
+                    objView.groupid = String(format: "%@", datareponse.value(forKey: "groupId") as! CVarArg)
+                    objView.getGroupInfo()
+                }
+                else
+                {
+                    let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                    let groupdetailsViewObj = storyBoard.instantiateViewController(withIdentifier: "GroupDetailsInfoViewID") as? GroupDetailsInfoViewController
+                    groupdetailsViewObj?.groupid = String(format: "%@", datareponse.value(forKey: "groupId") as! CVarArg)
+                    navigation().pushViewController(groupdetailsViewObj!, animated: true)
+                }
+            }
+            else if key == "groupTypeUpdate" || key == "groupHoursUpdate" || key == "groupNameUpdate" || key == "groupLogoUpdate"
+            {
+                if let objView = navigation().visibleViewController as? GroupListController
+                {
+                    objView.refreshObj()
+                }
+            }
+            else if key == "taskAdd" || key == "myTaskAdd" || key == "queueAdd" || key == "queueReject"
+            {
+                if let objView = navigation().visibleViewController as? HomeDetailViewController
+                {
+                    objView.getQueueList()
+                    objView.getMyBucketList()
+                }
+                else
+                {
+                    self.gotoWall()
+                }
+            }
+            else if key == "ownTaskDone"
             {
                 
             }
         }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default) { (action:UIAlertAction!) in
+            print("cancel button tapped");
+        }
         alertController.addAction(okAction)
         
-        // Present dialog window to user
-        window?.rootViewController?.present(alertController, animated: true, completion:nil)
+        if key == "teamUserMarkAdmin" || key == "teamUserRemoveAdmin"
+        {
+            var useridstring = String()
+            if key == "teamUserMarkAdmin"
+            {
+                useridstring = String(format: "%@", datareponse.value(forKey: "addUserId") as! CVarArg)
+            }
+            else
+            {
+                useridstring = String(format: "%@", datareponse.value(forKey: "removeUserId") as! CVarArg)
+            }
+            if useridstring==self.commonmethodClass.retrieveuserid() as String
+            {
+                alertController.addAction(cancelAction)
+            }
+        }
+        else
+        {
+            if key != "groupTypeUpdate" && key != "groupHoursUpdate" && key != "groupNameUpdate" && key != "groupLogoUpdate"
+            {
+                alertController.addAction(cancelAction)
+            }
+        }
+        
+        if window?.rootViewController?.presentedViewController == nil
+        {
+            window?.rootViewController?.present(alertController, animated: true, completion:nil)
+        }
+        else
+        {
+            window?.rootViewController?.dismiss(animated: false) { () -> Void in
+                self.window?.rootViewController?.present(alertController, animated: true, completion:nil)
+            }
+        }
+    }
+    
+    func gotoWall()
+    {
+        var isView : Bool!
+        isView = false
+        
+        var viewcontroller = UIViewController()
+        
+        for aviewcontroller : UIViewController in navigation().viewControllers
+        {
+            if aviewcontroller is HomeDetailViewController
+            {
+                viewcontroller = aviewcontroller
+                isView = true
+                break
+            }
+        }
+        
+        if isView==true
+        {
+            navigation().popToViewController(viewcontroller, animated: false)
+        }
+        else
+        {
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let homedetailObj = storyBoard.instantiateViewController(withIdentifier: "HomeDetailViewID") as? HomeDetailViewController
+            navigation().pushViewController(homedetailObj!, animated: false)
+        }
+    }
+    
+    func gotoTaskList()
+    {
+        var isView : Bool!
+        isView = false
+        
+        var viewcontroller = UIViewController()
+        
+        for aviewcontroller : UIViewController in navigation().viewControllers
+        {
+            if aviewcontroller is TaskListViewController
+            {
+                viewcontroller = aviewcontroller
+                isView = true
+                break
+            }
+        }
+        
+        if isView==true
+        {
+            navigation().popToViewController(viewcontroller, animated: false)
+        }
+        else
+        {
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let tasklistObj = storyBoard.instantiateViewController(withIdentifier: "TaskListViewID") as? TaskListViewController
+            navigation().pushViewController(tasklistObj!, animated: false)
+        }
+    }
+    
+    func gotoMessenger()
+    {
+        var isView : Bool!
+        isView = false
+        
+        var viewcontroller = UIViewController()
+        
+        for aviewcontroller : UIViewController in navigation().viewControllers
+        {
+            if aviewcontroller is MessageViewController
+            {
+                viewcontroller = aviewcontroller
+                isView = true
+                break
+            }
+        }
+        
+        if isView==true
+        {
+            navigation().popToViewController(viewcontroller, animated: false)
+        }
+        else
+        {
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let msgObj = storyBoard.instantiateViewController(withIdentifier: "MessageViewID") as? MessageViewController
+            navigation().pushViewController(msgObj!, animated: false)
+        }
     }
     
     func gotoHome()
     {
+        commonmethodClass.removeallkey()
+
         var isView : Bool!
         isView = false
         
@@ -656,13 +930,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ConnectionProtocol, CLLoc
         
         if isView==true
         {
-            navigation().popToViewController(viewcontroller, animated: false)
+            commonmethodClass.delayWithSeconds(0.5, completion: {
+                navigation().popToViewController(viewcontroller, animated: false)
+            })
         }
         else
         {
-            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-            let welcomeObj = storyBoard.instantiateViewController(withIdentifier: "WelcomeViewID") as? WelcomeViewController
-            navigation().pushViewController(welcomeObj!, animated: false)
+            commonmethodClass.delayWithSeconds(0.5, completion: {
+                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                let welcomeObj = storyBoard.instantiateViewController(withIdentifier: "WelcomeViewID") as? WelcomeViewController
+                navigation().pushViewController(welcomeObj!, animated: false)
+            })
         }
     }
     

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GroupTaskDetailViewController: UIViewController
+class GroupTaskDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource
 {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var tasktitle: UITextView!
@@ -22,6 +22,8 @@ class GroupTaskDetailViewController: UIViewController
     @IBOutlet weak var groupNamelbl: UILabel!
     @IBOutlet weak var memberscrollView: UIScrollView!
     @IBOutlet weak var viewheight : NSLayoutConstraint!
+    @IBOutlet weak var tbllist: UITableView!
+    @IBOutlet weak var tblheight: NSLayoutConstraint!
 
     var morebtn: UIButton!
     var taskDictionary = NSDictionary()
@@ -29,7 +31,8 @@ class GroupTaskDetailViewController: UIViewController
     var commonmethodClass = CommonMethodClass()
     var alertClass = AlertClass()
     var bottomView : BottomView!
-
+    var userArray = NSArray()
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -82,19 +85,48 @@ class GroupTaskDetailViewController: UIViewController
             taskdescheight.constant = taskdescheight.constant + 20.0
         }
         
-        self.loadMemberView(userArray: taskDictionary.value(forKey: "users") as! NSArray)
-        
-        let ownString = String(format: "%@", taskDictionary.value(forKey: "own") as! CVarArg)
-        let taskownString = String(format: "%@", taskDictionary.value(forKey: "taskOwnDone") as! CVarArg)
-        if ownString == "1" && taskownString == "0"
+        if let own = taskDictionary.value(forKey: "own") as? NSInteger
         {
-            viewheight.constant = 60.0
+            let taskown = taskDictionary.value(forKey: "taskOwnDone") as! NSInteger
+            if own == 1 && taskown == 0
+            {
+                viewheight.constant = 60.0
+            }
+            else
+            {
+                viewheight.constant = 0.0
+            }
+            
+            memberscrollView.isHidden = false
+            tbllist.isHidden = true
+            
+            self.loadMemberView(userArray: taskDictionary.value(forKey: "users") as! NSArray)
+            
+            commonmethodClass.delayWithSeconds(0.5, completion: {
+                self.scrollView.contentSize = CGSize(width: screenWidth, height: self.taskdescheight.constant+self.tasktitleheight.constant+280.0)
+            })
         }
         else
         {
             viewheight.constant = 0.0
+            memberscrollView.isHidden = true
+            tbllist.isHidden = false
+            
+            userArray = taskDictionary.value(forKey: "users") as! NSArray
+            
+            if(userArray.count>0)
+            {
+                tblheight.constant = CGFloat(userArray.count * 70) + 45
+                tbllist.reloadData()
+            }
+            
+            commonmethodClass.delayWithSeconds(0.5, completion: {
+                self.scrollView.contentSize = CGSize(width: screenWidth, height: self.tblheight.constant+self.taskdescheight.constant+self.tasktitleheight.constant+160.0)
+            })
         }
         
+        tbllist.register(UITableViewCell.classForKeyedArchiver(), forCellReuseIdentifier: "idUserCell")
+
         self.loadbottomView()
     }
     
@@ -251,6 +283,123 @@ class GroupTaskDetailViewController: UIViewController
                 break
             }
         }
+    }
+    
+    // MARK: UITableView Delegate and Datasource Methods
+    
+    func numberOfSections(in tableView: UITableView) -> Int
+    {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    {
+        return userArray.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+    {
+        let cell:UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "idUserCell") as UITableViewCell!
+        
+        cell.selectionStyle = .none
+        
+        let userdictionary = userArray[indexPath.row] as! NSDictionary
+        
+        let filestring = String(format: "%@%@", kfilePath,userdictionary.value(forKey: "profilePic") as! CVarArg)
+
+        let imageView = AsyncImageView()
+        imageView.frame = CGRect(x: CGFloat(15.0), y: CGFloat(10.0), width: CGFloat(40.0), height: CGFloat(40.0))
+        imageView.layer.cornerRadius = imageView.frame.size.height / 2.0
+        imageView.layer.masksToBounds = true
+        imageView.backgroundColor = UIColor.clear
+        imageView.imageURL = URL(string: filestring)
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        cell.contentView.addSubview(imageView)
+        
+        /*----------------------------------------------------------------*/
+        
+        let processString = String(format: "%@", userdictionary.value(forKey: "process") as! CVarArg)
+
+        let button = UIButton()
+        button.frame = CGRect(x: CGFloat(0.0), y: CGFloat(0.0), width: CGFloat(imageView.frame.size.width), height: CGFloat(imageView.frame.size.height))
+        button.layer.cornerRadius = button.frame.size.height/2.0
+        button.layer.masksToBounds = true
+        button.titleLabel?.font = UIFont(name: LatoBold, size: 20.0)
+        imageView.addSubview(button)
+        
+        if processString == "2"
+        {
+            button.setTitle("!", for: .normal)
+            button.setTitleColor(UIColor.white, for: .normal)
+            button.backgroundColor = UIColor(white: 0.0, alpha: 0.5)
+        }
+        else if processString == "1"
+        {
+            button.setTitle("D", for: .normal)
+            button.setTitleColor(UIColor.white, for: .normal)
+            button.backgroundColor = UIColor(white: 0.0, alpha: 0.5)
+        }
+        else
+        {
+            button.backgroundColor = UIColor.clear
+        }
+        
+        /*----------------------------------------------------------------*/
+
+        let firstnamestring = String(format: "%@",userdictionary.value(forKey: "firstName") as! CVarArg)
+
+        let userlbl = UILabel()
+        userlbl.frame = CGRect(x: CGFloat(imageView.frame.maxX+10.0), y: CGFloat(5.0), width: CGFloat(screenWidth-70.0), height: CGFloat(20.0))
+        userlbl.font = UIFont(name: LatoBold, size: CGFloat(14.0))
+        userlbl.backgroundColor = UIColor.clear
+        userlbl.textColor = UIColor.darkGray
+        userlbl.text = firstnamestring
+        cell.contentView.addSubview(userlbl)
+        
+        /*----------------------------------------------------------------*/
+        
+        let addressstring = String(format: "%@",userdictionary.value(forKey: "address") as! CVarArg)
+        
+        let addresslbl = UILabel()
+        addresslbl.frame = CGRect(x: CGFloat(imageView.frame.maxX+10.0), y: CGFloat(userlbl.frame.maxY+2.0), width: CGFloat(screenWidth-70.0), height: CGFloat(35.0))
+        addresslbl.font = UIFont(name: LatoRegular, size: CGFloat(13.0))
+        addresslbl.backgroundColor = UIColor.clear
+        addresslbl.textColor = UIColor(red: 119.0/255.0, green: 119.0/255.0, blue: 119.0/255.0, alpha: 1.0)
+        addresslbl.text = addressstring
+        addresslbl.numberOfLines = 5
+        addresslbl.adjustsFontSizeToFitWidth = true
+        cell.contentView.addSubview(addresslbl)
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
+    {
+        return 70.0
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
+    {
+        return 45.0
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
+    {
+        let headerheight = self.tableView(tableView, heightForHeaderInSection: section)
+        
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: headerheight))
+        headerView.backgroundColor = UIColor(red: 249/255, green: 249/255, blue: 249/255, alpha: 1)
+        
+        let memberslbl = UILabel()
+        memberslbl.frame = CGRect(x: CGFloat(15.0), y: CGFloat(0.0), width: CGFloat(110.0), height: CGFloat(headerheight))
+        memberslbl.font = UIFont(name: LatoRegular, size: CGFloat(15.0))
+        memberslbl.backgroundColor = UIColor.clear
+        memberslbl.textColor = UIColor.darkGray
+        memberslbl.text = "Member(s)"
+        headerView.addSubview(memberslbl)
+        
+        return headerView
     }
     
     override func didReceiveMemoryWarning()

@@ -519,6 +519,7 @@ class ConnectionClass: NSObject
     {
         let urlpath = String(format: "%@%@", kBaseURL,kgroupCreate)
         print("urlpath =>\(urlpath)")
+        print("imageData =>\(imageData.count)")
         
         let request : ASIFormDataRequest = ASIFormDataRequest(url: NSURL(string: urlpath)! as URL)
         request.requestMethod = "POST"
@@ -526,7 +527,10 @@ class ConnectionClass: NSObject
         request.addPostValue(desc as NSObjectProtocol!, forKey: "description")
         request.addPostValue(privacy as NSObjectProtocol!, forKey: "type")
         request.addPostValue(hourpermission as NSObjectProtocol!, forKey: "hours")
-        request.addData(imageData, withFileName: "image.jpeg", andContentType: "multipart/form-data", forKey: "image")
+        if imageData.count > 0
+        {
+            request.addData(imageData, withFileName: "image.jpeg", andContentType: "multipart/form-data", forKey: "image")
+        }
         request.addPostValue(commonmethodClass.retrieveUsernameToken(), forKey: "token")
         request.addPostValue(users as NSObjectProtocol!, forKey: "users")
         request.addHeader("Accept", value: "application/json")
@@ -1022,6 +1026,12 @@ class ConnectionClass: NSObject
         request.addPostValue(taskdescription as NSObjectProtocol!, forKey: "info")
         request.addPostValue(status as NSObjectProtocol!, forKey: "status")
         request.addPostValue(hours as NSObjectProtocol!, forKey: "hours")
+        if status == "1"
+        {
+            request.addPostValue(appDelegate.latitudeString as NSObjectProtocol!, forKey: "lat")
+            request.addPostValue(appDelegate.longitudeString as NSObjectProtocol!, forKey: "lon")
+            request.addPostValue(appDelegate.addressString as NSObjectProtocol!, forKey: "address")
+        }
         request.addHeader("Accept", value: "application/json")
         request.startSynchronous()
         
@@ -1040,6 +1050,9 @@ class ConnectionClass: NSObject
         request.addPostValue(status as NSObjectProtocol!, forKey: "status")
         request.addPostValue(description as NSObjectProtocol!, forKey: "description")
         request.addPostValue(hours as NSObjectProtocol!, forKey: "hours")
+        request.addPostValue(appDelegate.latitudeString as NSObjectProtocol!, forKey: "lat")
+        request.addPostValue(appDelegate.longitudeString as NSObjectProtocol!, forKey: "lon")
+        request.addPostValue(appDelegate.addressString as NSObjectProtocol!, forKey: "address")
         request.addHeader("Accept", value: "application/json")
         request.startSynchronous()
         
